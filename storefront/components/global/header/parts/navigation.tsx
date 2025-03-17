@@ -49,7 +49,7 @@ export default function Navigation({data}: {data: Header}) {
             return (
               <LocalizedLink
                 className={cx(
-                  "h-full whitespace-nowrap px-5 py-[14.5px] transition-opacity duration-300 hover:opacity-100! group-hover:opacity-50",
+                  "h-full px-5 py-[14.5px] whitespace-nowrap transition-opacity duration-300 group-hover:opacity-50 hover:opacity-100!",
                   {
                     "opacity-50": !!openDropdown,
                   },
@@ -72,7 +72,7 @@ export default function Navigation({data}: {data: Header}) {
               <NavigationMenu.Item key={item._key}>
                 <NavigationMenu.Trigger
                   className={cx(
-                    "whitespace-nowrap px-5 py-[14.5px] transition-all duration-300 hover:opacity-100! group-hover:opacity-50 data-[state=open]:opacity-100",
+                    "px-5 py-[14.5px] whitespace-nowrap transition-all duration-300 group-hover:opacity-50 hover:opacity-100! data-[state=open]:opacity-100",
                     {
                       "opacity-50": !!openDropdown,
                     },
@@ -82,7 +82,7 @@ export default function Navigation({data}: {data: Header}) {
                     {item.title}
                   </Body>
                 </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="absolute left-0 top-0 z-30 w-full bg-background data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft">
+                <NavigationMenu.Content className="bg-background data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft absolute top-0 left-0 z-30 w-full">
                   <Content {...item} />
                 </NavigationMenu.Content>
               </NavigationMenu.Item>
@@ -91,15 +91,15 @@ export default function Navigation({data}: {data: Header}) {
         })}
       </NavigationMenu.List>
 
-      <div className="perspective-[2000px] absolute left-0 top-full flex w-full flex-1 flex-col justify-center overflow-hidden bg-transparent">
+      <div className="absolute top-full left-0 flex w-full flex-1 flex-col justify-center overflow-hidden bg-transparent perspective-[2000px]">
         <BottomBorder DropdownOpen={!!openDropdown} />
-        <NavigationMenu.Viewport className="relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden bg-background transition-[width,_height] duration-300 data-[state=closed]:animate-exitToTop data-[state=open]:animate-enterFromTop" />
+        <NavigationMenu.Viewport className="bg-background data-[state=closed]:animate-exitToTop data-[state=open]:animate-enterFromTop relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden transition-[width,_height] duration-300" />
         <div
           className={cx(
-            "relative w-full bg-accent transition-all duration-300",
+            "bg-accent relative w-full transition-all duration-300",
             {
-              "h-[1.5px] animate-enterFromTop": openDropdown,
-              "h-0 animate-exitToTop": !openDropdown,
+              "animate-enterFromTop h-[1.5px]": openDropdown,
+              "animate-exitToTop h-0": !openDropdown,
             },
           )}
         />
@@ -113,15 +113,15 @@ function Content({cards, columns}: DropdownType) {
 
   return (
     <RemoveScroll>
-      <div className="relative mx-auto flex max-w-max-screen items-start justify-between gap-xl px-xl py-2xl">
-        <div className="group flex flex-wrap items-start justify-start gap-lg">
+      <div className="max-w-max-screen gap-xl px-xl py-2xl relative mx-auto flex items-start justify-between">
+        <div className="group gap-lg flex flex-wrap items-start justify-start">
           {columns?.map((link) => {
             return (
               <div
                 className="flex min-w-[270px] flex-col items-start justify-start"
                 key={link._key}
               >
-                <Body className="pb-s" font="sans" mobileSize="base">
+                <Body className="pb-sm" font="sans" mobileSize="base">
                   {link.title}
                 </Body>
                 {link.links?.map((link) => {
@@ -129,7 +129,7 @@ function Content({cards, columns}: DropdownType) {
                   return (
                     <LocalizedLink
                       className={cx(
-                        "py-xs opacity-100 transition-opacity duration-300 last:pb-0 group-hover:opacity-50",
+                        "py-xs opacity-100 transition-opacity duration-300 group-hover:opacity-50 last:pb-0",
                         {
                           "opacity-100!": hoveredKey === link._key,
                         },
@@ -150,7 +150,7 @@ function Content({cards, columns}: DropdownType) {
             );
           })}
         </div>
-        <div className="scrollbar-hide flex flex-wrap items-stretch justify-start gap-lg">
+        <div className="scrollbar-hide gap-lg flex flex-wrap items-stretch justify-start">
           {cards?.map((card) => {
             return <Product key={card._key} {...card} />;
           })}
@@ -167,7 +167,7 @@ function Product({
 }: NonNullable<DropdownType["cards"]>[number]) {
   if (!cta?.link) return null;
   return (
-    <div className="group relative flex w-[220px] min-w-[160px] max-w-[220px] shrink-0 flex-col items-center gap-xs rounded-lg">
+    <div className="group gap-xs relative flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center rounded-lg">
       <LocalizedLink
         className="absolute inset-0 z-10"
         href={cta?.link}
@@ -179,7 +179,7 @@ function Product({
           data={image}
         />
       ) : (
-        <div className="aspect-square w-full rounded-lg bg-accent" />
+        <div className="bg-accent aspect-square w-full rounded-lg" />
       )}
 
       <Heading className="text-center" font="serif" mobileSize="xs" tag="h5">

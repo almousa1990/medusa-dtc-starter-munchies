@@ -36,8 +36,8 @@ export default async function Layout(props: LayoutProps) {
   return (
     <>
       <PreventBackNavigationSmoothScroll />
-      <div className="sticky top-0 z-20 w-screen bg-background">
-        <div className="mx-auto my-s w-full max-w-max-screen bg-background px-m lg:px-xl">
+      <div className="bg-background sticky top-0 z-20 w-screen">
+        <div className="my-sm max-w-max-screen bg-background px-md lg:px-xl mx-auto w-full">
           <LocalizedLink href="/" prefetch>
             <img
               alt="Mubchies logo"

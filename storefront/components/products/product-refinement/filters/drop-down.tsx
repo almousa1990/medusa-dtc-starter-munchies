@@ -42,8 +42,8 @@ export default function DropDown({
       >
         <button
           className={cx(
-            "flex w-fit items-center justify-between gap-lg bg-background px-s py-[6px] outline-hidden",
-            "rounded-lg border-[1.5px] border-accent",
+            "gap-lg bg-background px-sm flex w-fit items-center justify-between py-[6px] outline-hidden",
+            "border-accent rounded-lg border-[1.5px]",
           )}
           disabled={disabled}
           onClick={() => {
@@ -54,14 +54,16 @@ export default function DropDown({
         >
           <div className="flex w-full items-center justify-between gap-6 py-2">
             <Body font="sans" mobileSize="base">
-              <h3 className="body-m min-w-[100px] text-start">{placeholder}</h3>
+              <h3 className="body-md min-w-[100px] text-start">
+                {placeholder}
+              </h3>
             </Body>
             <Caret isOpen={isOpen} />
           </div>
         </button>
         <div
           className={cx(
-            "absolute left-0 z-50 my-1 origin-top cursor-pointer overflow-y-scroll rounded-lg rounded-b-lg border-[1.5px] border-accent bg-background",
+            "border-accent bg-background absolute left-0 z-50 my-1 origin-top cursor-pointer overflow-y-scroll rounded-lg rounded-b-lg border-[1.5px]",
             {
               hidden: !isOpen,
             },

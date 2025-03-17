@@ -12,15 +12,15 @@ import Navigation from "./parts/navigation";
 
 export default function Header(props: {countryCode: string} & Header) {
   return (
-    <header className="sticky top-0 z-50 flex w-full flex-col items-center bg-background">
+    <header className="bg-background sticky top-0 z-50 flex w-full flex-col items-center">
       <AnnouncementBar {...props} />
-      <div className="mx-auto flex w-full max-w-max-screen items-center justify-between gap-2xl px-m py-xs lg:px-xl">
+      <div className="max-w-max-screen gap-2xl px-md py-xs lg:px-xl mx-auto flex w-full items-center justify-between">
         <Suspense>
           <Navigation data={props} />
         </Suspense>
         <HamburgerContainer sanityData={props} />
 
-        <div className="flex items-center gap-s">
+        <div className="gap-sm flex items-center">
           <LocalizedLink href="/" prefetch>
             <img
               alt="Mubchies logo"

@@ -23,7 +23,7 @@ export default function CartFooter() {
   return (
     <>
       <div className="bg-accent h-px w-full" />
-      <div className="p-s flex w-full flex-col justify-between gap-4">
+      <div className="p-sm flex w-full flex-col justify-between gap-4">
         <div className="flex w-full justify-between gap-4">
           <div>
             <Body className="font-semibold" font="sans" mobileSize="base">

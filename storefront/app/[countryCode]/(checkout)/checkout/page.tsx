@@ -11,6 +11,7 @@ import {redirect} from "next/navigation";
 
 import CartDetails from "./_parts/cart-details";
 import CheckoutForm from "./_parts/checkout-form";
+import {getCustomer} from "@/data/medusa/customer";
 
 export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const params = await props.params;
@@ -18,6 +19,7 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const {countryCode} = params;
 
   const cart = await getCart();
+  const customer = await getCustomer();
 
   if (!cart || (cart.items?.length || 0) === 0) {
     return redirect(`/${countryCode}/`);
@@ -34,8 +36,9 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const paymentMethods = (await listCartPaymentMethods(cart.region_id!)) || [];
 
   return (
-    <section className="mx-auto flex w-full max-w-max-screen flex-col-reverse gap-8 px-4 py-8 md:flex-row md:gap-20 md:px-8 lg:justify-between lg:pb-20 lg:pt-5">
+    <section className="max-w-max-screen mx-auto flex w-full flex-col-reverse gap-8 px-4 py-8 md:flex-row md:gap-20 md:px-8 lg:justify-between lg:pt-5 lg:pb-20">
       <CheckoutForm
+        customer={customer}
         cart={cart}
         paymentMethods={paymentMethods}
         shippingMethods={shippingMethods}

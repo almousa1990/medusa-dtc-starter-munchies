@@ -32,8 +32,8 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
   const shippingMethod = order.shipping_methods?.[0];
 
   return (
-    <div className="mx-auto flex max-w-[1200px] flex-col gap-2xl px-s py-2xl md:py-8xl">
-      <div className="flex flex-col gap-xs">
+    <div className="gap-2xl px-sm py-2xl md:py-8xl mx-auto flex max-w-[1200px] flex-col">
+      <div className="gap-xs flex flex-col">
         <Heading
           className="mb-lg"
           desktopSize="2xl"
@@ -60,11 +60,11 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
           Order number: {order.display_id}
         </Body>
       </div>
-      <div className="flex flex-col gap-s">
+      <div className="gap-s flex flex-col">
         <Heading desktopSize="xl" font="serif" mobileSize="lg" tag="h2">
           Summary
         </Heading>
-        <div className="flex flex-col gap-s">
+        <div className="gap-s flex flex-col">
           {order.items.map((item) => {
             return (
               <OrderItem
@@ -96,11 +96,11 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
           <Separator />
         </div>
       </div>
-      <div className="flex flex-col gap-s">
+      <div className="gap-s flex flex-col">
         <Heading desktopSize="xl" font="serif" mobileSize="lg" tag="h2">
           Delivery
         </Heading>
-        <div className="flex flex-col gap-xl lg:flex-row lg:gap-s">
+        <div className="gap-xl lg:gap-s flex flex-col lg:flex-row">
           <div className="flex flex-1 flex-col gap-[6px]">
             <Body
               className="mb-[6px] font-semibold"
@@ -158,12 +158,12 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
 }
 
 function Separator() {
-  return <div className="h-px w-full bg-accent" />;
+  return <div className="bg-accent h-px w-full" />;
 }
 
 function SubLineItem({title, value}: {title: string; value: string}) {
   return (
-    <div className="flex items-center justify-between gap-xl">
+    <div className="gap-xl flex items-center justify-between">
       <Body className="mb-[6px] font-semibold" desktopSize="base" font="sans">
         {title}
       </Body>

@@ -49,12 +49,12 @@ export default function SearchBar({
       )}
     >
       <Icon
-        className="absolute left-[14px] top-1/2 h-6 w-6 -translate-y-1/2"
+        className="absolute top-1/2 left-[14px] h-6 w-6 -translate-y-1/2"
         name="Search"
       />
       <input
         aria-label="Search"
-        className="h-full w-full appearance-none rounded-lg border-[1.5px] border-accent bg-background py-[10px] pl-[50px] pr-s font-sans text-body-base font-medium leading-[150%] text-accent outline-hidden placeholder:text-accent placeholder:opacity-60"
+        className="border-accent bg-background pr-sm text-body-base text-accent placeholder:text-accent h-full w-full appearance-none rounded-lg border-[1.5px] py-[10px] pl-[50px] font-sans leading-[150%] font-medium outline-hidden placeholder:opacity-60"
         onChange={(e) => handleSearch(e.target.value)}
         onKeyDown={keydownHandler}
         placeholder={placeholder ?? "Search"}

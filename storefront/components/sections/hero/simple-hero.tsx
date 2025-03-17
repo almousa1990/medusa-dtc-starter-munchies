@@ -10,7 +10,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
   const image = stegaClean(props.image);
   return (
     <div className="gap-xs flex flex-col items-stretch justify-center lg:flex-row-reverse">
-      <div className="gap-s bg-secondary px-m py-4xl lg:py-m flex min-h-[470px] w-full flex-col items-center justify-center rounded-lg text-center lg:w-1/2">
+      <div className="gap-sm bg-secondary px-md py-4xl lg:py-md flex min-h-[470px] w-full flex-col items-center justify-center rounded-lg text-center lg:w-1/2">
         <Heading
           className="leading-[100%]!"
           desktopSize="5xl"

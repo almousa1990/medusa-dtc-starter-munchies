@@ -60,7 +60,7 @@ export default function MobileFilterDropdown({children}: Props) {
         <div className="sticky top-0">
           <div
             className={cx(
-              "absolute left-0 top-0 flex w-full cursor-pointer items-center justify-center border-b-[1.5px] border-accent bg-background transition-all duration-300",
+              "border-accent bg-background absolute top-0 left-0 flex w-full cursor-pointer items-center justify-center border-b-[1.5px] transition-all duration-300",
               {
                 "translate-y-[-100%]": !showTopArrow,
               },
@@ -74,7 +74,7 @@ export default function MobileFilterDropdown({children}: Props) {
         <div className="sticky bottom-0 h-[25.5px] overflow-hidden">
           <div
             className={cx(
-              "sticky bottom-0 left-0 flex w-full cursor-pointer items-center justify-center border-t-[1.5px] border-accent bg-background transition-all duration-300",
+              "border-accent bg-background sticky bottom-0 left-0 flex w-full cursor-pointer items-center justify-center border-t-[1.5px] transition-all duration-300",
               {
                 "translate-y-[100%]": !showBottomArrow,
               },
@@ -86,7 +86,7 @@ export default function MobileFilterDropdown({children}: Props) {
         </div>
       </div>
 
-      <div className="sticky bottom-0 my-2 flex w-[calc(100vw-40px)] flex-col justify-center gap-s px-xs">
+      <div className="gap-sm px-xs sticky bottom-0 my-2 flex w-[calc(100vw-40px)] flex-col justify-center">
         <Cta className="w-full" onClick={() => setOpen(false)} size="md">
           Show Results
         </Cta>

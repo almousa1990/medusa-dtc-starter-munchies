@@ -2,23 +2,26 @@
 import type {
   StoreCart,
   StoreCartShippingOption,
+  StoreCustomer,
   StorePaymentProvider,
 } from "@medusajs/types";
 
 import Heading from "@/components/shared/typography/heading";
 import {useState} from "react";
 
-import AddressForm from "./address-form";
+import Address from "./address";
 import Delivery from "./delivery";
 import Payment from "./payment";
 import Review from "./review";
 
 export default function CheckoutForm({
   cart,
+  customer,
   paymentMethods,
   shippingMethods,
 }: {
   cart: StoreCart;
+  customer: StoreCustomer;
   paymentMethods: StorePaymentProvider[];
   shippingMethods: StoreCartShippingOption[];
 }) {
@@ -31,7 +34,8 @@ export default function CheckoutForm({
       <Heading desktopSize="2xl" font="serif" mobileSize="xl" tag="h3">
         Checkout
       </Heading>
-      <AddressForm
+      <Address
+        customer={customer}
         active={step === "addresses"}
         cart={cart}
         nextStep={shippingMethods.length > 0 ? "delivery" : "payment"}

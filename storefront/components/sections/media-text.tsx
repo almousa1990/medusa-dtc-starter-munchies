@@ -16,16 +16,16 @@ export default function MediaText(
     <section
       {...props.rootHtmlAttributes}
       className={cx(
-        "mx-auto flex w-full max-w-max-screen flex-col items-stretch justify-center gap-2 px-m py-xl lg:px-xl lg:py-2xl",
+        "max-w-max-screen px-md py-xl lg:px-xl lg:py-2xl mx-auto flex w-full flex-col items-stretch justify-center gap-2",
         {
           "lg:flex-row": position === "right",
           "lg:flex-row-reverse": position === "left",
         },
       )}
     >
-      <div className="relative flex min-h-[390px] flex-col items-center justify-start gap-11 rounded-lg border border-accent p-s sm:justify-center lg:w-1/2 lg:py-7xl">
+      <div className="border-accent p-sm lg:py-7xl relative flex min-h-[390px] flex-col items-center justify-start gap-11 rounded-lg border sm:justify-center lg:w-1/2">
         <Label
-          className="whitespace-nowrap sm:absolute sm:left-1/2 sm:top-xl sm:-translate-x-1/2"
+          className="sm:top-xl whitespace-nowrap sm:absolute sm:left-1/2 sm:-translate-x-1/2"
           desktopSize="base"
           font="display"
           mobileSize="sm"
@@ -33,7 +33,7 @@ export default function MediaText(
           {props.title}
         </Label>
         <Body
-          className="max-w-[580px] text-pretty text-center"
+          className="max-w-[580px] text-center text-pretty"
           desktopSize="6xl"
           font="serif"
           mobileSize="4xl"
@@ -50,7 +50,7 @@ export default function MediaText(
           />
         </div>
       ) : (
-        <div className="aspect-square rounded-lg bg-accent lg:w-1/2" />
+        <div className="bg-accent aspect-square rounded-lg lg:w-1/2" />
       )}
     </section>
   );

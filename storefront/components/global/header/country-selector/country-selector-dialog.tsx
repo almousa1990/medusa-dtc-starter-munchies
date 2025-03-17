@@ -66,7 +66,7 @@ export default function CountrySelectorDialog({
       <OpenDialog className={className}>
         <Body
           className={cx(
-            "overflow-hidden whitespace-nowrap rounded-lg border-[1.5px] border-accent p-2 lg:border-none",
+            "border-accent overflow-hidden rounded-lg border-[1.5px] p-2 whitespace-nowrap lg:border-none",
             className,
           )}
           font="sans"
@@ -77,8 +77,8 @@ export default function CountrySelectorDialog({
         </Body>
       </OpenDialog>
       <SideDialog>
-        <div className="relative flex h-full w-full flex-col border-l border-accent bg-background">
-          <div className="flex h-full w-full flex-col bg-background p-s pr-xs">
+        <div className="border-accent bg-background relative flex h-full w-full flex-col border-l">
+          <div className="bg-background p-sm pr-xs flex h-full w-full flex-col">
             <Title asChild>
               <Heading
                 className="py-4"
@@ -92,7 +92,7 @@ export default function CountrySelectorDialog({
             </Title>
             <CloseDialog
               aria-label="Close"
-              className="absolute right-[10px] top-[10px]"
+              className="absolute top-[10px] right-[10px]"
             >
               <Icon className="h-9 w-9" name="Close" />
             </CloseDialog>
@@ -100,7 +100,7 @@ export default function CountrySelectorDialog({
               {countries.map((country) => (
                 <Suspense key={country?.code}>
                   <Link
-                    className="whitespace-nowrap rounded-sm px-s py-xs hover:bg-secondary"
+                    className="px-sm py-xs hover:bg-secondary rounded-sm whitespace-nowrap"
                     href={getNewPath(country?.code)}
                     onClick={() => setOpen(false)}
                     prefetch

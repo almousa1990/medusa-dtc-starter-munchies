@@ -3,6 +3,7 @@
 @config '../tailwind.config.ts';
 @source "../node_modules/@merchify/ui";
 
+@plugin 'tailwindcss-animate';
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -11,6 +12,27 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+
+@theme inline {
+
+  --spacing-8xl: 80px;
+  --spacing-7xl: 72px;
+  --spacing-6xl: 64px;
+  --spacing-5xl: 56px;
+  --spacing-4xl: 48px;
+  --spacing-3xl: 44px;
+  --spacing-2xl: 40px;
+  --spacing-xl: 32px;
+  --spacing-lg: 24px;
+  --spacing-md: 20px;
+  --spacing-sm: 16px;
+  --spacing-xs: 8px;
+
+  /* Max/Min Widths */
+  --max-screen: 1200px;
+  --min-screen: 320px;
+}
+
 @layer base {
   *,
   ::after,

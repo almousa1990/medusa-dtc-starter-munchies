@@ -63,13 +63,13 @@ export default function Hamburger({
       </Dialog.Trigger>
       <Dialog.Portal container={portalContainer}>
         <RemoveScroll>
-          <Dialog.Content className="w-screen items-end justify-end overflow-x-hidden bg-background">
+          <Dialog.Content className="bg-background w-screen items-end justify-end overflow-x-hidden">
             <VisuallyHidden.Root>
               <Dialog.Title className="">Menu</Dialog.Title>
             </VisuallyHidden.Root>
             <div
               className={cx(
-                "scrollbar-hide fixed left-0 top-[calc(var(--header-height))] flex h-[calc(100dvh-var(--header-height))] w-screen flex-1 flex-col items-start justify-between overflow-x-hidden overflow-y-scroll bg-background transition-all duration-300",
+                "scrollbar-hide bg-background fixed top-[calc(var(--header-height))] left-0 flex h-[calc(100dvh-var(--header-height))] w-screen flex-1 flex-col items-start justify-between overflow-x-hidden overflow-y-scroll transition-all duration-300",
                 {
                   "-translate-x-full": isMenuActive,
                   "translate-x-0": !isMenuActive,
@@ -86,18 +86,18 @@ export default function Hamburger({
                   />
                 ))}
               </div>
-              <div className="p-m">
+              <div className="p-md">
                 <CountrySelectorDialog countries={countries} />
               </div>
             </div>
             <div
-              className={`scrollbar-hide fixed left-0 top-[calc(var(--header-height))] h-[calc(100dvh-var(--header-height))] w-screen transform overflow-x-hidden overflow-y-scroll bg-background transition-all duration-300 ${
+              className={`scrollbar-hide bg-background fixed top-[calc(var(--header-height))] left-0 h-[calc(100dvh-var(--header-height))] w-screen transform overflow-x-hidden overflow-y-scroll transition-all duration-300 ${
                 isMenuActive ? "translate-x-0" : "translate-x-full"
               }`}
             >
               <div className="h-auto w-full">
                 <button
-                  className="flex items-center justify-start gap-s p-m"
+                  className="gap-sm p-md flex items-center justify-start"
                   onClick={() => setActiveMenu(undefined)}
                 >
                   <Icon className="size-8" name="AccordionLeft" />
@@ -129,7 +129,7 @@ function NavMenuItem({
       <>
         {item.cta?.link && (
           <NextLink
-            className="p-m"
+            className="p-md"
             href={item.cta?.link}
             onClick={() => setOpen(false)}
           >
@@ -145,7 +145,7 @@ function NavMenuItem({
   if (item._type === "dropdown") {
     return (
       <div
-        className="flex items-center justify-between p-m"
+        className="p-md flex items-center justify-between"
         key={item._key}
         onClick={() => setActiveMenu(item._key)}
       >
@@ -167,11 +167,11 @@ function DropdownList({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <div className="flex h-full w-full flex-col items-start gap-xl pb-lg">
+    <div className="gap-xl pb-lg flex h-full w-full flex-col items-start">
       {activeMenu?.columns?.map((item) => {
         return (
           <div
-            className="flex flex-col items-start justify-start gap-s px-m"
+            className="gap-sm px-md flex flex-col items-start justify-start"
             key={item._key}
           >
             <Body font="sans" mobileSize="base">
@@ -195,11 +195,11 @@ function DropdownList({
           </div>
         );
       })}
-      <div className="scrollbar-hide flex w-full gap-xs overflow-x-scroll">
+      <div className="scrollbar-hide gap-xs flex w-full overflow-x-scroll">
         {activeMenu?.cards?.map((card) => {
           return (
             <div
-              className="flex w-[220px] min-w-[160px] max-w-[220px] shrink-0 flex-col items-center gap-xs rounded-lg first:ml-m last:mr-m"
+              className="gap-xs first:ml-md last:mr-md flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center rounded-lg"
               key={card._key}
             >
               {card.image ? (
@@ -208,7 +208,7 @@ function DropdownList({
                   data={card.image}
                 />
               ) : (
-                <div className="aspect-square w-full rounded-lg bg-accent" />
+                <div className="bg-accent aspect-square w-full rounded-lg" />
               )}
 
               <Heading

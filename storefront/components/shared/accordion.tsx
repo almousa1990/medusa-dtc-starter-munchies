@@ -71,7 +71,7 @@ function AccordionItem({
 
   return (
     <button
-      className={cx("cursor-pointer border-accent pb-xs text-start", {
+      className={cx("border-accent pb-xs cursor-pointer text-start", {
         "border-b": border,
         "border-none": !border,
         "pt-3": type === "faq",
@@ -80,7 +80,7 @@ function AccordionItem({
       id={id}
       onClick={toggleOpen}
     >
-      <div className="mb-s flex items-start justify-between gap-s">
+      <div className="mb-sm gap-s flex items-start justify-between">
         {type === "faq" ? (
           <Body desktopSize="xl" font="sans" mobileSize="lg">
             {title}
@@ -90,11 +90,11 @@ function AccordionItem({
             {title}
           </Heading>
         )}
-        <div className="group relative h-8 w-8 shrink-0 rounded-full border-[1.5px] border-accent bg-background transition-colors duration-300 hover:bg-accent">
-          <span className="absolute left-1/2 top-1/2 h-[1.5px] w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent transition-colors duration-300 group-hover:bg-background" />
+        <div className="group border-accent bg-background hover:bg-accent relative h-8 w-8 shrink-0 rounded-full border-[1.5px] transition-colors duration-300">
+          <span className="bg-accent group-hover:bg-background absolute top-1/2 left-1/2 h-[1.5px] w-3 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300" />
           <span
             className={cx(
-              "absolute left-1/2 top-1/2 h-3 w-[1.5px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent transition-all duration-300 group-hover:bg-background",
+              "bg-accent group-hover:bg-background absolute top-1/2 left-1/2 h-3 w-[1.5px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300",
               isOpen ? "rotate-90" : "rotate-0",
             )}
           />

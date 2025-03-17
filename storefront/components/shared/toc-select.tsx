@@ -30,7 +30,7 @@ export default function TocSelect({outlines}: Props) {
 
   return (
     <RadixSelect.Root onOpenChange={setOpen} open={open}>
-      <RadixSelect.Trigger className="flex w-full items-center justify-between rounded-lg border-[1.5px] border-accent bg-background px-s py-[19px] outline-hidden lg:hidden">
+      <RadixSelect.Trigger className="border-accent bg-background px-sm flex w-full items-center justify-between rounded-lg border-[1.5px] py-[19px] outline-hidden lg:hidden">
         <Label font="sans" mobileSize="base">
           <RadixSelect.Value placeholder="On this page" />
         </Label>
@@ -50,7 +50,7 @@ export default function TocSelect({outlines}: Props) {
       <RadixSelect.Portal>
         <RadixSelect.Content
           className={cx(
-            "z-50 my-5 max-h-[320px] w-(--radix-select-trigger-width) origin-top rounded-lg border-[1.5px] border-accent bg-background p-xs data-[state=closed]:animate-select-close data-[state=open]:animate-select-open",
+            "border-accent bg-background p-xs data-[state=closed]:animate-select-close data-[state=open]:animate-select-open z-50 my-5 max-h-[320px] w-(--radix-select-trigger-width) origin-top rounded-lg border-[1.5px]",
             {
               "data-[state=open]": open,
             },
@@ -82,7 +82,7 @@ function SelectItem({
   return (
     <RadixSelect.Item
       className={cx(
-        "cursor-pointer rounded-lg px-s py-[9.5px] data-disabled:pointer-events-none data-[state=checked]:bg-accent data-[state=checked]:text-background data-highlighted:outline-hidden",
+        "px-sm data-[state=checked]:bg-accent data-[state=checked]:text-background cursor-pointer rounded-lg py-[9.5px] data-disabled:pointer-events-none data-highlighted:outline-hidden",
         className,
       )}
       {...props}

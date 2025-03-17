@@ -134,7 +134,7 @@ export default function Faq({
   };
   return (
     <div className="scroll-mt-header-height flex-col items-center justify-center">
-      <section className="flex w-full flex-col items-center justify-center gap-1 bg-accent px-xl py-8xl text-center text-background">
+      <section className="bg-accent px-xl py-8xl text-background flex w-full flex-col items-center justify-center gap-1 text-center">
         <Heading
           className="heading-l mx-auto w-fit"
           desktopSize="5xl"
@@ -162,7 +162,7 @@ export default function Faq({
           {queryRef.current.trim() && (
             <>
               {searchResults.length > 0 ? (
-                <div className="absolute left-0 top-full z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] border-accent bg-background p-2 text-accent">
+                <div className="border-accent bg-background text-accent absolute top-full left-0 z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] p-2">
                   <div
                     className="max-h-[16rem] overflow-y-auto outline-hidden"
                     ref={searchResultsRef}
@@ -170,7 +170,7 @@ export default function Faq({
                   >
                     {searchResults.map((result, index) => (
                       <button
-                        className="w-full rounded-lg px-4 py-2 text-start outline-hidden hover:bg-secondary focus:bg-secondary"
+                        className="hover:bg-secondary focus:bg-secondary w-full rounded-lg px-4 py-2 text-start outline-hidden"
                         id={`search-${result._id}-${index}`}
                         key={`search-${result._id}-${index}`}
                         onClick={() => onClickSearchResult(result)}
@@ -189,8 +189,8 @@ export default function Faq({
                   </div>
                 </div>
               ) : (
-                <div className="absolute left-0 top-full z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] border-accent bg-background p-2">
-                  <div className="w-full px-4 py-2 text-start text-accent opacity-60">
+                <div className="border-accent bg-background absolute top-full left-0 z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] p-2">
+                  <div className="text-accent w-full px-4 py-2 text-start opacity-60">
                     {data.textTranslations?.searchNoResults}
                   </div>
                 </div>
@@ -199,7 +199,7 @@ export default function Faq({
           )}
         </div>
       </section>
-      <section className="relative mx-auto flex h-full w-full max-w-max-screen flex-col items-start justify-start gap-xl px-m py-2xl lg:flex-row lg:justify-center lg:py-8xl">
+      <section className="max-w-max-screen gap-xl px-md py-2xl lg:py-8xl relative mx-auto flex h-full w-full flex-col items-start justify-start lg:flex-row lg:justify-center">
         <FaqContent
           category={data.category}
           openAnswer={openAnswer}

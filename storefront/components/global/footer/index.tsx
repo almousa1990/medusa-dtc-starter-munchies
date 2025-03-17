@@ -14,17 +14,17 @@ interface FooterProps extends NonNullable<Footer> {
 export default function Footer({variant = "default", ...props}: FooterProps) {
   if (variant === "simple") {
     return (
-      <footer className="w-full bg-accent" id="footer">
-        <div className="mx-auto flex w-full max-w-max-screen flex-col gap-xl px-m py-xl text-background lg:px-xl">
+      <footer className="bg-accent w-full" id="footer">
+        <div className="max-w-max-screen gap-xl px-md py-xl text-background lg:px-xl mx-auto flex w-full flex-col">
           {props.image && (
             <SanityImage className="lg:mt-2xl" data={props.image} />
           )}
-          <div className="flex w-full justify-between lg:justify-start lg:gap-6xl">
+          <div className="lg:gap-6xl flex w-full justify-between lg:justify-start">
             {props.information?.map((column) => {
               if (!column.text) return null;
               return (
                 <div
-                  className="flex w-[170px] flex-col gap-xl"
+                  className="gap-xl flex w-[170px] flex-col"
                   key={column._key}
                 >
                   <RichText value={column.text} />
@@ -40,8 +40,8 @@ export default function Footer({variant = "default", ...props}: FooterProps) {
   return (
     <>
       <Newsletter {...props} />
-      <footer className="w-full bg-accent" id="footer">
-        <div className="mx-auto flex w-full max-w-max-screen flex-col gap-2xl px-m pb-m pt-6xl text-background lg:px-xl lg:pb-xl">
+      <footer className="bg-accent w-full" id="footer">
+        <div className="max-w-max-screen gap-2xl px-md pb-md pt-6xl text-background lg:px-xl lg:pb-xl mx-auto flex w-full flex-col">
           <TopLinks {...props} />
           {props.image && (
             <SanityImage className="lg:mt-2xl" data={props.image} />

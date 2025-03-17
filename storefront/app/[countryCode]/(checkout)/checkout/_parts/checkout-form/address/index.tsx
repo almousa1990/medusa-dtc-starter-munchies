@@ -1,27 +1,56 @@
 "use client";
-import type {StoreCart, StoreCartAddress} from "@medusajs/types";
+import type {
+  StoreCart,
+  StoreCartAddress,
+  StoreCreateCustomerAddress,
+  StoreCustomer,
+  StoreCustomerAddress,
+  StoreRegionCountry,
+  StoreUpdateCustomerAddress,
+} from "@medusajs/types";
 import type {BaseRegionCountry} from "@medusajs/types/dist/http/region/common";
 import type {Dispatch, SetStateAction} from "react";
 
 import {setCheckoutAddresses} from "@/actions/medusa/order";
 import {Cta} from "@/components/shared/button";
 import Checkbox from "@/components/shared/checkbox";
-import {Input} from "@merchify/ui";
+import {
+  Button,
+  cn,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Input,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+} from "@merchify/ui";
 import InputCombobox from "@/components/shared/input-combobox";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {useResetableActionState} from "@/hooks/use-resetable-action-state";
 import {useEffect, useState, useTransition} from "react";
 import {useFormStatus} from "react-dom";
+import {
+  addCustomerAddress,
+  deleteCustomerAddress,
+  updateCustomerAddress,
+} from "@/actions/medusa/customer";
+import AddressForm from "@/components/shared/address-form";
 
-export default function AddressForm({
+export default function Address({
   active,
   cart,
+  customer,
   nextStep,
   setStep,
 }: {
   active: boolean;
   cart: StoreCart;
+  customer: StoreCustomer;
   nextStep: "addresses" | "delivery" | "payment" | "review";
   setStep: Dispatch<
     SetStateAction<"addresses" | "delivery" | "payment" | "review">
@@ -91,6 +120,10 @@ export default function AddressForm({
       {active && (
         <div className="flex flex-col gap-4">
           <div className="grid gap-4 lg:grid-cols-2">
+            <AddressSelect
+              customer={customer}
+              countries={cart.region?.countries}
+            />
             <AddressInputs
               address={cart.shipping_address}
               addressName="shipping_address"
@@ -232,3 +265,133 @@ function AddressInputs({
     </>
   );
 }
+
+const AddressSelect = ({
+  customer,
+  countries,
+  value,
+  onValueChange,
+}: {
+  customer: StoreCustomer;
+  countries?: StoreRegionCountry[];
+  value?: string;
+  onValueChange: (value: string) => void;
+}) => {
+  const [removing, setRemoving] = useState(false);
+  const [addressEditFormOpen, setAddressEditFormOpen] = useState(false);
+  const [addressAddFormOpen, setAddressAddFormOpen] = useState(false);
+
+  const removeAddress = async (id: string) => {
+    setRemoving(true);
+    await deleteCustomerAddress(id);
+    setRemoving(false);
+  };
+
+  const handleEditCustomerAddress = async (
+    id: string,
+    address: StoreUpdateCustomerAddress,
+  ) => {
+    const result = await updateCustomerAddress(id, address);
+
+    if (result.success) {
+      setAddressEditFormOpen(false);
+    }
+
+    return result;
+  };
+
+  const handleAddCustomerAddress = async (
+    address: StoreCreateCustomerAddress,
+  ) => {
+    const result = await addCustomerAddress(address);
+
+    if (result.success) {
+      const [address] = result.customer.addresses.sort(
+        (a: StoreCustomerAddress, b: StoreCustomerAddress) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+      setAddressAddFormOpen(false);
+      handleSelectionChange(address.id);
+    }
+
+    return result;
+  };
+
+  return (
+    <RadioGroup onValueChange={onValueChange} value={value} dir="rtl">
+      {customer.addresses.map((address) => {
+        return (
+          <div
+            key={address.id}
+            className={cn(
+              "flex items-center justify-between space-x-3 space-x-reverse rounded-md border p-4",
+              {"border-primary": address.id == value},
+            )}
+          >
+            <div className="flex items-center space-x-3 space-x-reverse">
+              <RadioGroupItem value={address.id} id={address.id} />
+              <Label htmlFor={address.id}>
+                {address.country_code} - {address.city} -{" "}
+                {address.address_1}{" "}
+              </Label>
+            </div>
+            <div className="flex space-x-2 space-x-reverse">
+              <Button
+                disabled={removing}
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={() => removeAddress(address.id)}
+              >
+                {removing ? <>spinner icon</> : <>trash icon</>}
+                حذف
+              </Button>
+              <Dialog
+                open={addressEditFormOpen}
+                onOpenChange={setAddressEditFormOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    تعديل
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>تعديل العنوان</DialogTitle>
+                    <DialogDescription className="sr-only">
+                      تعديل عنوان الشحن
+                    </DialogDescription>
+                  </DialogHeader>
+                  <AddressForm
+                    address={address}
+                    countries={countries}
+                    onSubmit={(values) =>
+                      handleEditCustomerAddress(address.id, values)
+                    }
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        );
+      })}
+      <Dialog open={addressAddFormOpen} onOpenChange={setAddressEditFormOpen}>
+        <DialogTrigger className="w-full space-y-6 space-y-reverse rounded-md border border-dashed p-4 text-right">
+          إضافة عنوان جديد
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>إضافة عنوان جديد</DialogTitle>
+            <DialogDescription className="hidden">
+              إضافة عنوان الشحن
+            </DialogDescription>
+          </DialogHeader>
+          <AddressForm
+            countries={countries}
+            onSubmit={handleAddCustomerAddress}
+          />
+        </DialogContent>
+      </Dialog>
+    </RadioGroup>
+  );
+};

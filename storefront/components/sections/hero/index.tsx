@@ -14,7 +14,7 @@ export default function Hero(props: ModularPageSection<"section.hero">) {
   return (
     <section
       {...props.rootHtmlAttributes}
-      className="mx-auto w-full max-w-max-screen px-m py-xs lg:px-xl lg:py-xs"
+      className="max-w-max-screen px-md py-xs lg:px-xl lg:py-xs mx-auto w-full"
     >
       {mediaType === "image" && <SimpleHero {...props} />}
       {mediaType === "video" && video && (

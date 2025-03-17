@@ -53,11 +53,11 @@ export default function CarouselSection(props: Props) {
       }}
       slidesCount={slides.length}
     >
-      <section className="mx-auto max-w-max-screen py-2xl">
+      <section className="max-w-max-screen py-2xl mx-auto">
         <div
           className={cx("mb-xs flex items-center justify-between", {
-            "px-m lg:px-xl": variant === "default",
-            "px-s": variant === "cart",
+            "px-md lg:px-xl": variant === "default",
+            "px-sm": variant === "cart",
           })}
         >
           {title}
@@ -65,8 +65,8 @@ export default function CarouselSection(props: Props) {
         </div>
         <SlidesWrapper
           className={cx({
-            "px-m lg:px-xl": variant === "default",
-            "px-s": variant === "cart",
+            "px-md lg:px-xl": variant === "default",
+            "px-sm": variant === "cart",
           })}
         >
           <div className="-ml-2 flex touch-pan-y touch-pinch-zoom items-stretch">
@@ -80,7 +80,7 @@ export default function CarouselSection(props: Props) {
 
         {showProgress && <ProgressBar />}
         {cta?.text && (
-          <div className="mt-2xl px-m lg:px-xl">
+          <div className="mt-2xl px-md lg:px-xl">
             <Link
               className="w-full"
               href={cta.href}
@@ -121,9 +121,9 @@ function ProgressBar() {
   const {scrollProgress} = useCarousel();
 
   return (
-    <div className="relative mx-auto mt-2xl h-[2px] w-[215px] self-center justify-self-end overflow-hidden bg-[#FFD2C7] lg:hidden">
+    <div className="mt-2xl relative mx-auto h-[2px] w-[215px] self-center justify-self-end overflow-hidden bg-[#FFD2C7] lg:hidden">
       <div
-        className="absolute bottom-0 left-[-100%] top-0 w-full bg-accent transition-transform duration-300 ease-out"
+        className="bg-accent absolute top-0 bottom-0 left-[-100%] w-full transition-transform duration-300 ease-out"
         style={{transform: `translateX(${scrollProgress}%)`}}
       />
     </div>

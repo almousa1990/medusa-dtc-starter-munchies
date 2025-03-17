@@ -22,7 +22,7 @@ export default function Content({data}: {data: COOKIE_BANNER_QUERYResult}) {
       {showCookieBanner && (
         <div
           className={cx(
-            "border-accent bg-background p-s lg:p-m fixed bottom-4 left-4 z-300 flex w-full max-w-[332px] flex-col rounded-lg border-[1.5px] lg:max-w-[390px]",
+            "border-accent bg-background p-sm lg:p-md fixed bottom-4 left-4 z-300 flex w-full max-w-[332px] flex-col rounded-lg border-[1.5px] lg:max-w-[390px]",
             "animate-fadeInUp",
             {
               [`animate-fadeOutLeft [--duration:400ms]`]: isClosing,
@@ -41,7 +41,7 @@ export default function Content({data}: {data: COOKIE_BANNER_QUERYResult}) {
           <Body font="sans" mobileSize="sm">
             {data.description}
           </Body>
-          <div className="mt-s flex items-center gap-1">
+          <div className="mt-sm flex items-center gap-1">
             <Cta onClick={handleClose} size="sm" variant="outline">
               {data.rejectButton}
             </Cta>

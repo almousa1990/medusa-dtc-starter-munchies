@@ -47,13 +47,13 @@ export default function ProductCard({
         )}
         {product.type?.value && (
           <Tag
-            className="absolute right-4 top-3"
+            className="absolute top-3 right-4"
             text={product.type.value || ""}
           />
         )}
       </div>
 
-      <div className="pointer-events-none flex flex-1 flex-col items-center justify-center gap-1 px-lg py-s">
+      <div className="px-lg py-sm pointer-events-none flex flex-1 flex-col items-center justify-center gap-1">
         <Body
           className="text-center"
           desktopSize="xl"

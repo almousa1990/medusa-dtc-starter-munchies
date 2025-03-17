@@ -39,7 +39,7 @@ export default function HotspotsUi({
   const thumbnailUrl = product?.thumbnail || product?.images?.[0].url;
 
   return (
-    <div className="flex w-full flex-col items-stretch justify-start gap-xs lg:flex-row lg:gap-s">
+    <div className="gap-xs lg:gap-s flex w-full flex-col items-stretch justify-start lg:flex-row">
       {image ? (
         <div className="relative w-full min-w-[63%] rounded-lg">
           <SanityImage className="w-full rounded-lg" data={image} />
@@ -47,7 +47,7 @@ export default function HotspotsUi({
             return (
               <div
                 className={cx(
-                  "group relative h-6 w-6 cursor-pointer rounded-full bg-accent transition-all duration-300 hover:bg-secondary lg:h-8 lg:w-8",
+                  "group bg-accent hover:bg-secondary relative h-6 w-6 cursor-pointer rounded-full transition-all duration-300 lg:h-8 lg:w-8",
                   {
                     "bg-secondary": selectedProduct === hotSpot.product?._ref,
                   },
@@ -64,7 +64,7 @@ export default function HotspotsUi({
               >
                 <span
                   className={cx(
-                    "absolute left-1/2 top-1/2 z-10 h-[1.5px] w-2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 group-hover:bg-accent lg:w-[13px]",
+                    "group-hover:bg-accent absolute top-1/2 left-1/2 z-10 h-[1.5px] w-2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 lg:w-[13px]",
                     {
                       "bg-accent": selectedProduct === hotSpot.product?._ref,
                       "bg-background":
@@ -74,11 +74,11 @@ export default function HotspotsUi({
                 />
                 <span
                   className={cx(
-                    "absolute left-1/2 top-1/2 h-2 w-[1.5px] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 group-hover:rotate-90 group-hover:bg-accent lg:h-[13px]",
+                    "group-hover:bg-accent absolute top-1/2 left-1/2 h-2 w-[1.5px] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 group-hover:rotate-90 lg:h-[13px]",
                     {
                       "bg-background":
                         selectedProduct !== hotSpot.product?._ref,
-                      "rotate-90 bg-accent":
+                      "bg-accent rotate-90":
                         selectedProduct === hotSpot.product?._ref,
                     },
                   )}
@@ -88,10 +88,10 @@ export default function HotspotsUi({
           })}
         </div>
       ) : (
-        <div className="w-full min-w-[63%] rounded-lg bg-secondary" />
+        <div className="bg-secondary w-full min-w-[63%] rounded-lg" />
       )}
       <LocalizedLink
-        className="hidden w-full max-w-[450px] flex-col justify-between gap-2xl rounded-lg lg:flex"
+        className="gap-2xl hidden w-full max-w-[450px] flex-col justify-between rounded-lg lg:flex"
         href={`/products/${product?.handle}`}
         prefetch
       >
@@ -108,12 +108,12 @@ export default function HotspotsUi({
             ) : null}
             {product.type?.value && (
               <Tag
-                className="absolute right-4 top-3"
+                className="absolute top-3 right-4"
                 text={product.type.value || ""}
               />
             )}
           </div>
-          <div className="flex flex-1 flex-col items-center justify-center gap-1 px-lg py-s">
+          <div className="px-lg py-sm flex flex-1 flex-col items-center justify-center gap-1">
             <Body
               className="text-center"
               desktopSize="xl"
@@ -142,13 +142,13 @@ export default function HotspotsUi({
           Shop now
         </Link>
       </LocalizedLink>
-      <div className="flex flex-col gap-xs lg:hidden">
+      <div className="gap-xs flex flex-col lg:hidden">
         {referencedProducts.map((product) => {
           const {cheapestPrice} = getProductPrice({product});
           const thumbnailUrl = product?.thumbnail || product?.images?.[0].url;
           return (
             <LocalizedLink
-              className={cx("flex w-full gap-[10px] rounded-2xl p-xs", {
+              className={cx("p-xs flex w-full gap-[10px] rounded-2xl", {
                 "bg-secondary": selectedProduct === product.id,
               })}
               href={`/products/${product?.handle}`}
@@ -158,13 +158,13 @@ export default function HotspotsUi({
               {thumbnailUrl ? (
                 <Image
                   alt={product?.title}
-                  className="aspect-square w-full max-w-[100px] rounded-lg border border-accent"
+                  className="border-accent aspect-square w-full max-w-[100px] rounded-lg border"
                   height={100}
                   src={thumbnailUrl}
                   width={100}
                 />
               ) : null}
-              <div className="flex flex-col items-start justify-start gap-1 py-xs">
+              <div className="py-xs flex flex-col items-start justify-start gap-1">
                 <Body className="text-pretty" font="sans" mobileSize="lg">
                   {product?.title}
                 </Body>

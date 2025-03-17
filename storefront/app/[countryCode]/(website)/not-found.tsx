@@ -7,8 +7,8 @@ export default async function NotFound() {
   const data = await loadNotFound();
   return (
     <main className="flex-1">
-      <section className="mx-auto h-[calc(100vh-50px)] max-h-[650px] w-full max-w-max-screen p-m lg:p-xl">
-        <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border border-accent">
+      <section className="max-w-max-screen p-md lg:p-xl mx-auto h-[calc(100vh-50px)] max-h-[650px] w-full">
+        <div className="border-accent flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border">
           <Heading desktopSize="5xl" font="display" mobileSize="3xl" tag="h1">
             404
           </Heading>

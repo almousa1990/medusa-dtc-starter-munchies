@@ -13,7 +13,7 @@ export default function Newsletter(props: NonNullable<Footer>) {
   const [state, action] = useActionState(newsletterForm, "idle");
 
   return (
-    <section className="mx-auto flex w-full max-w-max-screen flex-col gap-s px-m py-2xl lg:px-xl">
+    <section className="max-w-max-screen gap-sm px-md py-2xl lg:px-xl mx-auto flex w-full flex-col">
       {state === "success" && (
         <Body desktopSize="8xl" font="serif" mobileSize="5xl">
           {props.signup_success && <RichText value={props.signup_success} />}
@@ -24,9 +24,9 @@ export default function Newsletter(props: NonNullable<Footer>) {
           <Heading desktopSize="5xl" font="serif" mobileSize="2xl" tag="h2">
             {props.copy && <RichText value={props.copy} />}
           </Heading>
-          <form action={action} className="flex flex-col gap-s lg:flex-row">
+          <form action={action} className="gap-sm flex flex-col lg:flex-row">
             <input
-              className="newletter-text h-20 w-full max-w-[960px] rounded-lg border-[1.5px] border-accent bg-transparent px-lg py-[7.5px] font-sans text-body-4xl leading-[140%] tracking-[-0.64px] outline-hidden placeholder:text-body-4xl placeholder:text-accent placeholder:opacity-60 lg:px-2xl lg:py-[6.5px] lg:text-body-8xl lg:tracking-[-0.96px] lg:placeholder:text-body-8xl"
+              className="newletter-text border-accent px-lg text-body-4xl placeholder:text-body-4xl placeholder:text-accent lg:px-2xl lg:text-body-8xl lg:placeholder:text-body-8xl h-20 w-full max-w-[960px] rounded-lg border-[1.5px] bg-transparent py-[7.5px] font-sans leading-[140%] tracking-[-0.64px] outline-hidden placeholder:opacity-60 lg:py-[6.5px] lg:tracking-[-0.96px]"
               name="email"
               placeholder={props.placeholder}
               required
@@ -40,7 +40,7 @@ export default function Newsletter(props: NonNullable<Footer>) {
         </>
       )}
       {state === "error" && (
-        <div className="rounded-lg bg-error bg-opacity-20 p-s">
+        <div className="bg-error bg-opacity-20 p-sm rounded-lg">
           <Body
             className="text-error"
             desktopSize="2xl"

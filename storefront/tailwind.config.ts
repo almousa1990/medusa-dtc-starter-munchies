@@ -109,22 +109,7 @@ const config: Config = {
         "label-xs": "calc(var(--base-font-size) - 4px)",
         "label-2xs": "calc(var(--base-font-size) - 6px)",
       },
-      spacing: {
-        "max-screen": "var(--max-width)",
-        "min-screen": "var(--min-width)",
-        "8xl": "80px",
-        "7xl": "72px",
-        "6xl": "64px",
-        "5xl": "50px",
-        "4xl": "48px",
-        "3xl": "44px",
-        "2xl": "40px",
-        xl: "32px",
-        lg: "24px",
-        m: "20px",
-        s: "16px",
-        xs: "8px",
-      },
+
       animation: {
         "spin-loading": "spin 1.5s linear infinite",
         marquee: "marquee var(--duration) linear infinite",
