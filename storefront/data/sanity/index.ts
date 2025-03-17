@@ -29,6 +29,7 @@ import {sanityFetch} from "./sanity-fetch";
 
 // Loader for routes
 export function loadRoute(pathname: string) {
+  console.log(pathname);
   return sanityFetch<ROUTE_QUERYResult>({
     params: {pathname},
     query: ROUTE_QUERY,

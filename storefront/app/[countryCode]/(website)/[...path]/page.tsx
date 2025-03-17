@@ -11,7 +11,10 @@ import TextPage from "./text-page.template";
 
 export type DynamicRouteProps = PageProps<"...path" | "countryCode">;
 
-export async function generateMetadata(props: DynamicRouteProps, parent: ResolvingMetadata) {
+export async function generateMetadata(
+  props: DynamicRouteProps,
+  parent: ResolvingMetadata,
+) {
   const params = await props.params;
   const initialData = await loadPageByPathname({params});
 

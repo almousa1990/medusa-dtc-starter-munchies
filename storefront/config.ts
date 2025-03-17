@@ -11,7 +11,7 @@ const config = {
   backendUrl:
     process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000/store",
   baseUrl,
-  defaultCountryCode: "us",
+  defaultCountryCode: "sa",
   sanity: {
     apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2023-06-21",
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "",

@@ -1,15 +1,15 @@
 import {cx} from "cva";
 import {
   Climate_Crisis,
-  Instrument_Sans,
+  IBM_Plex_Sans_Arabic,
   Instrument_Serif,
 } from "next/font/google";
 
 import dynamicFavicon from "./dynamic-favicon";
 import "./globals.css";
 
-const instrumentSans = Instrument_Sans({
-  subsets: ["latin"],
+const instrumentSans = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
   variable: "--font-instrumentSans",
   weight: ["400", "500", "600"],
 });

@@ -27,7 +27,7 @@ export default function AddToCart({
       productVariant={activeVariant}
       regionId={region_id}
       size={variant === "PDP" ? "xl" : "md"}
-      variant={variant === "PDP" ? "outline" : "primary"}
+      variant={variant === "PDP" ? "primary" : "primary"}
     />
   );
 }

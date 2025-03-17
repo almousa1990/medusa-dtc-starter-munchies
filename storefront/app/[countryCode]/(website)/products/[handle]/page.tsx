@@ -55,6 +55,7 @@ export async function generateMetadata(
 
 export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
+  console.log(params.countryCode);
   const region = await getRegion(params.countryCode);
   if (!region) {
     console.log("No region found");

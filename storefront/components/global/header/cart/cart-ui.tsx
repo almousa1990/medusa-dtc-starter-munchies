@@ -24,12 +24,12 @@ export default function CartUI({
     <Dialog>
       <OpenCart />
       <SideDialog>
-        <div className="relative flex h-full w-full flex-col border-l border-accent bg-background">
+        <div className="relative flex h-full w-full flex-col border-r border-accent bg-background">
           <CartHeading />
           <div className="h-px w-full bg-accent" />
           <CloseDialog
             aria-label="Close"
-            className="absolute right-[10px] top-[10px]"
+            className="absolute left-[10px] top-[10px]"
           >
             <Icon className="h-9 w-9" name="Close" />
           </CloseDialog>

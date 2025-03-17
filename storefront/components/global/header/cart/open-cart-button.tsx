@@ -13,9 +13,9 @@ export default function OpenCart() {
   return (
     <OpenDialog>
       <div className="relative h-10 w-10 p-2">
-        <Icon name="Cart" />
+        <Icon className="text-primary" name="Cart" />
         <Body
-          className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-background"
+          className="bg-primary text-primary-foreground absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full"
           font="sans"
           mobileSize="sm"
         >

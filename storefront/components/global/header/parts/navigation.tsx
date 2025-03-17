@@ -35,11 +35,14 @@ export default function Navigation({data}: {data: Header}) {
 
   return (
     <NavigationMenu.Root
-      className="z-20 hidden lg:block"
+      className="z-20 hidden lg:block lg:flex-1"
       onValueChange={handleValueChange}
       value={openDropdown}
     >
-      <NavigationMenu.List className="group flex items-center justify-start">
+      <NavigationMenu.List
+        className="group flex items-center justify-start"
+        dir="rtl"
+      >
         {data.navigation?.map((item) => {
           if (item._type === "link") {
             if (!item.cta?.link) return null;

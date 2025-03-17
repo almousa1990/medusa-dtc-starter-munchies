@@ -48,7 +48,12 @@ export function ProductImagesCarousel({
 
   return (
     <Root
-      options={{containScroll: "trimSnaps", dragFree: true}}
+      options={{
+        align: "start",
+        containScroll: "trimSnaps",
+        direction: "rtl",
+        dragFree: true,
+      }}
       slidesCount={images?.length || 0}
     >
       <div className="mx-auto flex w-full gap-2 lg:sticky lg:top-[calc(var(--header-height)+24px)] lg:mx-0 lg:max-w-[684px]">

@@ -52,7 +52,7 @@ export default function Hamburger({
     <Dialog.Root onOpenChange={setOpen} open={open}>
       <Dialog.Trigger
         aria-label="Menu"
-        className="shrink-0 lg:hidden"
+        className="flex flex-1 shrink-0 lg:hidden"
         onClick={() => setActiveMenu(undefined)}
       >
         {open ? (
