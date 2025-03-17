@@ -66,7 +66,7 @@ export default function FilterSelect(
   return (
     <DropDown isOpen={isOpen} placeholder={props.placeholder} setOpen={setOpen}>
       <div
-        className="relative max-h-[320px] w-full overflow-y-auto rounded"
+        className="relative max-h-[320px] w-full overflow-y-auto rounded-sm"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >
@@ -92,10 +92,10 @@ export default function FilterSelect(
                 key={option.value}
                 onClick={() => setFilter(option.value)}
               >
-                <div className="flex !size-4 items-center justify-center rounded-[4px] border border-accent">
+                <div className="flex size-4! items-center justify-center rounded-[4px] border border-accent">
                   <Icon
                     className={cx(
-                      "!size-3 shrink-0 transform opacity-0 transition-transform duration-300",
+                      "size-3! shrink-0 transform opacity-0 transition-transform duration-300",
                       {"opacity-100": selected},
                     )}
                     height={24}

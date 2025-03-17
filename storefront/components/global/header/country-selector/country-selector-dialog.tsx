@@ -100,7 +100,7 @@ export default function CountrySelectorDialog({
               {countries.map((country) => (
                 <Suspense key={country?.code}>
                   <Link
-                    className="whitespace-nowrap rounded px-s py-xs hover:bg-secondary"
+                    className="whitespace-nowrap rounded-sm px-s py-xs hover:bg-secondary"
                     href={getNewPath(country?.code)}
                     onClick={() => setOpen(false)}
                     prefetch

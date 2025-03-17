@@ -9,10 +9,10 @@ import type {ModularPageSection} from "../types";
 export default function SimpleHero(props: ModularPageSection<"section.hero">) {
   const image = stegaClean(props.image);
   return (
-    <div className="flex flex-col items-stretch justify-center gap-xs lg:flex-row-reverse">
-      <div className="flex min-h-[470px] w-full flex-col items-center justify-center gap-s rounded-lg bg-secondary px-m py-4xl text-center lg:w-1/2 lg:py-m">
+    <div className="gap-xs flex flex-col items-stretch justify-center lg:flex-row-reverse">
+      <div className="gap-s bg-secondary px-m py-4xl lg:py-m flex min-h-[470px] w-full flex-col items-center justify-center rounded-lg text-center lg:w-1/2">
         <Heading
-          className="!leading-[100%]"
+          className="leading-[100%]!"
           desktopSize="5xl"
           font="serif"
           mobileSize="3xl"
@@ -21,7 +21,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
           {props.title}
         </Heading>
         <Body
-          className="max-w-[580px] text-balance text-center"
+          className="max-w-[580px] text-center text-balance"
           desktopSize="xl"
           font="sans"
           mobileSize="lg"
@@ -34,7 +34,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
             href={props.cta.link}
             prefetch
             size="md"
-            variant="primary"
+            variant="default"
           >
             {props.cta.label}
           </Link>
@@ -50,7 +50,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
           />
         </div>
       ) : (
-        <div className="aspect-square rounded-lg bg-accent lg:w-1/2" />
+        <div className="bg-accent aspect-square rounded-lg lg:w-1/2" />
       )}
     </div>
   );

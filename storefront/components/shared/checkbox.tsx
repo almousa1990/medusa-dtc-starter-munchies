@@ -13,7 +13,7 @@ export default function Checkbox({
     <div className="flex items-center">
       <Root
         checked={checked}
-        className="flex size-4 appearance-none items-center justify-center rounded border border-accent outline-none data-[state=checked]:bg-accent"
+        className="flex size-4 appearance-none items-center justify-center rounded-sm border border-accent outline-hidden data-[state=checked]:bg-accent"
         onCheckedChange={onCheckedChange}
       >
         <Indicator>

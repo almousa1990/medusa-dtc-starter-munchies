@@ -19,15 +19,11 @@ export default function AddToCart({
   const {activeVariant} = useProductVariants();
   return (
     <AddToCartButton
-      className={cx("", {
-        "!h-[60px] w-fit": variant === "sticky",
-        "w-full": variant === "PDP",
-      })}
       label="Add to cart"
       productVariant={activeVariant}
       regionId={region_id}
       size={variant === "PDP" ? "xl" : "md"}
-      variant={variant === "PDP" ? "primary" : "primary"}
+      variant={variant === "PDP" ? "default" : "default"}
     />
   );
 }
@@ -59,6 +55,7 @@ export function AddToCartButton({
     });
   };
 
+  console.log(buttonProps);
   return (
     <Cta
       {...buttonProps}

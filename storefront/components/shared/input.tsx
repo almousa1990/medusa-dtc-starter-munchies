@@ -9,9 +9,9 @@ export default forwardRef<
     <input
       className={cx(
         className,
-        "rounded-lg border-[1.5px] border-accent bg-transparent px-[16px] py-[11px] font-medium outline-none placeholder:font-medium placeholder:text-accent placeholder:opacity-60",
+        "rounded-lg border-[1.5px] border-accent bg-transparent px-[16px] py-[11px] font-medium outline-hidden placeholder:font-medium placeholder:text-accent placeholder:opacity-60",
         {
-          "size-4 border-2 border-accent bg-transparent p-1 accent-accent outline-none":
+          "size-4 border-2 border-accent bg-transparent p-1 accent-accent outline-hidden":
             type === "checkbox",
         },
       )}

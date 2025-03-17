@@ -164,13 +164,13 @@ export default function Faq({
               {searchResults.length > 0 ? (
                 <div className="absolute left-0 top-full z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] border-accent bg-background p-2 text-accent">
                   <div
-                    className="max-h-[16rem] overflow-y-auto outline-none"
+                    className="max-h-[16rem] overflow-y-auto outline-hidden"
                     ref={searchResultsRef}
                     tabIndex={0}
                   >
                     {searchResults.map((result, index) => (
                       <button
-                        className="w-full rounded-lg px-4 py-2 text-start outline-none hover:bg-secondary focus:bg-secondary"
+                        className="w-full rounded-lg px-4 py-2 text-start outline-hidden hover:bg-secondary focus:bg-secondary"
                         id={`search-${result._id}-${index}`}
                         key={`search-${result._id}-${index}`}
                         onClick={() => onClickSearchResult(result)}

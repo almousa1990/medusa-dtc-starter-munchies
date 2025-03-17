@@ -28,12 +28,12 @@ export default function DropDown({
   const ref = useOutsideClick<HTMLDivElement>(() => setOpen(false));
 
   return (
-    <div className="relative z-[15] h-full w-fit">
+    <div className="relative z-15 h-full w-fit">
       <div
         className={cx(
           (className = "rounded-t-lg border border-white"),
           {
-            "!border-border-grey border": isOpen,
+            "border-border-grey! border": isOpen,
           },
           className,
         )}
@@ -42,7 +42,7 @@ export default function DropDown({
       >
         <button
           className={cx(
-            "flex w-fit items-center justify-between gap-lg bg-background px-s py-[6px] outline-none",
+            "flex w-fit items-center justify-between gap-lg bg-background px-s py-[6px] outline-hidden",
             "rounded-lg border-[1.5px] border-accent",
           )}
           disabled={disabled}

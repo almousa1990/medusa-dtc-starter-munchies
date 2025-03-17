@@ -53,7 +53,7 @@ export default function MobileFilterDropdown({children}: Props) {
   return (
     <DropDown isOpen={isOpen} placeholder="Filter" setOpen={setOpen}>
       <div
-        className="relative max-h-[360px] w-full overflow-y-auto rounded"
+        className="relative max-h-[360px] w-full overflow-y-auto rounded-sm"
         onScroll={handleScroll}
         ref={scrollContainerRef}
       >

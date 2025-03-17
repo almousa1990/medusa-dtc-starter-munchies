@@ -90,11 +90,11 @@ export default forwardRef<
         <input
           className={cx(
             className,
-            "w-full rounded-lg border-[1.5px] border-accent bg-transparent py-[11px] pr-[16px] font-medium outline-none placeholder:font-medium placeholder:text-accent placeholder:opacity-60",
+            "w-full rounded-lg border-[1.5px] border-accent bg-transparent py-[11px] pr-[16px] font-medium outline-hidden placeholder:font-medium placeholder:text-accent placeholder:opacity-60",
             {
               "pl-[16px]": isDisabled,
               "pl-10": !isDisabled,
-              "size-4 border-2 border-accent bg-transparent p-1 accent-accent outline-none":
+              "size-4 border-2 border-accent bg-transparent p-1 accent-accent outline-hidden":
                 type === "checkbox",
             },
           )}

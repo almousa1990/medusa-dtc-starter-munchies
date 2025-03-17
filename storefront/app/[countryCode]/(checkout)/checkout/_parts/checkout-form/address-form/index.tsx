@@ -6,7 +6,7 @@ import type {Dispatch, SetStateAction} from "react";
 import {setCheckoutAddresses} from "@/actions/medusa/order";
 import {Cta} from "@/components/shared/button";
 import Checkbox from "@/components/shared/checkbox";
-import Input from "@/components/shared/input";
+import {Input} from "@merchify/ui";
 import InputCombobox from "@/components/shared/input-combobox";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
@@ -50,7 +50,7 @@ export default function AddressForm({
   return (
     <form
       action={action}
-      className="flex flex-col gap-8 border-t border-accent py-8"
+      className="border-accent flex flex-col gap-8 border-t py-8"
     >
       <div className="flex items-center justify-between">
         <Heading desktopSize="xs" font="sans" mobileSize="xs" tag="h6">

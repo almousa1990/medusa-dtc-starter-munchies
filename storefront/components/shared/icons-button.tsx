@@ -26,7 +26,7 @@ const iconButtonVariants = cva(
     variants: {
       disabled: {
         false: "",
-        true: "opacity-50 focus:outline-none pointer-events-none",
+        true: "opacity-50 focus:outline-hidden pointer-events-none",
       },
       size: {
         full: "size-full",
@@ -66,7 +66,7 @@ export default function IconButton({
     >
       <img
         alt={`${icon} icon`}
-        className="h-full w-full flex-shrink-0 transition-all duration-300"
+        className="h-full w-full shrink-0 transition-all duration-300"
         src={iconSrc}
       />
     </button>

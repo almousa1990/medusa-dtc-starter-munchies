@@ -22,8 +22,8 @@ export default function CartFooter() {
 
   return (
     <>
-      <div className="h-px w-full bg-accent" />
-      <div className="flex w-full flex-col justify-between gap-4 p-s">
+      <div className="bg-accent h-px w-full" />
+      <div className="p-s flex w-full flex-col justify-between gap-4">
         <div className="flex w-full justify-between gap-4">
           <div>
             <Body className="font-semibold" font="sans" mobileSize="base">
@@ -40,11 +40,11 @@ export default function CartFooter() {
           )}
         </div>
         {!cartIsEmpty && !isUpdating ? (
-          <Link className="w-full" href="/checkout" size="lg" variant="primary">
+          <Link className="w-full" href="/checkout" size="lg" variant="default">
             Go to checkout
           </Link>
         ) : (
-          <Cta className="w-full" disabled size="lg" variant="primary">
+          <Cta className="w-full" disabled size="lg" variant="default">
             Go to checkout
           </Cta>
         )}
