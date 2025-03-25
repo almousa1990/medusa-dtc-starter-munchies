@@ -62,7 +62,7 @@ export const deleteCustomerAddress = async (
 
 export const updateCustomerAddress = async (
   id: string,
-  address: HttpTypes.StoreCreateCustomerAddress,
+  address: HttpTypes.StoreUpdateCustomerAddress,
 ): Promise<any> => {
   if (!id) {
     return {success: false, error: "Address ID is required"};

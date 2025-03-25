@@ -1,9 +1,6 @@
 import {cx} from "cva";
-import {
-  Climate_Crisis,
-  IBM_Plex_Sans_Arabic,
-  Baloo_Bhaijaan_2,
-} from "next/font/google";
+import {Baloo_Bhaijaan_2, IBM_Plex_Sans_Arabic} from "next/font/google";
+import {NuqsAdapter} from "nuqs/adapters/next/app";
 
 import dynamicFavicon from "./dynamic-favicon";
 import "./globals.css";
@@ -16,7 +13,7 @@ const ibmPlexSans = IBM_Plex_Sans_Arabic({
 const balooBhaijaan = Baloo_Bhaijaan_2({
   subsets: ["latin"],
   variable: "--font-balooBhaijaan",
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function RootLayout({
@@ -37,7 +34,7 @@ export default function RootLayout({
         <link href="/favicon.ico" rel="icon" type="image/x-icon" />
         <script dangerouslySetInnerHTML={{__html: dynamicFavicon}} />
       </head>
-      {children}
+      <NuqsAdapter>{children}</NuqsAdapter>
     </html>
   );
 }

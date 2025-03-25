@@ -25,21 +25,21 @@ export function AddonsItem({region_id, variant = "PDP", ...product}: Props) {
 
   return (
     <LocalizedLink
-      className="flex w-full gap-xs"
+      className="flex w-full gap-2"
       href={`/products/${product.handle}`}
       prefetch
     >
       {product.images?.[0].url && (
         <Image
           alt={product.title}
-          className="aspect-square h-[100px] w-[100px] rounded-lg border-[1.5px] border-accent"
+          className="border-accent aspect-square h-[100px] w-[100px] rounded-lg border-[1.5px]"
           height={100}
           src={product.images?.[0].url}
           width={100}
         />
       )}
       <div className="flex w-full flex-col justify-between">
-        <div className="flex flex-col gap-xs">
+        <div className="flex flex-col gap-2">
           <Body
             className="font-semibold"
             desktopSize="lg"

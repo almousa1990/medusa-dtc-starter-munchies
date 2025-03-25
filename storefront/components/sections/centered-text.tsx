@@ -10,9 +10,9 @@ export default function CenteredText(
   return (
     <section
       {...props.rootHtmlAttributes}
-      className="full max-w-max-screen p-md lg:p-xl mx-auto"
+      className="full max-w-max-screen mx-auto p-5 lg:p-8"
     >
-      <div className="border-accent px-sm rounded-lg border py-[90px] lg:py-[108px]">
+      <div className="border-accent rounded-lg border px-4 py-[90px] lg:py-[108px]">
         <Body
           className="mx-auto max-w-[720px] text-center text-balance"
           desktopSize="6xl"

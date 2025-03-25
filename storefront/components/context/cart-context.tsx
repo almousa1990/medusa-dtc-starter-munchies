@@ -19,9 +19,9 @@ import {
   useTransition,
 } from "react";
 
-import type {AddToCartEventPayload} from "./event-bus";
+import type {AddToCartEventPayload} from "../../utils/event-bus";
 
-import {addToCartEventBus} from "./event-bus";
+import {addToCartEventBus} from "../../utils/event-bus";
 
 type Cart = {
   promotions?: StorePromotion[];

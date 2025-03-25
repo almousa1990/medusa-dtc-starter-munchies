@@ -1,6 +1,6 @@
 "use server";
 
-import type {StoreUpdateCart} from "@medusajs/types";
+import type {HttpTypes, StoreUpdateCart} from "@medusajs/types";
 
 import {getCart} from "@/data/medusa/cart";
 import medusa from "@/data/medusa/client";
@@ -149,10 +149,69 @@ export async function updateCart(data: StoreUpdateCart) {
     );
   }
 
+  const cacheTag = await getCacheTag("carts");
+
   return medusa.store.cart
     .update(cartId, data, {}, await getAuthHeaders())
     .then(({cart}) => {
+      revalidateTag(cacheTag);
       return cart;
+    })
+    .catch(medusaError);
+}
+
+export async function addPromotions(codes: string[]) {
+  const cartId = await getCartId();
+
+  if (!cartId) {
+    throw new Error("No existing cart found");
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  };
+
+  return medusa.client
+    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${cartId}/promotions`, {
+      body: {promo_codes: codes},
+      headers,
+      method: "POST",
+    })
+    .then(async (response) => {
+      const cacheTag = await getCacheTag("carts");
+      revalidateTag(cacheTag);
+
+      const fulfillmentCacheTag = await getCacheTag("fulfillment");
+      revalidateTag(fulfillmentCacheTag);
+      return response;
+    })
+    .catch(medusaError);
+}
+
+export async function removePromotions(codes: string[]) {
+  const cartId = await getCartId();
+
+  if (!cartId) {
+    throw new Error("No existing cart found");
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  };
+
+  return medusa.client
+    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${cartId}/promotions`, {
+      body: {promo_codes: codes},
+      headers,
+      method: "DELETE",
+    })
+    .then(async (response) => {
+      const cacheTag = await getCacheTag("carts");
+      revalidateTag(cacheTag);
+
+      const fulfillmentCacheTag = await getCacheTag("fulfillment");
+      revalidateTag(fulfillmentCacheTag);
+      return response;
     })
     .catch(medusaError);
 }

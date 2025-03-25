@@ -1,5 +1,5 @@
 "use server";
-import type {StoreCart} from "@medusajs/types";
+import type {HttpTypes, StoreCart} from "@medusajs/types";
 
 import medusa from "@/data/medusa/client";
 import {
@@ -13,6 +13,7 @@ import {revalidateTag} from "next/cache";
 import {redirect} from "next/navigation";
 
 import {updateCart} from "./cart";
+import medusaError from "@/utils/medusa/error";
 
 type ActionState =
   | {error: null; status: "idle" | "success"}
@@ -71,12 +72,11 @@ export async function initiatePaymentSession(
 }
 
 export async function setCheckoutAddresses(
-  currentState: ActionState,
-  formData: FormData,
+  address: HttpTypes.StoreUpdateCustomerAddress,
 ): Promise<ActionState> {
   try {
-    if (!formData) {
-      throw new Error("No form data found when setting addresses");
+    if (!address) {
+      throw new Error("No data found when setting addresses");
     }
 
     const cartId = await getCartId();
@@ -87,36 +87,9 @@ export async function setCheckoutAddresses(
     }
 
     const data = {
-      customer_id: customer?.id,
-      email: customer?.email || formData.get("email"),
-      shipping_address: {
-        address_1: formData.get("shipping_address.address_1"),
-        address_2: "",
-        city: formData.get("shipping_address.city"),
-        company: formData.get("shipping_address.company"),
-        country_code: formData.get("shipping_address.country_code"),
-        first_name: formData.get("shipping_address.first_name"),
-        last_name: formData.get("shipping_address.last_name"),
-        phone: formData.get("billing_address.phone"),
-        postal_code: formData.get("shipping_address.postal_code"),
-        province: formData.get("shipping_address.province"),
-      },
+      billing_address: address,
+      shipping_address: address,
     } as any;
-
-    if (formData.get("billing_address.address_1")) {
-      data.billing_address = {
-        address_1: formData.get("billing_address.address_1"),
-        address_2: "",
-        city: formData.get("billing_address.city"),
-        company: formData.get("billing_address.company"),
-        country_code: formData.get("billing_address.country_code"),
-        first_name: formData.get("billing_address.first_name"),
-        last_name: formData.get("billing_address.last_name"),
-        phone: formData.get("billing_address.phone"),
-        postal_code: formData.get("billing_address.postal_code"),
-        province: formData.get("billing_address.province"),
-      };
-    }
 
     await updateCart(data);
 
@@ -126,26 +99,34 @@ export async function setCheckoutAddresses(
   }
 }
 
-export async function setShippingMethod(
-  _: ActionState,
-  formdata: FormData,
-): Promise<ActionState> {
+export async function setShippingMethod(id: string): Promise<ActionState> {
   const cartId = await getCartId();
 
   if (!cartId) return {error: "No cart id", status: "error"};
 
-  const shippingMethodId = formdata.get("shippingMethodId");
-
   return await medusa.store.cart
-    .addShippingMethod(
-      cartId,
-      {option_id: shippingMethodId as string},
-      {},
-      await getAuthHeaders(),
-    )
+    .addShippingMethod(cartId, {option_id: id}, {}, await getAuthHeaders())
     .then(async () => {
       revalidateTag(await getCacheTag("carts"));
       return {error: null, status: "success"} as const;
     })
     .catch((e) => ({error: e.message, status: "error"}));
 }
+
+export const retrieveOrder = async (id: string) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  };
+
+  return medusa.client
+    .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
+      method: "GET",
+      query: {
+        fields:
+          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
+      },
+      headers,
+    })
+    .then(({order}) => order)
+    .catch((err) => medusaError(err));
+};

@@ -15,16 +15,16 @@ export default function Footer({variant = "default", ...props}: FooterProps) {
   if (variant === "simple") {
     return (
       <footer className="bg-accent w-full" id="footer">
-        <div className="max-w-max-screen gap-xl px-md py-xl text-background lg:px-xl mx-auto flex w-full flex-col">
+        <div className="max-w-max-screen text-background mx-auto flex w-full flex-col gap-8 px-5 py-8 lg:px-8">
           {props.image && (
             <SanityImage className="lg:mt-2xl" data={props.image} />
           )}
-          <div className="lg:gap-6xl flex w-full justify-between lg:justify-start">
+          <div className="flex w-full justify-between lg:justify-start lg:gap-16">
             {props.information?.map((column) => {
               if (!column.text) return null;
               return (
                 <div
-                  className="gap-xl flex w-[170px] flex-col"
+                  className="flex w-[170px] flex-col gap-8"
                   key={column._key}
                 >
                   <RichText value={column.text} />
@@ -41,7 +41,7 @@ export default function Footer({variant = "default", ...props}: FooterProps) {
     <>
       <Newsletter {...props} />
       <footer className="bg-accent w-full" id="footer">
-        <div className="max-w-max-screen gap-2xl px-md pb-md pt-6xl text-background lg:px-xl lg:pb-xl mx-auto flex w-full flex-col">
+        <div className="max-w-max-screen pb-md pt-6xl text-background lg:pb-xl mx-auto flex w-full flex-col gap-10 px-5 lg:px-8">
           <TopLinks {...props} />
           {props.image && (
             <SanityImage className="lg:mt-2xl" data={props.image} />

@@ -4,7 +4,7 @@ import {Cta, Link} from "@/components/shared/button";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
 
-import {useCart} from "./cart-context";
+import {useCart} from "../../../context/cart-context";
 
 export default function CartFooter() {
   const {cart, isUpdating} = useCart();
@@ -23,14 +23,14 @@ export default function CartFooter() {
   return (
     <>
       <div className="bg-accent h-px w-full" />
-      <div className="p-sm flex w-full flex-col justify-between gap-4">
+      <div className="flex w-full flex-col justify-between gap-4 p-4">
         <div className="flex w-full justify-between gap-4">
           <div>
             <Body className="font-semibold" font="sans" mobileSize="base">
-              Subtotal
+              الإجمالي
             </Body>
             <Body font="sans" mobileSize="sm">
-              Taxes and shipping calculated at checkout
+              الضرائب وتكاليف الشحن تُحسب عند إتمام الطلب.
             </Body>
           </div>
           {item_total && (
@@ -40,12 +40,12 @@ export default function CartFooter() {
           )}
         </div>
         {!cartIsEmpty && !isUpdating ? (
-          <Link className="w-full" href="/checkout" size="lg" variant="default">
-            Go to checkout
+          <Link className="w-full" href="/cart" size="lg" variant="default">
+            عرض السلة
           </Link>
         ) : (
           <Cta className="w-full" disabled size="lg" variant="default">
-            Go to checkout
+            عرض السلة
           </Cta>
         )}
       </div>

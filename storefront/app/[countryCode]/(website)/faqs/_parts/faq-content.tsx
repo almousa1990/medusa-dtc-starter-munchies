@@ -29,7 +29,7 @@ export default function FaqContent({
         {category?.map((group) => {
           return (
             <button
-              className="border-accent-40 p-xs hover:border-accent border-l-[1.5px] transition-all duration-300 first:pt-1 last:pb-1"
+              className="border-accent-40 hover:border-accent border-l-[1.5px] p-2 transition-all duration-300 first:pt-1 last:pb-1"
               key={group._id}
               onClick={() => setSelectedCategory(group.slug?.current || "")}
             >
@@ -61,7 +61,7 @@ export default function FaqContent({
         >
           {currentCategory?.title}
         </Heading>
-        <div className="gap-md flex flex-col">
+        <div className="flex flex-col gap-5">
           <Accordion
             border={false}
             initialOpen={openAnswer}

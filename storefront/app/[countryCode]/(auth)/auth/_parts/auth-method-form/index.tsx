@@ -2,7 +2,7 @@
 
 import {generateOtp} from "@/actions/medusa/auth";
 import {Cta} from "@/components/shared/button";
-import Input from "@/components/shared/input";
+import {InputPhone} from "@/components/shared/input-phone";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Form,
@@ -11,12 +11,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
 } from "@merchify/ui";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-
-import {PhoneInput} from "./phone-input";
 const phoneRegex = /^5\d{8}$/; // Ensures exactly 9 digits, starting with '5'
 
 interface AuthMethodFormProps {
@@ -86,7 +85,7 @@ export default function AuthMethodForm({
                   <FormItem>
                     <FormLabel>البريد الالكتروني</FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="" type="email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -100,7 +99,7 @@ export default function AuthMethodForm({
                   <FormItem>
                     <FormLabel>رقم الجوال</FormLabel>
                     <FormControl>
-                      <PhoneInput placeholder="" {...field} />
+                      <InputPhone placeholder="" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

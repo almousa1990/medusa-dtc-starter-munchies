@@ -2,6 +2,7 @@ import type {PageProps} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
 import {getCart} from "@/data/medusa/cart";
+import {getCustomer} from "@/data/medusa/customer";
 import {
   listCartPaymentMethods,
   listCartShippingMethods,
@@ -11,7 +12,8 @@ import {redirect} from "next/navigation";
 
 import CartDetails from "./_parts/cart-details";
 import CheckoutForm from "./_parts/checkout-form";
-import {getCustomer} from "@/data/medusa/customer";
+import LocalizedLink from "@/components/shared/localized-link";
+import Body from "@/components/shared/typography/body";
 
 export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const params = await props.params;
@@ -21,7 +23,7 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const cart = await getCart();
   const customer = await getCustomer();
 
-  if (!cart || (cart.items?.length || 0) === 0) {
+  if (!customer || !cart || (cart.items?.length || 0) === 0) {
     return redirect(`/${countryCode}/`);
   }
 
@@ -36,14 +38,41 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const paymentMethods = (await listCartPaymentMethods(cart.region_id!)) || [];
 
   return (
-    <section className="max-w-max-screen mx-auto flex w-full flex-col-reverse gap-8 px-4 py-8 md:flex-row md:gap-20 md:px-8 lg:justify-between lg:pt-5 lg:pb-20">
-      <CheckoutForm
-        customer={customer}
-        cart={cart}
-        paymentMethods={paymentMethods}
-        shippingMethods={shippingMethods}
-      />
-      <CartDetails cart={cart} />
-    </section>
+    <>
+      <div className="px-4 py-6 sm:px-6 lg:hidden">
+        <div className="mx-auto flex max-w-lg justify-center">
+          <LocalizedLink href="/" prefetch>
+            <img
+              alt="Mubchies logo"
+              className="h-[22px] w-fit lg:h-8"
+              src="/images/logo.svg"
+            />
+          </LocalizedLink>
+        </div>
+      </div>
+      <section
+        aria-labelledby="checkout-summary"
+        className="bg-secondary mb-4 flex w-full flex-col p-4 lg:mb-0 lg:max-w-[420px]"
+      >
+        <CartDetails cart={cart} />
+      </section>
+      <section aria-labelledby="checkout-form" className="w-full px-4 lg:px-8">
+        <div className="hidden py-8 lg:block">
+          <LocalizedLink href="/" prefetch>
+            <img
+              alt="Mubchies logo"
+              className="h-6 w-fit"
+              src="/images/logo.svg"
+            />
+          </LocalizedLink>
+        </div>
+        <CheckoutForm
+          cart={cart}
+          customer={customer}
+          paymentMethods={paymentMethods}
+          shippingMethods={shippingMethods}
+        />
+      </section>
+    </>
   );
 }

@@ -14,7 +14,7 @@ export default function TextPage({
 }) {
   return (
     <div className="scroll-mt-header-height flex-col items-center justify-center">
-      <section className="gap-xs bg-accent px-xl py-8xl text-background flex w-full flex-col items-center justify-center text-center">
+      <section className="bg-accent text-background flex w-full flex-col items-center justify-center gap-2 px-8 py-20 text-center">
         <Heading
           className="heading-l mx-auto w-fit"
           desktopSize="5xl"
@@ -28,8 +28,8 @@ export default function TextPage({
           {data.description}
         </Body>
       </section>
-      <section className="max-w-max-screen gap-xl px-md py-2xl lg:gap-6xl lg:py-8xl mx-auto h-full w-full flex-col items-stretch justify-start lg:flex-row lg:justify-center">
-        <div className="gap-xl flex w-full flex-col justify-center lg:flex-row lg:gap-20">
+      <section className="max-w-max-screen mx-auto h-full w-full flex-col items-stretch justify-start gap-8 px-5 py-10 lg:flex-row lg:justify-center lg:gap-16 lg:py-20">
+        <div className="flex w-full flex-col justify-center gap-8 lg:flex-row lg:gap-20">
           {data?.body && (
             <aside className="h-auto w-full lg:max-w-[300px]">
               <TableOfContents body={data?.body} />

@@ -2,11 +2,11 @@ import type {VariantProps} from "cva";
 import type {LinkProps} from "next/link";
 import type {ComponentProps} from "react";
 
+import {Button, buttonVariants, cn} from "@merchify/ui";
 import {cva, cx} from "cva";
 
 import Icon from "./icon";
 import LocalizedLink from "./localized-link";
-import {Button, buttonVariants, cn} from "@merchify/ui";
 
 export const styles = cva(
   cx(
@@ -15,7 +15,7 @@ export const styles = cva(
   ),
   {
     defaultVariants: {
-      size: "md",
+      size: "default",
       variant: "default",
     },
     variants: {
@@ -23,14 +23,16 @@ export const styles = cva(
         true: "pointer-events-none",
       },
       size: {
-        lg: "text-lg px-6 h-12 tracking-[-1px]",
-        md: "text-md px-4 h-11",
-        sm: "text-sm px-2 h-10",
-        xl: "text-xl px-8 h-13 tracking-[-1px]",
+        default: "text-md px-4 h-10",
+        lg: "text-lg px-6 h-11 tracking-[-1px]",
+        sm: "text-sm px-2 h-9",
+        xl: "text-xl px-8 h-12 tracking-[-1px]",
       },
       variant: {
-        outline: "",
         default: "",
+        ghost: "",
+        outline: "",
+        secondary: "",
       },
     },
   },
@@ -56,6 +58,7 @@ export function Cta({
     <Button
       className={styles({className, loading, size, variant})}
       disabled={disabled}
+      variant={variant}
       {...rest}
     >
       <span className={cx(loading && "opacity-0")}>{children}</span>
@@ -64,7 +67,7 @@ export function Cta({
           <Icon
             className={cx("animate-spin-loading", {
               "size-5": size === "sm",
-              "size-8": size === "md",
+              "size-8": size === "default",
               "size-10": size === "lg" || size === "xl",
             })}
             name={loadingIconName}
@@ -108,7 +111,7 @@ export function Link({
   return (
     <LocalizedLink
       className={cn(
-        buttonVariants({variant, size}),
+        buttonVariants({size, variant}),
         styles({
           className,
           size,

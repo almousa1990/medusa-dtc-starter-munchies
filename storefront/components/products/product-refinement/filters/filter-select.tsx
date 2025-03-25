@@ -83,12 +83,12 @@ export default function FilterSelect(
             <Icon className="size-6" name="AccordionBottom" />
           </div>
         </div>
-        <div className="group p-xs flex w-full flex-col gap-2">
+        <div className="group flex w-full flex-col gap-2 p-2">
           {props.options.map((option) => {
             const selected = filter?.includes(option.value);
             return (
               <button
-                className="px-sm py-xs hover:bg-secondary flex cursor-pointer items-center gap-2 rounded-lg disabled:pointer-events-none"
+                className="hover:bg-secondary flex cursor-pointer items-center gap-2 rounded-lg px-4 py-2 disabled:pointer-events-none"
                 key={option.value}
                 onClick={() => setFilter(option.value)}
               >

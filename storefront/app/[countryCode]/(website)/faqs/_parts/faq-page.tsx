@@ -134,7 +134,7 @@ export default function Faq({
   };
   return (
     <div className="scroll-mt-header-height flex-col items-center justify-center">
-      <section className="bg-accent px-xl py-8xl text-background flex w-full flex-col items-center justify-center gap-1 text-center">
+      <section className="bg-accent text-background flex w-full flex-col items-center justify-center gap-1 px-8 py-20 text-center">
         <Heading
           className="heading-l mx-auto w-fit"
           desktopSize="5xl"
@@ -199,7 +199,7 @@ export default function Faq({
           )}
         </div>
       </section>
-      <section className="max-w-max-screen gap-xl px-md py-2xl lg:py-8xl relative mx-auto flex h-full w-full flex-col items-start justify-start lg:flex-row lg:justify-center">
+      <section className="max-w-max-screen relative mx-auto flex h-full w-full flex-col items-start justify-start gap-8 px-5 py-10 lg:flex-row lg:justify-center lg:py-20">
         <FaqContent
           category={data.category}
           openAnswer={openAnswer}

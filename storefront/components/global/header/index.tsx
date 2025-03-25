@@ -14,13 +14,13 @@ export default function Header(props: {countryCode: string} & Header) {
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full flex-col items-center">
       <AnnouncementBar {...props} />
-      <div className="max-w-max-screen gap-2xl px-md py-xs lg:px-xl mx-auto flex w-full items-center justify-between">
+      <div className="max-w-max-screen mx-auto flex w-full items-center justify-between gap-10 px-5 py-2 lg:px-8">
         <Suspense>
           <Navigation data={props} />
         </Suspense>
         <HamburgerContainer sanityData={props} />
 
-        <div className="gap-sm flex items-center">
+        <div className="flex items-center gap-4">
           <LocalizedLink href="/" prefetch>
             <img
               alt="Mubchies logo"

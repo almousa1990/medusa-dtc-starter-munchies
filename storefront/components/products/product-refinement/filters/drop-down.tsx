@@ -42,7 +42,7 @@ export default function DropDown({
       >
         <button
           className={cx(
-            "gap-lg bg-background px-sm flex w-fit items-center justify-between py-[6px] outline-hidden",
+            "bg-background flex w-fit items-center justify-between gap-6 px-4 py-[6px] outline-hidden",
             "border-accent rounded-lg border-[1.5px]",
           )}
           disabled={disabled}

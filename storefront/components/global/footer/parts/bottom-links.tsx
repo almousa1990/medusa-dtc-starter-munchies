@@ -10,12 +10,12 @@ export default function BottomLinks({
 }: NonNullable<Footer>) {
   const currentYear = new Date().getFullYear();
   return (
-    <div className="climate-label-xs flex flex-col justify-between gap-lg lg:flex-row lg:items-center">
-      <div className="flex flex-col gap-2xl lg:flex-row">
+    <div className="climate-label-xs flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+      <div className="flex flex-col gap-10 lg:flex-row">
         <Label desktopSize="xs" font="display" mobileSize="2xs">
           © {currentYear}
         </Label>
-        <div className="flex flex-wrap gap-2xl">
+        <div className="flex flex-wrap gap-10">
           {bottomLinks?.map((link) => {
             if (!link.link) return null;
             return (
@@ -32,7 +32,7 @@ export default function BottomLinks({
           })}
         </div>
       </div>
-      <div className="flex flex-wrap gap-2xl">
+      <div className="flex flex-wrap gap-10">
         {socialLinks?.map((link) => {
           if (!link.link) return null;
           return (

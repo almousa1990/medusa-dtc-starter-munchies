@@ -1,13 +1,13 @@
 import {Input, cn} from "@merchify/ui";
 import * as React from "react";
 
-interface PhoneInputProps extends React.ComponentPropsWithoutRef<typeof Input> {
+interface InputPhoneProps extends React.ComponentPropsWithoutRef<typeof Input> {
   countryCode?: string; // Default country code
 }
 
-const PhoneInput = React.forwardRef<
+const InputPhone = React.forwardRef<
   React.ComponentRef<typeof Input>,
-  PhoneInputProps
+  InputPhoneProps
 >(({className, countryCode = "+966", ...props}, ref) => {
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
@@ -26,13 +26,16 @@ const PhoneInput = React.forwardRef<
   return (
     <div className="relative w-full">
       {/* Country Code Prefix (Looks inside the input) */}
-      <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500">
+      <span
+        className="ltr absolute top-1/2 left-3 -translate-y-1/2 transform cursor-not-allowed text-base opacity-50 md:text-sm"
+        dir="ltr"
+      >
         {countryCode}
       </span>
 
       {/* Input Field (With left padding to avoid overlap) */}
       <Input
-        className={cn("pl-16", className)} // Ensures space for the prefix
+        className={cn("pl-12", className)} // Ensures space for the prefix
         inputMode="numeric"
         onInput={handleInput} // Use onInput for real-time filtering
         pattern="[1-9][0-9]{0,8}" // Allow only numbers, 1-9 followed by up to 8 more digits
@@ -44,6 +47,6 @@ const PhoneInput = React.forwardRef<
   );
 });
 
-PhoneInput.displayName = "PhoneInput";
+InputPhone.displayName = "PhoneInput";
 
-export {PhoneInput};
+export {InputPhone};

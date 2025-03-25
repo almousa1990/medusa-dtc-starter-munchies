@@ -55,7 +55,7 @@ export async function generateMetadata(
 
 export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
-  console.log(params.countryCode);
+
   const region = await getRegion(params.countryCode);
   if (!region) {
     console.log("No region found");
@@ -72,7 +72,7 @@ export default async function ProductPage(props: ProductPageProps) {
   }
   return (
     <>
-      <section className="max-w-max-screen gap-sm lg:gap-xs lg:px-xl lg:py-md mx-auto flex flex-col items-start justify-start lg:flex-row">
+      <section className="mx-auto flex flex-col items-start justify-start gap-4 lg:flex-row lg:gap-2 lg:px-8 lg:py-5">
         <ProductImagesCarousel product={product} />
         <ProductInformation
           content={content}

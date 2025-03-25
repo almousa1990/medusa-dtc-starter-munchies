@@ -1,6 +1,7 @@
 "use client";
 
 import LocalizedLink from "@/components/shared/localized-link";
+import {buttonVariants} from "@merchify/ui";
 import {cx} from "cva";
 import Link from "next/link";
 import {useParams, usePathname} from "next/navigation";
@@ -23,7 +24,7 @@ export default function SideNavigation({
   return (
     <nav
       className={cx(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
+        "flex gap-2 overflow-x-auto whitespace-nowrap lg:flex-col lg:gap-1",
         className,
       )}
       {...props}
@@ -31,6 +32,7 @@ export default function SideNavigation({
       {items.map((item) => (
         <LocalizedLink
           className={cx(
+            buttonVariants({variant: "ghost"}),
             pathname === item.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",

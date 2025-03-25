@@ -38,7 +38,7 @@ export default function Select({
       <RadixSelect.Trigger
         className={cx(
           className,
-          "gap-lg bg-background px-sm flex items-center justify-between truncate py-[6px] outline-hidden",
+          "bg-background flex items-center justify-between gap-6 truncate px-4 py-[6px] outline-hidden",
           {
             "border-accent rounded-lg border-[1.5px]": [
               "filter",
@@ -75,7 +75,7 @@ export default function Select({
       <RadixSelect.Portal>
         <RadixSelect.Content
           className={cx(
-            "border-accent bg-background p-xs data-[state=closed]:animate-select-close data-[state=open]:animate-select-open z-100 my-1 max-h-[296px] w-(--radix-select-trigger-width) origin-top rounded-lg border-[1.5px]",
+            "border-accent bg-background data-[state=closed]:animate-select-close data-[state=open]:animate-select-open z-100 my-1 max-h-[296px] w-(--radix-select-trigger-width) origin-top rounded-lg border-[1.5px] p-2",
             {
               "data-[state=open]": open,
             },
@@ -103,7 +103,7 @@ function SelectItem({
   return (
     <RadixSelect.Item
       className={cx(
-        "px-sm py-xs data-highlighted:bg-secondary data-[state=checked]:bg-accent data-[state=checked]:text-background cursor-pointer rounded-lg data-disabled:pointer-events-none data-highlighted:outline-hidden",
+        "data-highlighted:bg-secondary data-[state=checked]:bg-accent data-[state=checked]:text-background cursor-pointer rounded-lg px-4 py-2 data-disabled:pointer-events-none data-highlighted:outline-hidden",
         className,
       )}
       {...props}

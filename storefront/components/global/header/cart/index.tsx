@@ -5,7 +5,7 @@ import {getRegion} from "@/data/medusa/regions";
 import {Suspense} from "react";
 
 import CartAddons from "./cart-addons";
-import {CartProvider} from "./cart-context";
+import {CartProvider} from "../../../context/cart-context";
 import CartUI from "./cart-ui";
 
 type Props = Pick<Header, "cartAddons">;

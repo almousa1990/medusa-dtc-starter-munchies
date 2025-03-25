@@ -3,7 +3,7 @@ import Icon from "@/components/shared/icon";
 import {OpenDialog} from "@/components/shared/side-dialog";
 import Body from "@/components/shared/typography/body";
 
-import {useCart} from "./cart-context";
+import {useCart} from "../../../context/cart-context";
 
 export default function OpenCart() {
   const {cart} = useCart();
@@ -15,7 +15,7 @@ export default function OpenCart() {
       <div className="relative h-10 w-10 p-2">
         <Icon className="text-primary" name="Cart" />
         <Body
-          className="bg-primary text-primary-foreground absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full"
+          className="bg-primary text-primary-foreground absolute top-0 left-0 flex h-5 w-5 items-center justify-center rounded-full"
           font="sans"
           mobileSize="sm"
         >

@@ -20,7 +20,7 @@ type Props = {
 export default function ProductInformation(props: Props) {
   return (
     <ProductVariantsProvider product={props}>
-      <div className="lg:y-sm gap-lg px-md pb-2xl pt-sm flex w-full flex-col lg:max-w-[580px]">
+      <div className="lg:y-4 pb-2xl flex w-full flex-col gap-6 px-5 pt-4 lg:max-w-[580px]">
         <BreadCrumbs collection={props.collection} title={props.title} />
         <Heading
           className="leading-[100%]"
@@ -37,9 +37,9 @@ export default function ProductInformation(props: Props) {
           font="sans"
           mobileSize="base"
         >
-          {props.description}
+          {props.subtitle}
         </Body>
-        <div className="mt-sm gap-sm flex flex-col">
+        <div className="mt-4 flex flex-col gap-4">
           {props.options && <OptionsSelect options={props.options} />}
           <AddToCart region_id={props.region_id} variant="PDP" />
         </div>

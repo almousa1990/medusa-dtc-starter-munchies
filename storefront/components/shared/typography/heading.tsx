@@ -1,5 +1,6 @@
 import type {VariantProps} from "cva";
 
+import {cn} from "@merchify/ui";
 import {cva} from "cva";
 
 export const headingStyles = cva("", {
@@ -25,7 +26,7 @@ export const headingStyles = cva("", {
     mobileSize: {
       "2xl": "text-2xl text-pretty tracking-[-1.12px]",
       "3xl": "text-3xl text-pretty tracking-[-1.28px]",
-      "4xl": "lg:text-4xl lg:tracking-[-1.6px]",
+      "4xl": "text-4xl text-pretty lg:tracking-[-1.6px]",
       base: "text-base tracking-[-0.64px]",
       lg: "text-lg tracking-[-0.8px]",
       sm: "text-sm tracking-[-0.52px]",
@@ -54,7 +55,7 @@ export default function Heading({
   const Tag = tag;
   return (
     <Tag
-      className={headingStyles({className, desktopSize, font, mobileSize})}
+      className={cn(headingStyles({desktopSize, font, mobileSize}), className)}
       id={id}
       {...props}
     >

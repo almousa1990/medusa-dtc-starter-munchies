@@ -1,16 +1,28 @@
 "use client";
-import type { StoreCart, StoreCartShippingOption } from "@medusajs/types";
-import type { Dispatch, SetStateAction } from "react";
+import type {StoreCart, StoreCartShippingOption} from "@medusajs/types";
+import type {Dispatch, SetStateAction} from "react";
 
-import { setShippingMethod } from "@/actions/medusa/order";
-import { Cta } from "@/components/shared/button";
+import {setShippingMethod} from "@/actions/medusa/order";
+import {Cta} from "@/components/shared/button";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
-import { useResetableActionState } from "@/hooks/use-resetable-action-state";
-import { convertToLocale } from "@/utils/medusa/money";
-import { Indicator, Item, Root } from "@radix-ui/react-radio-group";
-import { useEffect, useTransition } from "react";
-import { useFormStatus } from "react-dom";
+import {convertToLocale} from "@/utils/medusa/money";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormField,
+  FormItem,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+} from "@merchify/ui";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+
+const formSchema = z.object({
+  shipping_method_id: z.string().optional(),
+});
 
 export default function Delivery({
   active,
@@ -27,103 +39,120 @@ export default function Delivery({
     SetStateAction<"addresses" | "delivery" | "payment" | "review">
   >;
 }) {
-  const [, startTransition] = useTransition();
-
-  const [{status}, action, , reset] = useResetableActionState(
-    setShippingMethod,
-    {
-      error: null,
-      status: "idle",
-    },
-  );
-
   const cartShippingMethod = cart.shipping_methods?.[0];
 
   const activeShippingMethod = methods.find(
     ({id}) => id === cartShippingMethod?.shipping_option_id,
   );
 
-  const isFilled = !active && !!activeShippingMethod;
+  const form = useForm({
+    defaultValues: {
+      shipping_method_id: cartShippingMethod?.shipping_option_id,
+    },
+    resolver: zodResolver(formSchema),
+  });
+
+  const {
+    formState: {isSubmitSuccessful, isSubmitting},
+    handleSubmit,
+    reset,
+  } = form;
 
   const activeShippingMethodPrice = convertToLocale({
     amount: activeShippingMethod?.amount || 0,
     currency_code,
   });
 
-  useEffect(() => {
-    if (status === "success") {
-      setStep("payment");
-      startTransition(() => reset());
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (data.shipping_method_id) {
+      await setShippingMethod(data.shipping_method_id);
     }
-  }, [status, setStep, reset]);
+  };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      setStep("payment");
+      reset();
+    }
+  }, [isSubmitSuccessful, setStep, reset]);
+
+  const isFilled = !active && !!activeShippingMethod;
 
   return (
-    <div className="flex w-full flex-col gap-8 border-t border-accent py-8">
-      <div className="flex items-center justify-between">
-        <Heading desktopSize="xs" font="sans" mobileSize="xs" tag="h6">
-          Delivery
-        </Heading>
-        {isFilled && (
-          <Cta onClick={() => setStep("delivery")} size="sm" variant="outline">
-            Edit
-          </Cta>
-        )}
-      </div>
-      {isFilled && (
-        <div className="flex flex-1 flex-col gap-4">
-          <Body className="font-semibold" font="sans">
-            Method
-          </Body>
-          <Body font="sans">
-            {activeShippingMethod.name} ({activeShippingMethodPrice})
-          </Body>
+    <Form {...form}>
+      <form
+        className="flex flex-col gap-2 border-t py-4"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="flex h-10 items-center justify-between">
+          <Heading desktopSize="xl" font="serif" mobileSize="xl" tag="h3">
+            شركة الشحن
+          </Heading>
+          {isFilled && (
+            <Cta
+              onClick={() => setStep("delivery")}
+              size="sm"
+              variant="outline"
+            >
+              تعديل
+            </Cta>
+          )}
         </div>
-      )}
-      {active && (
-        <form action={action} className="flex w-full flex-col gap-4">
-          <Root
-            className="flex w-full flex-col gap-4"
-            defaultValue={cartShippingMethod?.shipping_option_id}
-            name="shippingMethodId"
-            required
-          >
-            {methods.map((item) => {
-              const price = convertToLocale({
-                amount: item.amount,
-                currency_code,
-              });
+        {isFilled && (
+          <div className="flex flex-1 flex-col gap-4">
+            <Body font="sans">
+              {activeShippingMethod.name} ({activeShippingMethodPrice})
+            </Body>
+          </div>
+        )}
+        {active && (
+          <div className="flex flex-col gap-4">
+            <FormField
+              control={form.control}
+              name="shipping_method_id"
+              render={({field}) => (
+                <FormItem>
+                  <RadioGroup
+                    dir="rtl"
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    {methods.map((item) => {
+                      const price = convertToLocale({
+                        amount: item.amount,
+                        currency_code,
+                      });
 
-              return (
-                <Item
-                  className="flex w-full items-center justify-between gap-[10px] rounded-lg border-[1.5px] border-accent px-[32px] py-[19px] data-[state=checked]:bg-accent data-[state=checked]:text-background"
-                  key={item.id}
-                  value={item.id}
-                >
-                  <div className="size-4 rounded-full border border-accent">
-                    <Indicator id={item.id}>
-                      <div className="size-4 rounded-full border-[4px] border-background" />
-                    </Indicator>
-                  </div>
-                  <div className="flex w-full items-center justify-between">
-                    <Body font="sans">{item.name}</Body>
-                    <Body font="sans">{price}</Body>
-                  </div>
-                </Item>
-              );
-            })}
-          </Root>
-          <SubmitButton />
-        </form>
-      )}
-    </div>
-  );
-}
+                      return (
+                        <div className="rounded-md border p-4" key={item.id}>
+                          <div className="flex items-center gap-3">
+                            <RadioGroupItem id={item.id} value={item.id} />
+                            <Label className="w-full" htmlFor={item.id}>
+                              <div className="flex w-full items-center justify-between">
+                                <Body font="sans">{item.name}</Body>
+                                <Body font="sans">{price}</Body>
+                              </div>
+                            </Label>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </RadioGroup>
+                </FormItem>
+              )}
+            />
 
-function SubmitButton() {
-  const {pending} = useFormStatus();
-  return (
-    <Cta loading={pending} size="sm" type="submit">
-      Continue to payment
-    </Cta>
+            <Cta
+              className="w-full"
+              loading={isSubmitting}
+              size="sm"
+              type="submit"
+            >
+              تأكيد شركة الشحن
+            </Cta>
+          </div>
+        )}
+      </form>
+    </Form>
   );
 }

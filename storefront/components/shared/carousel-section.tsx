@@ -53,11 +53,11 @@ export default function CarouselSection(props: Props) {
       }}
       slidesCount={slides.length}
     >
-      <section className="max-w-max-screen py-2xl mx-auto">
+      <section className="max-w-max-screen mx-auto py-10">
         <div
-          className={cx("mb-xs flex items-center justify-between", {
-            "px-md lg:px-xl": variant === "default",
-            "px-sm": variant === "cart",
+          className={cx("mb-2 flex items-center justify-between", {
+            "px-5 lg:px-8": variant === "default",
+            "px-4": variant === "cart",
           })}
         >
           {title}
@@ -65,8 +65,8 @@ export default function CarouselSection(props: Props) {
         </div>
         <SlidesWrapper
           className={cx({
-            "px-md lg:px-xl": variant === "default",
-            "px-sm": variant === "cart",
+            "px-5 lg:px-8": variant === "default",
+            "px-4": variant === "cart",
           })}
         >
           <div className="-ml-2 flex touch-pan-y touch-pinch-zoom items-stretch">
@@ -80,7 +80,7 @@ export default function CarouselSection(props: Props) {
 
         {showProgress && <ProgressBar />}
         {cta?.text && (
-          <div className="mt-2xl px-md lg:px-xl">
+          <div className="mt-2xl px-5 lg:px-8">
             <Link
               className="w-full"
               href={cta.href}

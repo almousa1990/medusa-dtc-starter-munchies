@@ -36,20 +36,10 @@ export default async function Layout(props: LayoutProps) {
   return (
     <>
       <PreventBackNavigationSmoothScroll />
-      <div className="bg-background sticky top-0 z-20 w-screen">
-        <div className="my-sm max-w-max-screen bg-background px-md lg:px-xl mx-auto w-full">
-          <LocalizedLink href="/" prefetch>
-            <img
-              alt="Mubchies logo"
-              className="h-[22px] w-fit lg:h-8"
-              src="/images/logo.svg"
-            />
-          </LocalizedLink>
-        </div>
-        <BottomBorder />
-      </div>
-      <main className="flex-1">{children}</main>
-      {data.footer && <Footer variant="simple" {...data.footer} />}
+
+      <main className="flex flex-col lg:min-h-screen lg:flex-row-reverse lg:overflow-hidden">
+        {children}
+      </main>
     </>
   );
 }

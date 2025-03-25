@@ -63,7 +63,6 @@ export default function Payment({
       action({
         cart,
         data: {
-          context: {},
           provider_id: selectedPaymentMethod,
         },
       });
@@ -85,10 +84,10 @@ export default function Payment({
   const method = getMethodInfo(activeMethod?.id);
 
   return (
-    <div className="flex w-full flex-col gap-8 border-t border-accent py-8">
+    <div className="flex w-full flex-col gap-2 border-t py-4">
       <div className="flex items-center justify-between">
-        <Heading desktopSize="xs" font="sans" mobileSize="xs" tag="h6">
-          Payment
+        <Heading desktopSize="xl" font="serif" mobileSize="xl" tag="h3">
+          طريقة الدفع
         </Heading>
         {isFilled && (
           <Cta onClick={() => setStep("payment")} size="sm" variant="outline">
@@ -114,13 +113,13 @@ export default function Payment({
           {methods.map((item) => {
             return (
               <Item
-                className="flex w-full items-center justify-between gap-[10px] rounded-lg border-[1.5px] border-accent px-[32px] py-[19px] data-[state=checked]:bg-accent data-[state=checked]:text-background"
+                className="border-accent data-[state=checked]:bg-accent data-[state=checked]:text-background flex w-full items-center justify-between gap-[10px] rounded-lg border-[1.5px] px-[32px] py-[19px]"
                 key={item.id}
                 value={item.id}
               >
-                <div className="size-4 rounded-full border border-accent">
+                <div className="border-accent size-4 rounded-full border">
                   <Indicator id={item.id}>
-                    <div className="size-4 rounded-full border-[4px] border-background" />
+                    <div className="border-background size-4 rounded-full border-[4px]" />
                   </Indicator>
                 </div>
                 <div className="flex w-full items-center justify-between">

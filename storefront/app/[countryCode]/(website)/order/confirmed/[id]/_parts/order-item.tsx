@@ -24,18 +24,18 @@ export default function OrderItem({
   const image = product?.images?.[0]?.url;
 
   return (
-    <div className="flex w-full gap-xs">
+    <div className="flex w-full gap-2">
       {image && (
         <Image
           alt={product.title + variant?.title}
-          className="aspect-square h-[100px] w-[100px] rounded-lg border-[1.5px] border-accent"
+          className="border-accent aspect-square h-[100px] w-[100px] rounded-lg border-[1.5px]"
           height={100}
           src={image}
           width={100}
         />
       )}
       <div className="flex w-full flex-col justify-between">
-        <div className="flex justify-between gap-xl">
+        <div className="flex justify-between gap-8">
           <div className="flex flex-col items-start justify-start gap-1">
             <Body className="font-semibold" font="sans" mobileSize="lg">
               {product?.title}
@@ -45,7 +45,12 @@ export default function OrderItem({
             </Body>
           </div>
           <div className="flex flex-col items-end justify-end gap-1">
-            <Body className="opacity-80" font="sans" mobileSize="base">
+            <Body
+              className="opacity-80"
+              font="sans"
+              mobileSize="base"
+              dir="ltr"
+            >
               {quantity} x {unit_price_to_locale}
             </Body>
             <Body font="sans" mobileSize="base">

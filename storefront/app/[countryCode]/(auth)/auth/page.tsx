@@ -1,3 +1,4 @@
+import type {PageProps} from "@/types";
 import type {Metadata} from "next";
 
 import {getCustomer} from "@/data/medusa/customer";
@@ -11,14 +12,22 @@ export const metadata: Metadata = {
   title: "Account",
 };
 
-export default async function AuthPage() {
+type AuthPageProps = PageProps<"", "redirectTo">;
+
+export default async function AuthPage(props: AuthPageProps) {
+  const searchParams = await props.searchParams;
+
   const headersList = await headers();
-  const referer = headersList.get("referer") || "/account"; // Get the referrer or fallback
+
+  const redirectTo =
+    (searchParams?.redirectTo as string) ||
+    headersList.get("referer") ||
+    "/account";
   const customer = await getCustomer();
 
   if (customer) {
-    //redirect(referer);
+    redirect(redirectTo);
   }
 
-  return <AuthFlow customer={customer} referer={referer} />;
+  return <AuthFlow customer={customer} redirect={redirectTo} />;
 }

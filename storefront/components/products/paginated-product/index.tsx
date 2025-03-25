@@ -40,7 +40,7 @@ export default async function PaginatedProducts({
   return (
     <>
       {products.length === 0 && (
-        <div className="gap-xs py-2xl flex w-full flex-1 flex-col items-start">
+        <div className="flex w-full flex-1 flex-col items-start gap-2 py-10">
           <Heading font="sans" mobileSize="xs" tag="h2">
             {productsDictionary?.noResultsText}
           </Heading>
@@ -79,7 +79,7 @@ export function ProductsSkeleton() {
               />
             </div>
           </div>
-          <div className="px-lg py-s flex flex-col items-center justify-center gap-1">
+          <div className="flex flex-col items-center justify-center gap-1 px-6 py-4">
             <div className="bg-accent h-[30px] w-3/4 rounded-sm opacity-10" />
             <div className="bg-accent h-6 w-1/2 rounded-sm opacity-10" />
           </div>

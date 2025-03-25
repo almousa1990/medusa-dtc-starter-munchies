@@ -1,6 +1,6 @@
 "use client";
 
-import {generateOtp, refreshOtp, verifyOtp} from "@/actions/medusa/auth";
+import {refreshOtp, verifyOtp} from "@/actions/medusa/auth";
 import {Cta} from "@/components/shared/button";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
@@ -25,7 +25,7 @@ interface OtpFormProps {
   input: {stateKey: string};
   onErorr: (message: string) => void;
   onRestart: () => void;
-  onSuccess: (token: string) => void;
+  onSuccess: (token: string) => Promise<void>;
 }
 
 const formSchema = z.object({
@@ -52,10 +52,10 @@ export default function OtpForm({
       stateKey: stateKey,
     });
 
-    form.reset();
     if (response.success) {
-      onSuccess(response.token);
+      await onSuccess(response.token);
     } else {
+      form.reset();
       onErorr(response.error);
     }
   }

@@ -6,7 +6,7 @@ import Label from "../shared/typography/label";
 
 export default function Marquee(props: ModularPageSection<"section.marquee">) {
   const item = (
-    <div className="flex shrink-0 animate-marquee items-center justify-start gap-20 [--duration:15s] [--gap:5rem]">
+    <div className="animate-marquee flex shrink-0 items-center justify-start gap-20 [--duration:15s] [--gap:5rem]">
       {props.text?.map((item) => {
         return (
           <Label
@@ -23,7 +23,7 @@ export default function Marquee(props: ModularPageSection<"section.marquee">) {
   );
   return (
     <section
-      className="mx-auto flex max-w-max-screen items-center gap-20 overflow-hidden px-xl py-2xl"
+      className="max-w-max-screen mx-auto flex items-center gap-20 overflow-hidden px-8 py-10"
       {...props.rootHtmlAttributes}
     >
       {item}

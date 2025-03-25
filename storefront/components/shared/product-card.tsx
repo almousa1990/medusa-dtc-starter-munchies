@@ -53,7 +53,7 @@ export default function ProductCard({
         )}
       </div>
 
-      <div className="px-lg py-sm pointer-events-none flex flex-1 flex-col items-center justify-center gap-1">
+      <div className="pointer-events-none flex flex-1 flex-col items-center justify-center gap-1 px-6 py-4">
         <Body
           className="text-center"
           desktopSize="xl"

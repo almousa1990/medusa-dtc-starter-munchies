@@ -6,10 +6,12 @@ import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
 import Image from "next/image";
 
-import {isOptimisticItemId, useCart} from "../cart-context";
+import {isOptimisticItemId, useCart} from "@/components/context/cart-context";
+import {InputQuantity} from "@/components/shared/input-quantity";
 
 export default function LineItem(props: StoreCartLineItem) {
-  const {cart, handleDeleteItem, handleUpdateCartQuantity} = useCart();
+  const {cart, handleDeleteItem, handleUpdateCartQuantity, isUpdating} =
+    useCart();
 
   const item = cart?.items?.find(({id}) => id === props.id);
 
@@ -26,7 +28,7 @@ export default function LineItem(props: StoreCartLineItem) {
     <div className="flex items-start justify-between gap-2 space-x-4">
       <Image
         alt={props.title}
-        className="h-[100px] w-[100px] rounded-lg border-[1.5px] border-accent object-cover"
+        className="border-accent h-[100px] w-[100px] rounded-lg border-[1.5px] object-cover"
         height={100}
         src={props.product?.thumbnail || ""}
         width={100}
@@ -46,33 +48,14 @@ export default function LineItem(props: StoreCartLineItem) {
           </Body>
         </div>
         <div className="flex w-full items-center justify-between gap-4">
-          <div className="flex h-10 w-32 items-center justify-center gap-1 overflow-hidden rounded-lg border border-accent">
-            <button
-              className="group flex h-full w-full flex-1 items-center justify-center hover:bg-secondary active:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={isOptimisticLine}
-              onClick={() =>
-                handleUpdateCartQuantity(props.id, (item?.quantity || 0) - 1)
-              }
-            >
-              <span className="h-[1.5px] w-2 bg-accent transition-all duration-300 group-active:bg-background" />
-            </button>
-            <Body className="flex-1 text-center" font="sans" mobileSize="base">
-              {item?.quantity}
-            </Body>
-            <button
-              className="group relative flex h-full w-full flex-1 items-center justify-center hover:bg-secondary active:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={isOptimisticLine}
-              onClick={() =>
-                handleUpdateCartQuantity(props.id, (item?.quantity || 0) + 1)
-              }
-            >
-              <span className="h-[1.5px] w-2 bg-accent transition-all duration-300 group-active:bg-background" />
-              <span className="absolute left-1/2 top-1/2 h-2 w-[1.5px] -translate-x-1/2 -translate-y-1/2 bg-accent transition-all duration-300 group-active:bg-background" />
-            </button>
-          </div>
+          <InputQuantity
+            quantity={item?.quantity || 0}
+            disabled={isOptimisticLine || isUpdating}
+            onChange={(newQty) => handleUpdateCartQuantity(props.id, newQty)}
+          />
           <button
             className="bg-transparent disabled:pointer-events-none disabled:opacity-50"
-            disabled={isOptimisticLine}
+            disabled={isOptimisticLine || isUpdating}
             onClick={() => handleDeleteItem(props.id)}
           >
             <Icon className="size-6" name="Trash" />

@@ -19,8 +19,8 @@ export const bodyStyles = cva("", {
       xs: "lg:text-xs",
     },
     font: {
-      sans: "font-sans font-medium leading-[150%]",
-      serif: "font-serif font-normal leading-[150%]",
+      sans: "font-sans leading-[150%]",
+      serif: "font-serif leading-[150%]",
     },
     mobileSize: {
       "2xl": "text-2xl",

@@ -2,16 +2,16 @@
 
 import type {StoreProductOption} from "@medusajs/types";
 
-import Select from "@/components/shared/select";
-
 import {useProductVariants} from "../product-context";
+import OptionSelect from "./option-select";
 
 type Props = {
   options: StoreProductOption[];
 };
 
 export default function OptionsSelect({options}: Props) {
-  const {selectedOptions, setSelectedOptions} = useProductVariants();
+  const {selectedOptions, setSelectedOptions, product, updateOption} =
+    useProductVariants();
 
   return options?.map((option) => {
     const values = option.values?.map(({value}) => ({
@@ -20,21 +20,23 @@ export default function OptionsSelect({options}: Props) {
     }));
 
     if (!values || values.length <= 1) return null;
-    const activeOption = selectedOptions[option.title.toLowerCase()];
+    const activeOption = selectedOptions[option.id];
     const setOption = (value: string) =>
       setSelectedOptions((prev) => ({
         ...prev,
-        [option.title.toLowerCase()]: value,
+        [option.id]: value,
       }));
 
     return (
-      <Select
-        className="w-fit"
+      <OptionSelect
         key={option.id}
-        options={values}
-        placeholder={activeOption}
-        setOption={setOption}
-        variant="outline"
+        option={option}
+        product={product}
+        selectedOptions={selectedOptions}
+        current={activeOption}
+        updateOption={(v) => updateOption(option.id, v)}
+        disabled={false}
+        data-testid="product-options"
       />
     );
   });

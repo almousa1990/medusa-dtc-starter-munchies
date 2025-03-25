@@ -7,7 +7,7 @@ import type {
 } from "@medusajs/types";
 
 import Heading from "@/components/shared/typography/heading";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import Address from "./address";
 import Delivery from "./delivery";
@@ -29,15 +29,32 @@ export default function CheckoutForm({
     "addresses" | "delivery" | "payment" | "review"
   >("addresses");
 
+  useEffect(() => {
+    // Determine the correct current step
+    if (cart.shipping_address?.address_1) {
+      if (shippingMethods.length > 0) {
+        if (cart.shipping_methods?.[0]) {
+          setStep("payment");
+        } else {
+          setStep("delivery");
+        }
+      } else {
+        setStep("payment");
+      }
+    } else {
+      setStep("addresses");
+    }
+  }, [cart, shippingMethods]);
+
   return (
-    <div className="w-full">
-      <Heading desktopSize="2xl" font="serif" mobileSize="xl" tag="h3">
-        Checkout
+    <>
+      <Heading className="sr-only" tag="h1">
+        إتمام الطلب
       </Heading>
       <Address
-        customer={customer}
         active={step === "addresses"}
         cart={cart}
+        customer={customer}
         nextStep={shippingMethods.length > 0 ? "delivery" : "payment"}
         setStep={setStep}
       />
@@ -57,6 +74,6 @@ export default function CheckoutForm({
         setStep={setStep}
       />
       <Review active={step === "review"} cart={cart} />
-    </div>
+    </>
   );
 }

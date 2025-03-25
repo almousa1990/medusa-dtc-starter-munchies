@@ -86,7 +86,7 @@ export default function Hamburger({
                   />
                 ))}
               </div>
-              <div className="p-md">
+              <div className="p-5">
                 <CountrySelectorDialog countries={countries} />
               </div>
             </div>
@@ -97,7 +97,7 @@ export default function Hamburger({
             >
               <div className="h-auto w-full">
                 <button
-                  className="gap-sm p-md flex items-center justify-start"
+                  className="flex items-center justify-start gap-4 p-5"
                   onClick={() => setActiveMenu(undefined)}
                 >
                   <Icon className="size-8" name="AccordionLeft" />
@@ -129,7 +129,7 @@ function NavMenuItem({
       <>
         {item.cta?.link && (
           <NextLink
-            className="p-md"
+            className="p-5"
             href={item.cta?.link}
             onClick={() => setOpen(false)}
           >
@@ -145,7 +145,7 @@ function NavMenuItem({
   if (item._type === "dropdown") {
     return (
       <div
-        className="p-md flex items-center justify-between"
+        className="flex items-center justify-between p-5"
         key={item._key}
         onClick={() => setActiveMenu(item._key)}
       >
@@ -167,11 +167,11 @@ function DropdownList({
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <div className="gap-xl pb-lg flex h-full w-full flex-col items-start">
+    <div className="flex h-full w-full flex-col items-start gap-8 pb-6">
       {activeMenu?.columns?.map((item) => {
         return (
           <div
-            className="gap-sm px-md flex flex-col items-start justify-start"
+            className="flex flex-col items-start justify-start gap-4 px-5"
             key={item._key}
           >
             <Body font="sans" mobileSize="base">
@@ -195,11 +195,11 @@ function DropdownList({
           </div>
         );
       })}
-      <div className="scrollbar-hide gap-xs flex w-full overflow-x-scroll">
+      <div className="scrollbar-hide flex w-full gap-2 overflow-x-scroll">
         {activeMenu?.cards?.map((card) => {
           return (
             <div
-              className="gap-xs first:ml-md last:mr-md flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center rounded-lg"
+              className="first:ml-md last:mr-md flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center gap-2 rounded-lg"
               key={card._key}
             >
               {card.image ? (

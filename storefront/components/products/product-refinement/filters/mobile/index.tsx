@@ -86,7 +86,7 @@ export default function MobileFilterDropdown({children}: Props) {
         </div>
       </div>
 
-      <div className="gap-sm px-xs sticky bottom-0 my-2 flex w-[calc(100vw-40px)] flex-col justify-center">
+      <div className="sticky bottom-0 my-2 flex w-[calc(100vw-40px)] flex-col justify-center gap-4 px-2">
         <Cta className="w-full" onClick={() => setOpen(false)} size="md">
           Show Results
         </Cta>

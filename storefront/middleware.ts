@@ -2,19 +2,28 @@ import type {NextRequest} from "next/server";
 
 import {NextResponse} from "next/server";
 
-export function middleware(request: NextRequest) {
+import {getCustomer} from "./data/medusa/customer";
+
+export async function middleware(request: NextRequest) {
   // Retrieve the `_medusa_jwt` token from cookies
-  const medusaToken = request.cookies.get("_medusa_jwt")?.value;
+  const customer = await getCustomer();
 
   // If no token is found, redirect to the login page
-  if (!medusaToken && request.nextUrl.pathname.startsWith("/account")) {
-    return NextResponse.redirect(new URL("/auth", request.url));
+  if (
+    !customer &&
+    (request.nextUrl.pathname.startsWith("/account") ||
+      request.nextUrl.pathname.startsWith("/checkout"))
+  ) {
+    // Redirect to auth page with intended destination as a search param
+    const authUrl = new URL("/auth", request.url);
+    authUrl.searchParams.set("redirectTo", request.nextUrl.pathname);
+
+    return NextResponse.redirect(authUrl);
   }
 
   return NextResponse.next();
 }
 
-// Apply middleware only to `/account/*` routes
 export const config = {
-  matcher: ["/account/:path*"], // Protects all routes under `/account`
+  matcher: ["/account/:path*", "/checkout/:path*"],
 };

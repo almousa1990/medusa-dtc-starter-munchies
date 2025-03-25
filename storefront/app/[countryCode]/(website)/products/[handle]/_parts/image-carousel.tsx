@@ -73,9 +73,7 @@ export function ProductImagesCarousel({
           </div>
         )}
         <SlidesWrapper
-          className={cx(
-            "scrollbar-hide gap-xs px-md mt-1 h-fit w-full lg:px-0",
-          )}
+          className={cx("scrollbar-hide mt-1 h-fit w-full gap-2 px-5 lg:px-0")}
         >
           <Slides
             content={slides}
@@ -84,7 +82,7 @@ export function ProductImagesCarousel({
                 "relative flex w-[86vw] min-w-full snap-center justify-center lg:w-full",
             }}
             wrapperDiv={{
-              className: "snap-x snap-mandatory gap-xs",
+              className: "snap-x snap-mandatory gap-2",
             }}
           />
         </SlidesWrapper>

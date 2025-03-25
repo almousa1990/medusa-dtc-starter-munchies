@@ -39,7 +39,7 @@ export default function HotspotsUi({
   const thumbnailUrl = product?.thumbnail || product?.images?.[0].url;
 
   return (
-    <div className="gap-xs lg:gap-s flex w-full flex-col items-stretch justify-start lg:flex-row">
+    <div className="flex w-full flex-col items-stretch justify-start gap-2 lg:flex-row lg:gap-4">
       {image ? (
         <div className="relative w-full min-w-[63%] rounded-lg">
           <SanityImage className="w-full rounded-lg" data={image} />
@@ -91,7 +91,7 @@ export default function HotspotsUi({
         <div className="bg-secondary w-full min-w-[63%] rounded-lg" />
       )}
       <LocalizedLink
-        className="gap-2xl hidden w-full max-w-[450px] flex-col justify-between rounded-lg lg:flex"
+        className="hidden w-full max-w-[450px] flex-col justify-between gap-10 rounded-lg lg:flex"
         href={`/products/${product?.handle}`}
         prefetch
       >
@@ -113,7 +113,7 @@ export default function HotspotsUi({
               />
             )}
           </div>
-          <div className="px-lg py-sm flex flex-1 flex-col items-center justify-center gap-1">
+          <div className="flex flex-1 flex-col items-center justify-center gap-1 px-6 py-4">
             <Body
               className="text-center"
               desktopSize="xl"
@@ -142,13 +142,13 @@ export default function HotspotsUi({
           Shop now
         </Link>
       </LocalizedLink>
-      <div className="gap-xs flex flex-col lg:hidden">
+      <div className="flex flex-col gap-2 lg:hidden">
         {referencedProducts.map((product) => {
           const {cheapestPrice} = getProductPrice({product});
           const thumbnailUrl = product?.thumbnail || product?.images?.[0].url;
           return (
             <LocalizedLink
-              className={cx("p-xs flex w-full gap-[10px] rounded-2xl", {
+              className={cx("flex w-full gap-[10px] rounded-2xl p-2", {
                 "bg-secondary": selectedProduct === product.id,
               })}
               href={`/products/${product?.handle}`}
@@ -164,7 +164,7 @@ export default function HotspotsUi({
                   width={100}
                 />
               ) : null}
-              <div className="py-xs flex flex-col items-start justify-start gap-1">
+              <div className="flex flex-col items-start justify-start gap-1 py-2">
                 <Body className="text-pretty" font="sans" mobileSize="lg">
                   {product?.title}
                 </Body>

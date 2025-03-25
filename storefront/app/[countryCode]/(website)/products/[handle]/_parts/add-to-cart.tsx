@@ -2,7 +2,7 @@
 import type {ButtonProps} from "@/components/shared/button";
 import type {StoreProductVariant} from "@medusajs/types";
 
-import {addToCartEventBus} from "@/components/global/header/cart/event-bus";
+import {addToCartEventBus} from "@/utils/event-bus";
 import {Cta} from "@/components/shared/button";
 import {track} from "@vercel/analytics";
 import {cx} from "cva";
@@ -22,8 +22,7 @@ export default function AddToCart({
       label="Add to cart"
       productVariant={activeVariant}
       regionId={region_id}
-      size={variant === "PDP" ? "xl" : "md"}
-      variant={variant === "PDP" ? "default" : "default"}
+      size={variant === "PDP" ? "xl" : "default"}
     />
   );
 }

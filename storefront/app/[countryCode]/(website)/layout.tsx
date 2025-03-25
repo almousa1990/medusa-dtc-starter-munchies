@@ -30,9 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Layout(props: LayoutProps) {
   const params = await props.params;
 
-  const {
-    children
-  } = props;
+  const {children} = props;
 
   const data = await loadGlobalData();
 
@@ -42,7 +40,9 @@ export default async function Layout(props: LayoutProps) {
       {data.header && (
         <Header {...data.header} countryCode={params.countryCode} />
       )}
-      <main className="flex-1">{children}</main>
+      <main className="mt-8 w-full flex-1 px-4 pb-16 sm:px-6 sm:pb-24 lg:mx-auto lg:max-w-7xl lg:px-8">
+        {children}
+      </main>
       {data.footer && <Footer {...data.footer} />}
     </>
   );

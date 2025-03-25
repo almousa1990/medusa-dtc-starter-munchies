@@ -30,7 +30,7 @@ const config = {
     return [
       {
         source:
-          "/:path((?!sa|dk|fr|de|es|jp|gb|ca|ar|za|mx|my|au/|nz|dz|br|cms|api|images|icons|favicon.ico|sections|favicon-inactive.ico).*)",
+          "/:path((?!sa|dk|fr|de|es|jp|gb|ca/|ar|za|mx|my|au/|nz|dz|br|cms|api|images|icons|favicon.ico|sections|favicon-inactive.ico).*)",
         destination: "/sa/:path*",
       },
     ];

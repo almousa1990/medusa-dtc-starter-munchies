@@ -69,8 +69,8 @@ export default async function Layout(props: LayoutProps) {
       </div>
       <Separator />
 
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 lg:space-x-reverse">
-        <aside className="-mx-4 lg:w-1/5">
+      <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
+        <aside className="lg:w-1/5">
           <SideNavigation items={sidebarNavItems} />
         </aside>
         <div className="flex-1 lg:max-w-2xl">{children}</div>
@@ -80,5 +80,5 @@ export default async function Layout(props: LayoutProps) {
 }
 
 function Separator() {
-  return <div className="my-6 h-px w-full bg-accent" />;
+  return <div className="bg-accent my-6 h-px w-full" />;
 }

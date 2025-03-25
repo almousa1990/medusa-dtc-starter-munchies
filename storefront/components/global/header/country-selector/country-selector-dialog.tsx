@@ -78,7 +78,7 @@ export default function CountrySelectorDialog({
       </OpenDialog>
       <SideDialog>
         <div className="border-accent bg-background relative flex h-full w-full flex-col border-l">
-          <div className="bg-background p-sm pr-xs flex h-full w-full flex-col">
+          <div className="bg-background pr-xs flex h-full w-full flex-col p-4">
             <Title asChild>
               <Heading
                 className="py-4"
@@ -100,7 +100,7 @@ export default function CountrySelectorDialog({
               {countries.map((country) => (
                 <Suspense key={country?.code}>
                   <Link
-                    className="px-sm py-xs hover:bg-secondary rounded-sm whitespace-nowrap"
+                    className="hover:bg-secondary rounded-sm px-4 py-2 whitespace-nowrap"
                     href={getNewPath(country?.code)}
                     onClick={() => setOpen(false)}
                     prefetch

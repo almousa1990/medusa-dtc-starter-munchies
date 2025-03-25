@@ -23,7 +23,7 @@ export default async function Filters() {
 
   return (
     <>
-      <div className="lg:gap-sm hidden lg:flex lg:items-center">
+      <div className="hidden lg:flex lg:items-center lg:gap-4">
         <Suspense fallback={<EmptyDropdown placeholder="Collections" />}>
           <FilterSelect
             name="collection"
@@ -43,7 +43,7 @@ export default async function Filters() {
       <div className="flex lg:hidden">
         <Suspense fallback={<EmptyDropdown placeholder="Filter" />}>
           <MobileFilterDropdown>
-            <div className="gap-xs p-xs flex flex-col">
+            <div className="flex flex-col gap-2 p-2">
               <Accordion
                 heading="Collections"
                 name="collection"

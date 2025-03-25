@@ -34,7 +34,7 @@ export default function StickyAtc({
     <ProductVariantsProvider product={product}>
       <div
         className={cx(
-          "border-accent bg-background p-md fixed right-0 bottom-0 left-0 z-80 w-screen min-w-[320px] border-t transition-transform duration-300 lg:hidden",
+          "border-accent bg-background fixed right-0 bottom-0 left-0 z-80 w-screen min-w-[320px] border-t p-5 transition-transform duration-300 lg:hidden",
           {
             "translate-y-0": isVisible,
             "translate-y-full": !isVisible,

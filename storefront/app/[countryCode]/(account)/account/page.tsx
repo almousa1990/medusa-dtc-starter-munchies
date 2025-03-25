@@ -1,12 +1,11 @@
+import type {HttpTypes} from "@medusajs/types";
 import type {Metadata} from "next";
 
 import {getCustomer} from "@/data/medusa/customer";
 import {listOrders} from "@/data/medusa/order";
-import {notFound} from "next/navigation";
-
-import {HttpTypes} from "@medusajs/types";
 import {convertToLocale} from "@/utils/medusa/money";
 import Link from "next/link";
+import {notFound} from "next/navigation";
 
 export const metadata: Metadata = {
   description: "Overview of your account activity.",

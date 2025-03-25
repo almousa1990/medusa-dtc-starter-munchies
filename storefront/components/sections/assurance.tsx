@@ -11,7 +11,7 @@ export default function Assurance(
   return (
     <section
       {...props.rootHtmlAttributes}
-      className="max-w-max-screen gap-4xl px-md py-2xl lg:px-xl mx-auto flex w-full flex-col items-center justify-start"
+      className="max-w-max-screen mx-auto flex w-full flex-col items-center justify-start gap-12 px-5 py-10 lg:px-8"
     >
       {props.title && (
         <Heading
@@ -23,7 +23,7 @@ export default function Assurance(
           {props.title}
         </Heading>
       )}
-      <div className="gap-md lg:gap-2xl flex w-full flex-col items-center justify-between lg:flex-row">
+      <div className="flex w-full flex-col items-center justify-between gap-5 lg:flex-row lg:gap-10">
         {props.cards?.map((card) => (
           <Item
             description={card.description}
@@ -44,7 +44,7 @@ function Item({
   title: string | undefined;
 }) {
   return (
-    <div className="gap-xs flex w-full max-w-[400px] flex-col items-center text-center">
+    <div className="flex w-full max-w-[400px] flex-col items-center gap-2 text-center">
       <Heading mobileSize="base" tag="h5">
         {title}
       </Heading>

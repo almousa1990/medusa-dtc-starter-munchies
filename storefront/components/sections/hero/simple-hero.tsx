@@ -9,8 +9,8 @@ import type {ModularPageSection} from "../types";
 export default function SimpleHero(props: ModularPageSection<"section.hero">) {
   const image = stegaClean(props.image);
   return (
-    <div className="gap-xs flex flex-col items-stretch justify-center lg:flex-row-reverse">
-      <div className="gap-sm bg-secondary px-md py-4xl lg:py-md flex min-h-[470px] w-full flex-col items-center justify-center rounded-lg text-center lg:w-1/2">
+    <div className="flex flex-col items-stretch justify-center gap-2 lg:flex-row-reverse">
+      <div className="bg-secondary flex min-h-[470px] w-full flex-col items-center justify-center gap-4 rounded-lg px-5 py-12 text-center lg:w-1/2 lg:py-5">
         <Heading
           className="leading-[100%]!"
           desktopSize="5xl"
@@ -30,7 +30,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
         </Body>
         {props.cta?.link && (
           <Link
-            className="mt-lg"
+            className="mt-6"
             href={props.cta.link}
             prefetch
             size="md"

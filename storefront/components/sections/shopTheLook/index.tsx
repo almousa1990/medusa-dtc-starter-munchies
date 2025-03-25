@@ -12,7 +12,7 @@ export default async function ShopTheLook(
   return (
     <section
       {...props.rootHtmlAttributes}
-      className="max-w-max-screen gap-xs px-md py-2xl lg:px-xl mx-auto flex w-full flex-col items-start"
+      className="max-w-max-screen mx-auto flex w-full flex-col items-start gap-2 px-5 py-10 lg:px-8"
     >
       <Heading desktopSize="3xl" font="serif" mobileSize="xl" tag="h3">
         {props.title}

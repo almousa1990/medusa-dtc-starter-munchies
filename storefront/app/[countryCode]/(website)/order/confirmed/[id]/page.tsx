@@ -32,24 +32,24 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
   const shippingMethod = order.shipping_methods?.[0];
 
   return (
-    <div className="gap-2xl px-sm py-2xl md:py-8xl mx-auto flex max-w-[1200px] flex-col">
-      <div className="gap-xs flex flex-col">
+    <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-4 py-10 md:py-20">
+      <div className="flex flex-col gap-2">
         <Heading
-          className="mb-lg"
+          className="mb-6"
           desktopSize="2xl"
           font="serif"
           mobileSize="lg"
           tag="h1"
         >
-          Thank you! Your order was placed successfully
+          شكراً لطلبكم!
         </Heading>
 
         <Body className="font-medium" desktopSize="xl" font="sans">
-          We have sent the order confirmation details to {order.email}
+          تم إرسال تفاصيل تأكيد الطلب إلى {order.email}
         </Body>
 
         <Body desktopSize="base" font="sans">
-          Order date:{" "}
+          تاريخ الطلب:{" "}
           {new Date(order.created_at).toLocaleDateString("en-US", {
             day: "numeric",
             month: "long",
@@ -57,14 +57,14 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
           })}
         </Body>
         <Body desktopSize="base" font="sans">
-          Order number: {order.display_id}
+          رقم الطلب: {order.display_id}
         </Body>
       </div>
-      <div className="gap-s flex flex-col">
+      <div className="flex flex-col gap-4">
         <Heading desktopSize="xl" font="serif" mobileSize="lg" tag="h2">
-          Summary
+          الملخص
         </Heading>
-        <div className="gap-s flex flex-col">
+        <div className="flex flex-col gap-4">
           {order.items.map((item) => {
             return (
               <OrderItem
@@ -76,18 +76,18 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
           })}
           <Separator />
           <SubLineItem
-            title="Subtotal"
+            title="المجموع الفرعي"
             value={convertMoney(order.item_subtotal)}
           />
-          <SubLineItem title="Taxes" value={convertMoney(order.tax_total)} />
+          <SubLineItem title="الضريبة" value={convertMoney(order.tax_total)} />
           <SubLineItem
-            title="Shipping"
+            title="الشحن"
             value={convertMoney(order.shipping_total)}
           />
           <Separator />
           <div className="flex justify-between">
             <Heading desktopSize="base" font="sans" mobileSize="sm" tag="h4">
-              Total
+              الأجمالي
             </Heading>
             <Heading desktopSize="base" font="sans" mobileSize="sm" tag="h4">
               {convertMoney(order.total)}
@@ -96,18 +96,18 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
           <Separator />
         </div>
       </div>
-      <div className="gap-s flex flex-col">
+      <div className="flex flex-col gap-4">
         <Heading desktopSize="xl" font="serif" mobileSize="lg" tag="h2">
-          Delivery
+          التوصيل
         </Heading>
-        <div className="gap-xl lg:gap-s flex flex-col lg:flex-row">
+        <div className="flex flex-col gap-8 lg:flex-row lg:gap-4">
           <div className="flex flex-1 flex-col gap-[6px]">
             <Body
               className="mb-[6px] font-semibold"
               desktopSize="base"
               font="sans"
             >
-              Shipping Address
+              عنوان الشحن
             </Body>
             <Body className="font-medium" desktopSize="base" font="sans">
               {order.shipping_address?.first_name}{" "}
@@ -127,7 +127,7 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
               desktopSize="base"
               font="sans"
             >
-              Contact
+              التواصل
             </Body>
             <Body className="font-medium" desktopSize="base" font="sans">
               {order.email}
@@ -141,7 +141,7 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
                 desktopSize="base"
                 font="sans"
               >
-                Method
+                الشحن
               </Body>
               <Body className="font-medium" desktopSize="base" font="sans">
                 {shippingMethod?.name}
@@ -163,7 +163,7 @@ function Separator() {
 
 function SubLineItem({title, value}: {title: string; value: string}) {
   return (
-    <div className="gap-xl flex items-center justify-between">
+    <div className="flex items-center justify-between gap-8">
       <Body className="mb-[6px] font-semibold" desktopSize="base" font="sans">
         {title}
       </Body>

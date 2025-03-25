@@ -3,8 +3,8 @@
 import type {StoreCustomer} from "@medusajs/types";
 
 import {login, refresh, register} from "@/actions/medusa/auth";
+import {navigate} from "@/actions/medusa/navigate";
 import Body from "@/components/shared/typography/body";
-import {useRouter} from "next/navigation";
 import {useState} from "react";
 
 import AuthMethodForm from "../auth-method-form";
@@ -15,11 +15,9 @@ type Step = "authMethod" | "otp" | "signup";
 
 interface AuthFlowProps {
   customer: StoreCustomer | null;
-  referer: string; // Accept referer as a prop
+  redirect: string; // Accept referer as a prop
 }
-export default function AuthFlow({customer, referer}: AuthFlowProps) {
-  const router = useRouter();
-
+export default function AuthFlow({customer, redirect}: AuthFlowProps) {
   const [step, setStep] = useState<Step>("authMethod");
   const [stateKey, setStateKey] = useState<null | string>(null);
 
@@ -47,7 +45,7 @@ export default function AuthFlow({customer, referer}: AuthFlowProps) {
       if (!response.customer) {
         setStep("signup");
       } else {
-        router.push(referer);
+        await navigate(redirect); // Server-side redirect
       }
     } else {
       const response = await register(token);
@@ -69,7 +67,7 @@ export default function AuthFlow({customer, referer}: AuthFlowProps) {
 
     if (response.success) {
       console.log("User logged in successfully!");
-      router.push(referer);
+      await navigate(redirect); // Server-side redirect
     }
   }
 

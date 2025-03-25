@@ -21,10 +21,10 @@ export default function LineItem(props: StoreCartLineItem) {
   });
 
   return (
-    <div className="flex items-start justify-between gap-2 space-x-4">
+    <div className="flex items-start justify-between space-x-4">
       <Image
         alt={props.title}
-        className="h-[100px] w-[100px] rounded-lg border-[1.5px] border-accent object-cover"
+        className="size-20 rounded-md border object-cover"
         height={100}
         src={props.product?.thumbnail || ""}
         width={100}

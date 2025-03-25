@@ -3,7 +3,7 @@
 import Heading from "@/components/shared/typography/heading";
 import {Title} from "@radix-ui/react-dialog";
 
-import {useCart} from "./cart-context";
+import {useCart} from "../../../context/cart-context";
 
 export default function CartHeading() {
   const {cart} = useCart();
@@ -14,7 +14,7 @@ export default function CartHeading() {
     <div className="flex min-h-[calc(var(--header-height))] items-center justify-start px-4">
       <Title asChild>
         <Heading desktopSize="2xl" font="serif" mobileSize="lg" tag="h2">
-          My Bag ({count})
+          سلة التسوق ({count})
         </Heading>
       </Title>
     </div>

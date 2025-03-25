@@ -16,16 +16,16 @@ export default function MediaText(
     <section
       {...props.rootHtmlAttributes}
       className={cx(
-        "max-w-max-screen px-md py-xl lg:px-xl lg:py-2xl mx-auto flex w-full flex-col items-stretch justify-center gap-2",
+        "max-w-max-screen mx-auto flex w-full flex-col items-stretch justify-center gap-2 px-5 py-8 lg:px-8 lg:py-10",
         {
           "lg:flex-row": position === "right",
           "lg:flex-row-reverse": position === "left",
         },
       )}
     >
-      <div className="border-accent p-sm lg:py-7xl relative flex min-h-[390px] flex-col items-center justify-start gap-11 rounded-lg border sm:justify-center lg:w-1/2">
+      <div className="border-accent relative flex min-h-[390px] flex-col items-center justify-start gap-11 rounded-lg border p-4 sm:justify-center lg:w-1/2 lg:py-[4.5rem]">
         <Label
-          className="sm:top-xl whitespace-nowrap sm:absolute sm:left-1/2 sm:-translate-x-1/2"
+          className="whitespace-nowrap sm:absolute sm:top-8 sm:left-1/2 sm:-translate-x-1/2"
           desktopSize="base"
           font="display"
           mobileSize="sm"

@@ -113,15 +113,15 @@ function Content({cards, columns}: DropdownType) {
 
   return (
     <RemoveScroll>
-      <div className="max-w-max-screen gap-xl px-xl py-2xl relative mx-auto flex items-start justify-between">
-        <div className="group gap-lg flex flex-wrap items-start justify-start">
+      <div className="max-w-max-screen relative mx-auto flex items-start justify-between gap-8 px-8 py-10">
+        <div className="group flex flex-wrap items-start justify-start gap-6">
           {columns?.map((link) => {
             return (
               <div
                 className="flex min-w-[270px] flex-col items-start justify-start"
                 key={link._key}
               >
-                <Body className="pb-sm" font="sans" mobileSize="base">
+                <Body className="pb-4" font="sans" mobileSize="base">
                   {link.title}
                 </Body>
                 {link.links?.map((link) => {
@@ -129,7 +129,7 @@ function Content({cards, columns}: DropdownType) {
                   return (
                     <LocalizedLink
                       className={cx(
-                        "py-xs opacity-100 transition-opacity duration-300 group-hover:opacity-50 last:pb-0",
+                        "py-2 opacity-100 transition-opacity duration-300 group-hover:opacity-50 last:pb-0",
                         {
                           "opacity-100!": hoveredKey === link._key,
                         },
@@ -150,7 +150,7 @@ function Content({cards, columns}: DropdownType) {
             );
           })}
         </div>
-        <div className="scrollbar-hide gap-lg flex flex-wrap items-stretch justify-start">
+        <div className="scrollbar-hide flex flex-wrap items-stretch justify-start gap-6">
           {cards?.map((card) => {
             return <Product key={card._key} {...card} />;
           })}
@@ -167,7 +167,7 @@ function Product({
 }: NonNullable<DropdownType["cards"]>[number]) {
   if (!cta?.link) return null;
   return (
-    <div className="group gap-xs relative flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center rounded-lg">
+    <div className="group relative flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center gap-2 rounded-lg">
       <LocalizedLink
         className="absolute inset-0 z-10"
         href={cta?.link}
