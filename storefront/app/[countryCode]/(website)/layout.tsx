@@ -8,6 +8,7 @@ import PreventBackNavigationSmoothScroll from "@/components/prevent-back-navigat
 import config from "@/config";
 import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
+import {getCustomer} from "@/data/medusa/customer";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">
@@ -33,12 +34,17 @@ export default async function Layout(props: LayoutProps) {
   const {children} = props;
 
   const data = await loadGlobalData();
+  const customer = await getCustomer();
 
   return (
     <>
       <PreventBackNavigationSmoothScroll />
       {data.header && (
-        <Header {...data.header} countryCode={params.countryCode} />
+        <Header
+          {...data.header}
+          countryCode={params.countryCode}
+          customer={customer}
+        />
       )}
       <main className="mt-8 w-full flex-1 px-4 pb-16 sm:px-6 sm:pb-24 lg:mx-auto lg:max-w-7xl lg:px-8">
         {children}

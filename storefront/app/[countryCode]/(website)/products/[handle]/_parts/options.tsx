@@ -2,7 +2,7 @@
 
 import type {StoreProductOption} from "@medusajs/types";
 
-import {useProductVariants} from "../product-context";
+import {useProductVariants} from "../../../../../../components/context/product-context";
 import OptionSelect from "./option-select";
 
 type Props = {
@@ -10,8 +10,7 @@ type Props = {
 };
 
 export default function OptionsSelect({options}: Props) {
-  const {selectedOptions, setSelectedOptions, product, updateOption} =
-    useProductVariants();
+  const {selectedOptions, product, updateOption} = useProductVariants();
 
   return options?.map((option) => {
     const values = option.values?.map(({value}) => ({
@@ -21,11 +20,6 @@ export default function OptionsSelect({options}: Props) {
 
     if (!values || values.length <= 1) return null;
     const activeOption = selectedOptions[option.id];
-    const setOption = (value: string) =>
-      setSelectedOptions((prev) => ({
-        ...prev,
-        [option.id]: value,
-      }));
 
     return (
       <OptionSelect

@@ -6,7 +6,6 @@ import {cva} from "cva";
 export const headingStyles = cva("", {
   defaultVariants: {
     font: "serif",
-    mobileSize: "2xl",
   },
   variants: {
     desktopSize: {
@@ -20,8 +19,8 @@ export const headingStyles = cva("", {
       xs: "lg:text-xs",
     },
     font: {
-      sans: "font-sans font-medium leading-[120%]",
-      serif: "font-serif font-medium leading-[120%]",
+      sans: "font-sans font-semibold leading-[120%]",
+      serif: "font-serif font-semibold leading-[120%]",
     },
     mobileSize: {
       "2xl": "text-2xl text-pretty tracking-[-1.12px]",

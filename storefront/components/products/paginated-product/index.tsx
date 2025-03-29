@@ -7,18 +7,21 @@ import {getProducts} from "@/data/medusa/products";
 import {getRegion} from "@/data/medusa/regions";
 import {loadDictionary} from "@/data/sanity";
 
-import {Link} from "../../shared/button";
 import ClearAllButton from "../product-refinement/filters/clear-button";
 import ProductGrid from "./grid";
+import Pagination from "@/components/shared/pagination";
 
 export default async function PaginatedProducts({
   countryCode,
   searchParams,
 }: {
   countryCode: string;
-  searchParams: SearchParams<"category" | "collection" | "page" | "sort">;
+  searchParams: SearchParams<
+    "category" | "collection" | "tags" | "page" | "sort"
+  >;
 }) {
   const category = parseSearchParam(searchParams.category)?.split(",");
+  const tags = parseSearchParam(searchParams.tags)?.split(",");
   const collection = parseSearchParam(searchParams.collection)?.split(",");
   const page =
     typeof searchParams.page === "string" ? parseInt(searchParams.page, 10) : 1;
@@ -31,9 +34,10 @@ export default async function PaginatedProducts({
     return null;
   }
 
-  const {hasNextPage, products} = await getProducts(page, region.id, {
+  const {totalPages, products} = await getProducts(page, region.id, {
     category_id: category,
     collection_id: collection,
+    tag_id: tags,
   });
 
   const hasFilters = category || collection;
@@ -41,26 +45,24 @@ export default async function PaginatedProducts({
     <>
       {products.length === 0 && (
         <div className="flex w-full flex-1 flex-col items-start gap-2 py-10">
-          <Heading font="sans" mobileSize="xs" tag="h2">
-            {productsDictionary?.noResultsText}
+          <Heading font="sans" mobileSize="xl" tag="h2">
+            لا يوجد منتجات تطابق الخيارات المحددة
           </Heading>
           <Body font="sans" mobileSize="lg">
-            {productsDictionary?.noResultsDescription}
+            لم نعثر على منتجات تطابق اختياراتك، جرّب تعديل الفلاتر وشوف خيارات
+            أكثر!
           </Body>
-          {hasFilters && <ClearAllButton variant="button" />}
         </div>
       )}
-      <div className="grid grid-cols-2 gap-x-2 gap-y-4 lg:grid-cols-3">
+      <div className="flex flex-col space-y-4 sm:mx-6 sm:flex-row sm:space-y-0 sm:space-x-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
         <ProductGrid products={products} />
       </div>
-      {hasNextPage && (
-        <Link
-          className="w-full"
-          href={"?page=" + (page + 1).toString()}
-          variant="outline"
-        >
-          Load more
-        </Link>
+      {totalPages > 1 && (
+        <Pagination
+          data-testid="product-pagination"
+          page={page}
+          totalPages={2}
+        />
       )}
     </>
   );
@@ -68,7 +70,7 @@ export default async function PaginatedProducts({
 
 export function ProductsSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-x-2 gap-y-4 lg:grid-cols-3">
+    <div className="inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
       {[...Array(9)].map((_, index) => (
         <div key={index}>
           <div className="border-accent relative aspect-square w-full rounded-lg border">

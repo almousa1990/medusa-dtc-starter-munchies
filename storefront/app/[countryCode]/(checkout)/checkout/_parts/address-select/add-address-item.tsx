@@ -1,5 +1,6 @@
 import type {
   StoreCreateCustomerAddress,
+  StoreCustomerAddress,
   StoreRegionCountry,
 } from "@medusajs/types";
 
@@ -13,11 +14,13 @@ import {
 } from "@merchify/ui";
 
 export default function AddAddressItem({
+  defaultAddress,
   countries,
   onOpenChange,
   onSubmit,
   open,
 }: {
+  defaultAddress?: Partial<StoreCustomerAddress>;
   countries?: StoreRegionCountry[];
   onOpenChange: (open: boolean) => void;
   onSubmit: (address: StoreCreateCustomerAddress) => Promise<any>;
@@ -38,7 +41,11 @@ export default function AddAddressItem({
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="pt-4">
-        <AddressForm countries={countries} onSubmit={onSubmit} />
+        <AddressForm
+          address={defaultAddress}
+          countries={countries}
+          onSubmit={(data) => onSubmit(data as StoreCreateCustomerAddress)}
+        />
       </CollapsibleContent>
     </Collapsible>
   );

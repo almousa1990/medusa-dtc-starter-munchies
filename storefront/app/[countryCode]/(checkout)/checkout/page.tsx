@@ -13,7 +13,7 @@ import {redirect} from "next/navigation";
 import CartDetails from "./_parts/cart-details";
 import CheckoutForm from "./_parts/checkout-form";
 import LocalizedLink from "@/components/shared/localized-link";
-import Body from "@/components/shared/typography/body";
+import {CheckoutProvider} from "@/components/context/checkout-context";
 
 export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const params = await props.params;
@@ -38,7 +38,14 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
   const paymentMethods = (await listCartPaymentMethods(cart.region_id!)) || [];
 
   return (
-    <>
+    <CheckoutProvider
+      value={{
+        cart,
+        customer,
+        paymentMethods,
+        shippingMethods,
+      }}
+    >
       <div className="px-4 py-6 sm:px-6 lg:hidden">
         <div className="mx-auto flex max-w-lg justify-center">
           <LocalizedLink href="/" prefetch>
@@ -66,13 +73,8 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
             />
           </LocalizedLink>
         </div>
-        <CheckoutForm
-          cart={cart}
-          customer={customer}
-          paymentMethods={paymentMethods}
-          shippingMethods={shippingMethods}
-        />
+        <CheckoutForm />
       </section>
-    </>
+    </CheckoutProvider>
   );
 }

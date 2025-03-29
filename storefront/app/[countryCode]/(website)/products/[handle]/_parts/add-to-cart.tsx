@@ -7,7 +7,7 @@ import {Cta} from "@/components/shared/button";
 import {track} from "@vercel/analytics";
 import {cx} from "cva";
 
-import {useProductVariants} from "../product-context";
+import {useProductVariants} from "../../../../../../components/context/product-context";
 
 export default function AddToCart({
   region_id,

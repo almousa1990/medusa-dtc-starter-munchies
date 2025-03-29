@@ -1,4 +1,3 @@
-import type {Category} from "@/types/sanity.generated";
 import type {StoreProductCategory} from "@medusajs/types";
 
 import {unstable_cache} from "next/cache";
@@ -6,40 +5,30 @@ import {unstable_cache} from "next/cache";
 import medusa from "./client";
 
 export const getCategoryByHandle = unstable_cache(
-  async function (handle: string[], page: number) {
-    const limit = 12;
-    const offset = (page - 1) * limit;
-
+  async function (handle: string) {
     const category = await medusa.store.category
       .list(
         {
-          fields: "+sanity_category.*",
-          handle: handle[handle.length - 1],
+          fields: "+category_children.*, +filters.*, +filters.tags.*",
+          handle,
         },
         {next: {tags: ["category"]}},
       )
       .then(
         ({product_categories}) =>
           product_categories[0] as {
-            sanity_category: Category;
+            filters: {
+              id: string;
+              title: string;
+              tags: {
+                id: string;
+                value: string;
+              }[];
+            }[];
           } & StoreProductCategory,
       );
 
-    const {count, products} = await medusa.store.product.list(
-      {
-        category_id: category.id,
-        fields: "+images.*,+variants.*",
-        limit,
-        offset,
-      },
-      {next: {tags: ["products"]}},
-    );
-
-    return {
-      category,
-      hasNextPage: count > offset + limit,
-      products,
-    };
+    return category;
   },
   ["category"],
   {

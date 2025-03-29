@@ -18,16 +18,11 @@ import {Cta} from "@/components/shared/button";
 import {updateCustomer} from "@/actions/medusa/customer";
 
 const profileFormSchema = z.object({
-  first_name: z
-    .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
-    }),
-  last_name: z.string({
-    required_error: "Please select an email to display.",
+  first_name: z.string().min(2, {
+    message: "مطلوب",
+  }),
+  last_name: z.string().min(2, {
+    message: "مطلوب",
   }),
   email: z.string().email(),
   phone: z.string().min(10),
@@ -35,7 +30,7 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-type MyInformationProps = {
+type ProfileFormProps = {
   customer: HttpTypes.StoreCustomer;
   regions: HttpTypes.StoreRegion[];
 };
@@ -44,10 +39,7 @@ export default function ProfileForm({
   customer,
   regions,
   ...props
-}: MyInformationProps) {
-  // This can come from your database or API.
-  const defaultValues: Partial<ProfileFormValues> = customer;
-
+}: ProfileFormProps) {
   if (!customer || !regions) {
     console.log("not found");
     notFound();
@@ -55,7 +47,12 @@ export default function ProfileForm({
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
+    defaultValues: {
+      first_name: customer.first_name || "",
+      last_name: customer.last_name || "",
+      phone: customer.phone || "",
+      email: customer.email || "",
+    },
     mode: "onChange",
   });
 
@@ -99,7 +96,7 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>البريد الالكتروني</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input disabled placeholder="" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,7 +109,7 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>رقم الجوال</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input disabled placeholder="" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

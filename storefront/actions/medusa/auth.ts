@@ -16,10 +16,10 @@ import {redirect} from "next/navigation";
 
 export async function signout() {
   await medusa.auth.logout();
-  removeAuthToken();
+  await removeAuthToken();
   revalidateTag("auth");
   revalidateTag("customer");
-  redirect(`/account`);
+  redirect(`/`);
 }
 
 export async function generateOtp(payload: {

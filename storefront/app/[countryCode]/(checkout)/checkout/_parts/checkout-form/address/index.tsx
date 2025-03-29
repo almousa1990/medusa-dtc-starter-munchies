@@ -1,38 +1,28 @@
 "use client";
-import type {StoreCart, StoreCustomer} from "@medusajs/types";
-import type {Dispatch, SetStateAction} from "react";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 import {setCheckoutAddresses} from "@/actions/medusa/order";
 import {Cta} from "@/components/shared/button";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
-import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormField, FormItem} from "@merchify/ui";
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
 
 import AddressSelect from "../../address-select";
+import {useCheckout} from "@/components/context/checkout-context";
+import FormattedAddress from "@/components/shared/formatted-address";
 
 const formSchema = z.object({
   customer_address_id: z.string().nullable(),
 });
 
-export default function Address({
-  active,
-  cart,
-  customer,
-  nextStep,
-  setStep,
-}: {
-  active: boolean;
-  cart: StoreCart;
-  customer: StoreCustomer;
-  nextStep: "addresses" | "delivery" | "payment" | "review";
-  setStep: Dispatch<
-    SetStateAction<"addresses" | "delivery" | "payment" | "review">
-  >;
-}) {
+export default function Address({active}: {active: boolean}) {
+  const {cart, customer, shippingMethods, setStep} = useCheckout();
+
+  const nextStep = shippingMethods.length > 0 ? "delivery" : "payment";
+
   const form = useForm({
     defaultValues: {
       customer_address_id:
@@ -52,6 +42,7 @@ export default function Address({
     const address = customer.addresses.find(
       (address) => address.id == data.customer_address_id,
     );
+
     if (address) {
       await setCheckoutAddresses({
         address_1: address.address_1 || undefined,
@@ -61,20 +52,18 @@ export default function Address({
         country_code: address.country_code || undefined,
         first_name: address.first_name || customer?.first_name || undefined,
         last_name: address.last_name || customer?.last_name || undefined,
-        metadata: {customer_address_id: address.id},
+        metadata: {
+          ...address.metadata,
+          customer_address_id: address.id,
+        },
         phone: address.phone || undefined,
         postal_code: address.postal_code || undefined,
         province: address.province || undefined,
       });
+      form.setValue("customer_address_id", address.id);
+      setStep(nextStep);
     }
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      setStep(nextStep);
-      reset();
-    }
-  }, [isSubmitSuccessful, setStep, nextStep, reset]);
 
   const isFilled = !active && !!cart.shipping_address?.address_1;
   const customerAddressId = form.watch("customer_address_id");
@@ -99,10 +88,9 @@ export default function Address({
             </Cta>
           )}
         </div>
-        {isFilled && (
+        {isFilled && cart.shipping_address && (
           <Body font="sans">
-            {cart.shipping_address?.city}, {cart.shipping_address?.address_1},{" "}
-            {cart.shipping_address?.address_2}
+            <FormattedAddress address={cart.shipping_address} />
           </Body>
         )}
         {active && (
@@ -121,12 +109,10 @@ export default function Address({
                 </FormItem>
               )}
             />
-
             <Cta
               className="w-full"
               disabled={!customerAddressId}
               loading={isSubmitting}
-              size="sm"
               type="submit"
             >
               تأكيد العنوان

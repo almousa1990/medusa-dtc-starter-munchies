@@ -34,7 +34,7 @@ export function ProductImagesCarousel({
         )}
         <Image
           alt={product.title}
-          className="aspect-thin aspect-square w-full rounded-2xl object-cover object-bottom"
+          className="aspect-thin aspect-square w-full rounded-md object-cover object-bottom"
           height={591}
           priority={index === 0}
           sizes="(min-width: 1360px) 600px, (min-width: 1040px) calc(92vw - 633px), 100vw"
@@ -72,9 +72,7 @@ export function ProductImagesCarousel({
             ))}
           </div>
         )}
-        <SlidesWrapper
-          className={cx("scrollbar-hide mt-1 h-fit w-full gap-2 px-5 lg:px-0")}
-        >
+        <SlidesWrapper className={cx("scrollbar-hide h-fit w-full gap-2")}>
           <Slides
             content={slides}
             itemProps={{
@@ -110,7 +108,7 @@ function ItemCarousel({
 
   return (
     <button
-      className="w-[85px] overflow-hidden rounded-lg"
+      className="w-[85px] overflow-hidden rounded-md"
       onClick={() => {
         setSelectedImageIdex(index);
       }}

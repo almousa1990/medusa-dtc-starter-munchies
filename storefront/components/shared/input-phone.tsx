@@ -2,30 +2,61 @@ import {Input, cn} from "@merchify/ui";
 import * as React from "react";
 
 interface InputPhoneProps extends React.ComponentPropsWithoutRef<typeof Input> {
-  countryCode?: string; // Default country code
+  countryCode?: string;
 }
 
 const InputPhone = React.forwardRef<
   React.ComponentRef<typeof Input>,
   InputPhoneProps
->(({className, countryCode = "+966", ...props}, ref) => {
-  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    const input = e.currentTarget;
-    let numericValue = input.value.replace(/\D/g, ""); // Remove non-numeric characters
+>(({className, countryCode = "+966", onChange, onBlur, ...props}, ref) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.currentTarget.value.replace(/\D/g, ""); // Remove non-digits
 
-    // Prevent the number from starting with 0
-    if (numericValue.startsWith("0")) {
-      numericValue = numericValue.slice(1);
+    const maxLength = rawValue.startsWith("0") ? 10 : 9;
+    const trimmedValue = rawValue.slice(0, maxLength);
+
+    const syntheticEvent = {
+      ...e,
+      target: {
+        ...e.target,
+        value: trimmedValue,
+      },
+      currentTarget: {
+        ...e.currentTarget,
+        value: trimmedValue,
+      },
+    };
+
+    onChange?.(syntheticEvent as React.ChangeEvent<HTMLInputElement>);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    let value = e.currentTarget.value;
+
+    // Remove leading zero on blur if present
+    if (value.startsWith("0")) {
+      value = value.slice(1);
+      e.currentTarget.value = value;
+
+      const syntheticEvent = {
+        ...e,
+        target: {
+          ...e.target,
+          value,
+        },
+        currentTarget: {
+          ...e.currentTarget,
+          value,
+        },
+      };
+      onChange?.(syntheticEvent as React.ChangeEvent<HTMLInputElement>);
     }
 
-    // Limit to 9 digits max
-    numericValue = numericValue.slice(0, 9);
-
-    input.value = numericValue; // Update input value directly
+    onBlur?.(e);
   };
+
   return (
     <div className="relative w-full">
-      {/* Country Code Prefix (Looks inside the input) */}
       <span
         className="ltr absolute top-1/2 left-3 -translate-y-1/2 transform cursor-not-allowed text-base opacity-50 md:text-sm"
         dir="ltr"
@@ -33,14 +64,14 @@ const InputPhone = React.forwardRef<
         {countryCode}
       </span>
 
-      {/* Input Field (With left padding to avoid overlap) */}
       <Input
-        className={cn("pl-12", className)} // Ensures space for the prefix
+        className={cn("pl-12", className)}
         inputMode="numeric"
-        onInput={handleInput} // Use onInput for real-time filtering
-        pattern="[1-9][0-9]{0,8}" // Allow only numbers, 1-9 followed by up to 8 more digits
+        pattern="\d{1,10}"
         ref={ref}
         type="tel"
+        onChange={handleChange}
+        onBlur={handleBlur}
         {...props}
       />
     </div>

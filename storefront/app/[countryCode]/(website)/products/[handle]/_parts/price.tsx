@@ -4,7 +4,7 @@ import type {StoreProduct} from "@medusajs/types";
 import Body from "@/components/shared/typography/body";
 import {getProductPrice} from "@/utils/medusa/get-product-price";
 
-import {useProductVariants} from "../product-context";
+import {useProductVariants} from "../../../../../../components/context/product-context";
 
 export default function Price({
   product,

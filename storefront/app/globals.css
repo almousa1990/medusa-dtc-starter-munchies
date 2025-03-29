@@ -3,6 +3,7 @@
 
 @config '../tailwind.config.ts';
 @source "../node_modules/@merchify/ui";
+@source "../node_modules/@merchify/editor";
 
 
 

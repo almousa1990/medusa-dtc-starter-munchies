@@ -29,10 +29,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const sidebarNavItems = [
   {
-    href: "/account",
-    title: "عام",
-  },
-  {
     href: "/account/profile",
     title: "الملف الشخصي",
   },
@@ -60,7 +56,7 @@ export default async function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className="space-y-6 p-10 pb-16 md:block">
+    <div className="space-y-6 p-5 pb-16 md:block lg:p-10">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">
           هلا {customer.first_name}!

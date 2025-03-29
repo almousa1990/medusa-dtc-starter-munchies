@@ -1,21 +1,28 @@
-import type {StoreProductParams} from "@medusajs/types";
+import type {
+  StoreProduct,
+  StoreProductListParams,
+  StoreProductParams,
+} from "@medusajs/types";
 
 import {unstable_cache} from "next/cache";
 
 import medusa from "./client";
+import {MerchifyProduct} from "@/types";
+const PRODUCT_LIMIT = 12;
 
 export const getProductByHandle = unstable_cache(
   async function (handle: string, region_id: string) {
     return medusa.store.product
       .list(
         {
-          fields: "*variants.calculated_price,+variants.inventory_quantity",
+          fields:
+            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+care_instructions.*,+feature_entries.content,+feature_entries.template.*",
           handle,
           region_id,
         },
         {next: {tags: ["products"]}},
       )
-      .then(({products}) => products[0]);
+      .then(({products}) => products[0] as MerchifyProduct);
   },
   ["product"],
   {
@@ -44,11 +51,11 @@ export const getProducts = unstable_cache(
     page: number,
     region_id: string,
     query?: Omit<
-      StoreProductParams,
+      StoreProductListParams,
       "fields" | "limit" | "offset" | "region_id"
     >,
   ) {
-    const limit = 12;
+    const limit = PRODUCT_LIMIT;
     const offset = (page - 1) * limit;
 
     const {count, products} = await medusa.store.product.list(
@@ -63,7 +70,8 @@ export const getProducts = unstable_cache(
     );
 
     return {
-      hasNextPage: count > offset + limit,
+      count,
+      totalPages: Math.ceil(count / PRODUCT_LIMIT),
       products,
     };
   },

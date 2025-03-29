@@ -10,6 +10,7 @@ import LineItem from "./_parts/line-item";
 import {CartSummary} from "./_parts/summary";
 import {CartProvider} from "@/components/context/cart-context";
 import {PageProps} from "@/types";
+import EmptyCartMessage from "./_parts/empty-card-message";
 
 export const metadata: Metadata = {
   description: "View your cart",
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 type CartPageProps = PageProps<"countryCode">;
 
-export default async function Cart(props: CartPageProps) {
+export default async function CartPage(props: CartPageProps) {
   const cart = await getCart();
   const params = await props.params;
 
@@ -65,6 +66,6 @@ export default async function Cart(props: CartPageProps) {
       </div>
     </CartProvider>
   ) : (
-    <>empty cart</>
+    <EmptyCartMessage />
   );
 }

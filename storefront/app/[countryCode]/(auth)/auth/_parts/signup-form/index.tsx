@@ -14,23 +14,28 @@ import {
 } from "@merchify/ui";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {InputPhone} from "@/components/shared/input-phone";
+import Heading from "@/components/shared/typography/heading";
+const phoneRegex = /^5\d{8}$/; // Ensures exactly 9 digits, starting with '5'
 
 interface SignupFormProps {
   input: {email?: string; phone?: string};
-  onErorr: (message: string) => void;
+  onError: (message: string) => void;
   onSuccess: (customer: HttpTypes.StoreCustomer) => void;
 }
 
 const formSchema = z.object({
-  email: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
-  phone: z.string(),
+  email: z.string().email("البريد الالكتروني غير صحيح"),
+  first_name: z.string().min(3, {message: "مطلوب"}),
+  last_name: z.string().min(3, {message: "مطلوب"}),
+  phone: z.string().refine((value) => phoneRegex.test(value), {
+    message: "رقم الجوال غير صحيح.",
+  }),
 });
 
 export default function SignupForm({
   input,
-  onErorr,
+  onError,
   onSuccess,
 }: SignupFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,6 +46,8 @@ export default function SignupForm({
       phone: input.phone ?? "",
     },
     resolver: zodResolver(formSchema),
+    mode: "onSubmit", // validate only when submitting
+    reValidateMode: "onSubmit", // don't re-validate on blur/change
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -57,13 +64,21 @@ export default function SignupForm({
     if (response.success) {
       onSuccess(response.customer);
     } else {
-      onErorr(response.error);
+      onError(response.error);
     }
   }
 
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="flex flex-col items-center gap-2 text-center">
+          <Heading tag="h1" mobileSize="2xl">
+            إنشاء حساب جديد
+          </Heading>
+          <p className="text-muted-foreground text-sm text-balance">
+            يرجى إدخال معلوماتك لإنشاء حسابك والبدء في استخدام المنصة
+          </p>
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -71,7 +86,15 @@ export default function SignupForm({
             <FormItem>
               <FormLabel>البريد الالكتروني</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} disabled={input.email} />
+                <Input
+                  placeholder=""
+                  {...field}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    form.clearErrors([field.name]);
+                  }}
+                  disabled={!!input.email}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,7 +108,14 @@ export default function SignupForm({
               <FormItem>
                 <FormLabel>الاسم الأول</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Input
+                    placeholder=""
+                    {...field}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      form.clearErrors([field.name]);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,7 +128,14 @@ export default function SignupForm({
               <FormItem>
                 <FormLabel>الاسم الأخير</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Input
+                    placeholder=""
+                    {...field}
+                    onChange={(value) => {
+                      field.onChange(value);
+                      form.clearErrors([field.name]);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,7 +150,15 @@ export default function SignupForm({
             <FormItem>
               <FormLabel>رقم الجوال</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} disabled={input.phone} />
+                <InputPhone
+                  placeholder=""
+                  {...field}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    form.clearErrors([field.name]);
+                  }}
+                  disabled={!!input.phone}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,8 +166,8 @@ export default function SignupForm({
         />
 
         <Cta
+          className="w-full"
           data-testid="sign-in-button"
-          disabled={!form.formState.isDirty || !form.formState.isValid}
           loading={form.formState.isSubmitting}
         >
           الاستمرار

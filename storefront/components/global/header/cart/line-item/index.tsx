@@ -8,6 +8,7 @@ import Image from "next/image";
 
 import {isOptimisticItemId, useCart} from "@/components/context/cart-context";
 import {InputQuantity} from "@/components/shared/input-quantity";
+import {X} from "lucide-react";
 
 export default function LineItem(props: StoreCartLineItem) {
   const {cart, handleDeleteItem, handleUpdateCartQuantity, isUpdating} =
@@ -58,7 +59,7 @@ export default function LineItem(props: StoreCartLineItem) {
             disabled={isOptimisticLine || isUpdating}
             onClick={() => handleDeleteItem(props.id)}
           >
-            <Icon className="size-6" name="Trash" />
+            <X className="size-5" name="حذف" />
           </button>
         </div>
       </div>

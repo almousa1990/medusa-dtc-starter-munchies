@@ -11,14 +11,14 @@ import AuthMethodForm from "../auth-method-form";
 import OtpForm from "../otp-form";
 import SignupForm from "../signup-form";
 
-type Step = "authMethod" | "otp" | "signup";
+type Step = "method" | "otp" | "signup";
 
 interface AuthFlowProps {
   customer: StoreCustomer | null;
   redirect: string; // Accept referer as a prop
 }
 export default function AuthFlow({customer, redirect}: AuthFlowProps) {
-  const [step, setStep] = useState<Step>("authMethod");
+  const [step, setStep] = useState<Step>("method");
   const [stateKey, setStateKey] = useState<null | string>(null);
 
   const [error, setError] = useState("");
@@ -58,7 +58,7 @@ export default function AuthFlow({customer, redirect}: AuthFlowProps) {
   async function handleRestart() {
     setError("");
 
-    setStep("authMethod");
+    setStep("method");
   }
 
   async function handleSignupSuccess() {
@@ -72,14 +72,14 @@ export default function AuthFlow({customer, redirect}: AuthFlowProps) {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-6">
-      {step === "authMethod" && (
-        <AuthMethodForm onErorr={setError} onSuccess={handleAuthSuccess} />
+    <div className="flex flex-col items-center gap-6">
+      {step === "method" && (
+        <AuthMethodForm onError={setError} onSuccess={handleAuthSuccess} />
       )}
       {step === "otp" && stateKey && (
         <OtpForm
-          input={{stateKey}}
-          onErorr={setError}
+          input={{stateKey, email: userInput.email, phone: userInput.phone}}
+          onError={setError}
           onRestart={handleRestart}
           onSuccess={handleVerificationSuccess}
         />
@@ -87,11 +87,10 @@ export default function AuthFlow({customer, redirect}: AuthFlowProps) {
       {step === "signup" && (
         <SignupForm
           input={userInput}
-          onErorr={setError}
+          onError={setError}
           onSuccess={handleSignupSuccess}
         />
       )}
-      <Body>{error}</Body>
     </div>
   );
 }

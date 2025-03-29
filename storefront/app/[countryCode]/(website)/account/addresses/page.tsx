@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "View your addresses",
 };
 
-export default async function Addresses(props: {
+export default async function AddressPage(props: {
   params: Promise<{countryCode: string}>;
 }) {
   const params = await props.params;
@@ -28,7 +28,7 @@ export default async function Addresses(props: {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium">العناوين</h3>
-        <p className="text-sm text-muted-foreground">تحديث عناوينك المسجلة</p>
+        <p className="text-muted-foreground text-sm">تحديث عناوينك المسجلة</p>
       </div>
       <Separator />
       <AddressBook customer={customer} region={region} />

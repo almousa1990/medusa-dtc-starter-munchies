@@ -1,8 +1,17 @@
 "use client";
 
 import React, {useEffect, useState, useActionState} from "react";
-import {HttpTypes} from "@medusajs/types";
+import {HttpTypes, StoreUpdateCustomerAddress} from "@medusajs/types";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   cn,
   Dialog,
   DialogContent,
@@ -17,21 +26,17 @@ import {
 } from "@/actions/medusa/customer";
 import Heading from "@/components/shared/typography/heading";
 import Body from "@/components/shared/typography/body";
+import {Pencil, Trash, Trash2} from "lucide-react";
+import {Cta} from "@/components/shared/button";
 
 type EditAddressProps = {
   region: HttpTypes.StoreRegion;
   address: HttpTypes.StoreCustomerAddress;
-  isActive?: boolean;
 };
 
-const EditAddress: React.FC<EditAddressProps> = ({
-  region,
-  address,
-  isActive = false,
-}) => {
+const EditAddress: React.FC<EditAddressProps> = ({region, address}) => {
   const [open, setOpen] = useState(false);
   const [removing, setRemoving] = useState(false);
-  const [successState, setSuccessState] = useState(false);
 
   const hanldeRemoveAddress = async () => {
     setRemoving(true);
@@ -39,15 +44,12 @@ const EditAddress: React.FC<EditAddressProps> = ({
     setRemoving(false);
   };
 
-  const handleEditAddress = async (
-    data: HttpTypes.StoreCreateCustomerAddress,
-  ) => {
+  const handleEditAddress = async (data: StoreUpdateCustomerAddress) => {
     const result = await updateCustomerAddress(address.id, data);
 
     if (result.success) {
       setOpen(false);
     }
-
     return result;
   };
 
@@ -55,30 +57,15 @@ const EditAddress: React.FC<EditAddressProps> = ({
     <>
       <div
         className={cn(
-          "rounded-rounded flex h-full min-h-[220px] w-full flex-col justify-between border p-5 transition-colors",
-          {
-            "border-gray-900": isActive,
-          },
+          "flex h-full min-h-[220px] w-full flex-col justify-between rounded-md border p-5 transition-colors",
         )}
-        data-testid="address-container"
       >
         <div className="flex flex-col">
-          <Heading
-            tag="h4"
-            className="text-base-semi text-right"
-            data-testid="address-name"
-          >
+          <Heading tag="h4" mobileSize="lg" className="text-right">
             {address.first_name} {address.last_name}
           </Heading>
-          {address.company && (
-            <Body
-              className="txt-compact-small text-ui-fg-base"
-              data-testid="address-company"
-            >
-              {address.company}
-            </Body>
-          )}
-          <Body className="text-base-regular mt-2 flex flex-col text-right">
+
+          <Body className="mt-2 flex flex-col text-right">
             <span data-testid="address-address">
               {address.address_1}
               {address.address_2 && <span>, {address.address_2}</span>}
@@ -88,26 +75,19 @@ const EditAddress: React.FC<EditAddressProps> = ({
             </span>
             <span data-testid="address-province-country">
               {address.province && `${address.province}, `}
-              {address.country_code?.toUpperCase()}
+              {address.metadata?.country_name as string}
             </span>
           </Body>
         </div>
-        <div className="flex items-center gap-x-4">
-          <button
-            className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
-            onClick={() => setOpen(true)}
-            data-testid="address-edit-button"
-          >
-            (edit icon) تعديل
-          </button>
-          <button
-            className="text-small-regular text-ui-fg-base flex items-center gap-x-2"
-            onClick={hanldeRemoveAddress}
-            data-testid="address-delete-button"
-          >
-            {removing ? <>spinner</> : <>trash</>}
-            حذف
-          </button>
+        <div className="flex items-center justify-end gap-x-2">
+          <Cta size="sm" variant="secondary" onClick={() => setOpen(true)}>
+            <Pencil /> تعديل
+          </Cta>
+
+          <DeleteAddressButton
+            onConfirm={hanldeRemoveAddress}
+            loading={removing}
+          />
         </div>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -128,5 +108,36 @@ const EditAddress: React.FC<EditAddressProps> = ({
     </>
   );
 };
+
+function DeleteAddressButton({
+  onConfirm,
+  loading = false,
+}: {
+  onConfirm: () => void;
+  loading?: boolean;
+}) {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Cta loading={loading} size="sm" variant="secondary">
+          <Trash2 />
+          حذف
+        </Cta>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>تأكيد حذف العنوان</AlertDialogTitle>
+          <AlertDialogDescription>
+            لا يمكن التراجع عن هذا الإجراء. سيتم حذف هذا العنوان من حسابك.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>إلغاء</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm}>تأكيد</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
 
 export default EditAddress;

@@ -7,11 +7,10 @@ import type {
 
 import {
   addCustomerAddress,
-  deleteCustomerAddress,
   updateCustomerAddress,
 } from "@/actions/medusa/customer";
 import {RadioGroup} from "@merchify/ui";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 
 import AddAddressItem from "./add-address-item";
 import AddressItem from "./address-item";
@@ -23,67 +22,69 @@ type AddressSelectProps = {
   value?: null | string;
 };
 
+const getMostRecentAddress = (addresses: StoreCustomer["addresses"]) =>
+  [...addresses].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  )[0];
+
 export default function AddressSelect({
   countries,
   customer,
   onValueChange,
   value,
 }: AddressSelectProps) {
-  const [removingId, setRemovingId] = useState<null | string>(null);
   const [editFormOpenId, setEditFormOpenId] = useState<null | string>(null);
   const [addFormOpen, setAddFormOpen] = useState(false);
 
-  const handleRemoveAddress = async (id: string) => {
-    try {
-      setRemovingId(id);
-      await deleteCustomerAddress(id);
-    } catch (e) {
-      console.error("Failed to delete address:", e);
-    } finally {
-      setRemovingId(null);
-    }
-  };
+  const handleEditCustomerAddress = useCallback(
+    async (id: string, address: StoreUpdateCustomerAddress) => {
+      const result = await updateCustomerAddress(id, address);
+      if (!result.success) return result;
+      if (result.success) setEditFormOpenId(null);
+      return result;
+    },
+    [],
+  );
 
-  const handleEditCustomerAddress = async (
-    id: string,
-    address: StoreUpdateCustomerAddress,
-  ) => {
-    const result = await updateCustomerAddress(id, address);
-    if (result.success) setEditFormOpenId(null);
-    return result;
-  };
+  const handleAddCustomerAddress = useCallback(
+    async (address: StoreCreateCustomerAddress) => {
+      const result = await addCustomerAddress(address);
+      if (!result.success) return result;
 
-  const handleAddCustomerAddress = async (
-    address: StoreCreateCustomerAddress,
-  ) => {
-    const result = await addCustomerAddress(address);
-    if (result.success) {
-      const [latest] = result.customer.addresses.sort(
-        (
-          a: {created_at: Date | number | string},
-          b: {created_at: Date | number | string},
-        ) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      );
+      if (result.success) {
+        const latest = getMostRecentAddress(result.customer.addresses);
+
+        onValueChange(latest.id);
+        setAddFormOpen(false);
+      }
+      return result;
+    },
+    [onValueChange],
+  );
+
+  const handleSelect = useCallback(
+    (value: string) => {
+      onValueChange(value);
       setAddFormOpen(false);
-      onValueChange(latest.id);
-    }
-    return result;
-  };
+    },
+    [onValueChange],
+  );
 
-  const handleSelect = (value: string) => {
-    onValueChange(value);
-    setAddFormOpen(false);
-    setEditFormOpenId(null);
-  };
+  const handleAddAddressOpenChange = useCallback(
+    (open: boolean) => {
+      setAddFormOpen(open);
+      if (open) {
+        setEditFormOpenId(null);
+        onValueChange(null);
+      }
+    },
+    [onValueChange],
+  );
 
-  const handleAddAddressOpenChange = (open: boolean) => {
-    setAddFormOpen(open);
-    if (open) {
-      setEditFormOpenId(null);
-      onValueChange(null);
-    }
-  };
+  const handleExpand = useCallback((id: string) => {
+    setEditFormOpenId((prev) => (prev === id ? null : id));
+  }, []);
 
   return (
     <>
@@ -92,27 +93,26 @@ export default function AddressSelect({
         onValueChange={handleSelect}
         value={value ?? ""} // null → undefined
       >
-        {customer.addresses.map((address) => (
+        {(customer.addresses ?? []).map((address) => (
           <AddressItem
             address={address}
             countries={countries}
             isOpen={editFormOpenId === address.id}
-            isRemoving={removingId === address.id}
             isSelected={value === address.id}
             key={address.id}
             onEdit={handleEditCustomerAddress}
-            onRemove={handleRemoveAddress}
             onSelect={handleSelect} // ← NEW
-            onToggleOpen={() =>
-              setEditFormOpenId((prev) =>
-                prev === address.id ? null : address.id,
-              )
-            }
+            onToggleOpen={handleExpand}
           />
         ))}
       </RadioGroup>
 
       <AddAddressItem
+        defaultAddress={{
+          first_name: customer.first_name,
+          last_name: customer.last_name,
+          phone: customer.phone,
+        }}
         countries={countries}
         onOpenChange={handleAddAddressOpenChange}
         onSubmit={handleAddCustomerAddress}

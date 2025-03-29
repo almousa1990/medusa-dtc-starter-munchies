@@ -47,6 +47,7 @@ export default function CarouselSection(props: Props) {
     <Root
       options={{
         ...options,
+        direction: "rtl",
         breakpoints: {"(min-width: 1024px)": {watchDrag: !disableDesktopDrag}},
         containScroll: "trimSnaps",
         dragFree: true,
@@ -56,7 +57,7 @@ export default function CarouselSection(props: Props) {
       <section className="max-w-max-screen mx-auto py-10">
         <div
           className={cx("mb-2 flex items-center justify-between", {
-            "px-5 lg:px-8": variant === "default",
+            "": variant === "default",
             "px-4": variant === "cart",
           })}
         >
@@ -65,7 +66,7 @@ export default function CarouselSection(props: Props) {
         </div>
         <SlidesWrapper
           className={cx({
-            "px-5 lg:px-8": variant === "default",
+            "": variant === "default",
             "px-4": variant === "cart",
           })}
         >
@@ -101,14 +102,14 @@ function Buttons({variant}: {variant: "cart" | "default"}) {
     <div className="hidden gap-2 lg:flex">
       <PrevButton asChild>
         <IconButton
-          icon="ArrowLeft"
+          icon="ArrowRight"
           size={variant === "default" ? "sm" : "xs"}
           type="button"
         />
       </PrevButton>
       <NextButton asChild>
         <IconButton
-          icon="ArrowRight"
+          icon="ArrowLeft"
           size={variant === "default" ? "sm" : "xs"}
           type="button"
         />

@@ -15,7 +15,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         serif: "var(--font-ibmPlex)",
-        sans: "var(--font-balooBhaijaan)",
+        sans: "var(--font-rubik)",
       },
 
       colors: {

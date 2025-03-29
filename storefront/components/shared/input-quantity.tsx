@@ -19,7 +19,7 @@ export const InputQuantity: React.FC<InputQuantityProps> = ({
         disabled={disabled}
         onClick={() => onChange(quantity - 1)}
       >
-        <span className="bg-primary h-[1.5px] w-2 transition-all duration-300" />
+        <span className="bg-primary h-px w-2 transition-all duration-300" />
       </button>
       <Body className="flex-1 text-center" font="sans" mobileSize="base">
         {quantity}
@@ -29,8 +29,8 @@ export const InputQuantity: React.FC<InputQuantityProps> = ({
         disabled={disabled}
         onClick={() => onChange(quantity + 1)}
       >
-        <span className="bg-primary h-[1.5px] w-2 transition-all duration-300" />
-        <span className="bg-primary absolute top-1/2 left-1/2 h-2 w-[1.5px] -translate-x-1/2 -translate-y-1/2 transition-all duration-300" />
+        <span className="bg-primary h-px w-2 transition-all duration-300" />
+        <span className="bg-primary absolute top-1/2 left-1/2 h-2 w-px -translate-x-1/2 -translate-y-1/2 transition-all duration-300" />
       </button>
     </div>
   );

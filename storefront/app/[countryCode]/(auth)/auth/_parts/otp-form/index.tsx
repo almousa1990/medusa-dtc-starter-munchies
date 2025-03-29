@@ -2,8 +2,10 @@
 
 import {refreshOtp, verifyOtp} from "@/actions/medusa/auth";
 import {Cta} from "@/components/shared/button";
+import Heading from "@/components/shared/typography/heading";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
+  cn,
   Form,
   FormControl,
   FormDescription,
@@ -22,8 +24,12 @@ import {z} from "zod";
 const REFRESH_COOLDOWN = 30;
 
 interface OtpFormProps {
-  input: {stateKey: string};
-  onErorr: (message: string) => void;
+  input: {
+    stateKey: string;
+    email?: string;
+    phone?: string;
+  };
+  onError: (message: string) => void;
   onRestart: () => void;
   onSuccess: (token: string) => Promise<void>;
 }
@@ -34,16 +40,20 @@ const formSchema = z.object({
 
 export default function OtpForm({
   input,
-  onErorr,
+  onError,
   onRestart,
   onSuccess,
 }: OtpFormProps) {
+  const method = input.phone ? "phone" : "email";
+
   const [stateKey, setStateKey] = useState(input.stateKey);
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       otp: "",
     },
     resolver: zodResolver(formSchema),
+    mode: "onSubmit", // validate only when submitting
+    reValidateMode: "onSubmit", // don't re-validate on blur/change
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -56,7 +66,11 @@ export default function OtpForm({
       await onSuccess(response.token);
     } else {
       form.reset();
-      onErorr(response.error);
+      form.setError("otp", {
+        type: "manual",
+        message: response.error, // ✅ this will show inside <FormMessage />
+      });
+      onError(response.error);
     }
   }
 
@@ -70,74 +84,95 @@ export default function OtpForm({
       setStateKey(response.stateKey);
     } else {
       setStateKey("");
-      onErorr(response.error);
+      onError(response.error);
       onRestart();
     }
   }
 
-  // Reset error when user starts typing
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      if (value.otp) {
-        onErorr(""); // Clear error when user starts typing
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form, form.watch, onErorr]);
-
   return (
     <>
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="otp"
-            render={({field}) => (
-              <FormItem>
-                <FormLabel>رقم التحقق</FormLabel>
-                <FormControl>
-                  <InputOTP
-                    disabled={form.formState.isSubmitting}
-                    maxLength={6}
-                    onComplete={() => form.handleSubmit(onSubmit)()}
-                    {...field}
-                  >
-                    <InputOTPGroup className="flex flex-row-reverse">
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
-                </FormControl>
-                <FormDescription>
-                  لقد تم إرسال رمز التحقق فى رسالة إليكم
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div>
-            <Cta
-              data-testid="sign-in-button"
-              disabled={!form.formState.isDirty || !form.formState.isValid}
-              loading={form.formState.isSubmitting}
-            >
-              الاستمرار
-            </Cta>
+        <form
+          className="w-full space-y-6"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Heading tag="h1" mobileSize="2xl">
+              رمز التحقق
+            </Heading>
+            <p className="text-muted-foreground text-sm text-balance">
+              أدخل رمز التحقق المكون من ٦ أرقام والذي تم إرساله إلى{" "}
+              <span className="text-primary font-medium">{input.phone}</span>
+            </p>
           </div>
+          <div className="grid gap-2">
+            <FormField
+              control={form.control}
+              name="otp"
+              render={({field}) => (
+                <FormItem>
+                  <FormControl>
+                    <InputOTP
+                      className="mx-auto"
+                      disabled={form.formState.isSubmitting}
+                      maxLength={6}
+                      onComplete={() => form.handleSubmit(onSubmit)()}
+                      {...field}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        form.clearErrors([field.name]);
+                      }}
+                    >
+                      <InputOTPGroup className="mx-auto flex flex-row-reverse">
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <ResendButton
+              onClick={onResend}
+              className={cn({hidden: form.formState.isSubmitting})}
+            />
+          </div>
+
+          <Cta
+            className="w-full"
+            data-testid="sign-in-button"
+            loading={form.formState.isSubmitting}
+          >
+            الاستمرار
+          </Cta>
         </form>
       </Form>
-      <ResendButton onClick={onResend} />
+
+      <Cta
+        variant="ghost"
+        size="sm"
+        className="w-full"
+        onClick={onRestart}
+        disabled={form.formState.isSubmitting}
+      >
+        تغيير طريقة الدخول
+      </Cta>
     </>
   );
 }
 
-function ResendButton({onClick}: {onClick: () => void}) {
+function ResendButton({
+  onClick,
+  className,
+}: {
+  onClick: () => void;
+  className?: string;
+}) {
   const [countdown, setCountdown] = useState(REFRESH_COOLDOWN);
   const [showButton, setShowButton] = useState(false);
 
@@ -158,15 +193,21 @@ function ResendButton({onClick}: {onClick: () => void}) {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className={cn("flex w-full flex-col items-center", className)}>
       {showButton ? (
-        <Cta className="w-full" onClick={handleSubmit}>
-          إعادة إرسال
+        <Cta
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="w-full"
+          onClick={handleSubmit}
+        >
+          إعادة إرسال رمز التحقق
         </Cta>
       ) : (
-        <span className="text-gray-500">
+        <Cta variant="ghost" size="sm" className="w-full" disabled>
           يمكنك إعادة الإرسال بعد {countdown} ثانية
-        </span>
+        </Cta>
       )}
     </div>
   );

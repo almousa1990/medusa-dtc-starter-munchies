@@ -38,7 +38,7 @@ export default async function FeaturedProducts(
           <Heading
             className="text-center"
             desktopSize="3xl"
-            mobileSize="lg"
+            mobileSize="2xl"
             tag="h3"
           >
             {props.title}

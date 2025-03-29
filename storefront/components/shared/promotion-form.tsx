@@ -18,6 +18,7 @@ import {
 } from "@merchify/ui";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import {X} from "lucide-react";
 
 export const formSchema = z.object({
   code: z.string().min(1),
@@ -82,7 +83,7 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
         </form>
       </Form>
       {promotions.length > 0 && (
-        <div className="mt-1 flex w-full items-center">
+        <div className="mt-2 flex w-full items-center">
           <div className="flex w-full flex-col gap-1">
             {promotions.map((promotion) => {
               return (
@@ -94,7 +95,7 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
                   <Body className="txt-small-plus flex w-4/5 items-baseline gap-x-1 pr-1">
                     <span className="truncate" data-testid="discount-code">
                       <Badge
-                        color={promotion.is_automatic ? "green" : "grey"}
+                        variant={promotion.is_automatic ? "primary" : "outline"}
                         size="small"
                       >
                         {promotion.code}
@@ -133,7 +134,7 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
                         removePromotionCode(promotion.code);
                       }}
                     >
-                      trash icon
+                      <X className="size-4" />
                       <span className="sr-only">
                         Remove discount code from order
                       </span>

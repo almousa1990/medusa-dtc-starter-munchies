@@ -1,5 +1,5 @@
 import {cx} from "cva";
-import {Baloo_Bhaijaan_2, IBM_Plex_Sans_Arabic} from "next/font/google";
+import {IBM_Plex_Sans_Arabic, Rubik} from "next/font/google";
 import {NuqsAdapter} from "nuqs/adapters/next/app";
 
 import dynamicFavicon from "./dynamic-favicon";
@@ -10,9 +10,9 @@ const ibmPlexSans = IBM_Plex_Sans_Arabic({
   variable: "--font-ibmPlex",
   weight: ["400", "500", "600", "700"],
 });
-const balooBhaijaan = Baloo_Bhaijaan_2({
-  subsets: ["latin"],
-  variable: "--font-balooBhaijaan",
+const rubik = Rubik({
+  subsets: ["arabic"],
+  variable: "--font-rubik",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html
       className={cx(
         ibmPlexSans.variable,
-        balooBhaijaan.variable,
+        rubik.variable,
         "overflow-x-clip overscroll-none scroll-smooth",
       )}
       lang="en"

@@ -9,6 +9,8 @@ import LocalizedLink from "@/components/shared/localized-link";
 import {convertToLocale} from "@/utils/medusa/money";
 import {useMemo} from "react";
 import Image from "next/image";
+import DataTable from "./_parts/order-data-table/data-table";
+import {columns} from "./_parts/order-data-table/columns";
 
 export const metadata: Metadata = {
   title: "Orders",
@@ -26,10 +28,10 @@ export default async function Orders() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium">الطلبات</h3>
-        <p className="text-sm text-muted-foreground">عرض سجل الطلبات</p>
+        <p className="text-muted-foreground text-sm">عرض سجل الطلبات</p>
       </div>
       <Separator />
-      <OrderList orders={orders} />
+      <DataTable columns={columns} data={orders} />
     </div>
   );
 }

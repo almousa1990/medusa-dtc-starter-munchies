@@ -4,9 +4,10 @@ import {HttpTypes} from "@medusajs/types";
 import React, {useEffect, useMemo, useCallback} from "react";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import {cn} from "@merchify/ui";
+import {MerchifyProductOption} from "@/types";
 
 type OptionSelectProps = {
-  option: HttpTypes.StoreProductOption;
+  option: MerchifyProductOption;
   current: string | undefined;
   updateOption: (value: string) => void;
   product?: HttpTypes.StoreProduct | null;
@@ -57,12 +58,12 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
     }
   }, [validValues, current, updateOption]);
 
-  const isColorOption = option.metadata?.is_color_option as boolean;
+  const isColorOption = option.metadata?.type == "color";
 
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-gray-900">{option.title}</h3>
+        <h3 className="text-primary text-sm font-medium">{option.title}</h3>
       </div>
 
       <fieldset aria-label={`تحديد ${option.title}`} className="mt-2">
@@ -72,7 +73,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
           onValueChange={updateOption}
           className={cn(
             isColorOption
-              ? "flex items-center gap-x-3"
+              ? "mr-1 flex items-center gap-x-3"
               : "grid grid-cols-3 gap-3 sm:grid-cols-6",
           )}
         >
@@ -89,7 +90,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
                 style={
                   isColorOption
                     ? ({
-                        "--tw-ring-color": v.metadata?.hex as string,
+                        "--tw-ring-color": v.metadata?.color.hex,
                       } as React.CSSProperties)
                     : {}
                 }
@@ -104,7 +105,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
                 {isColorOption ? (
                   <span
                     aria-hidden="true"
-                    style={{backgroundColor: v.metadata?.hex as string}}
+                    style={{backgroundColor: v.metadata?.color?.hex}}
                     className="size-8 rounded-full border border-black/10"
                   />
                 ) : (

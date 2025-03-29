@@ -58,3 +58,5 @@ export const PRODUCT_QUERY = groq`*[_type == "product" && pathname.current == ("
   ...,
   sections[] ${SECTIONS_BODY_FRAGMENT},
 }`;
+
+export const CATEGORY_QUERY = groq`*[_type == "category" && pathname.current == ("/categories/" + $handle)][0]`;

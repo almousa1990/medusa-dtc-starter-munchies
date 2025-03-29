@@ -12,6 +12,7 @@ import {notFound} from "next/navigation";
 import {ProductImagesCarousel} from "./_parts/image-carousel";
 import ProductInformation from "./_parts/product-information";
 import StickyAtc from "./_parts/sticky-atc";
+import ProductSpecs from "./_parts/specs";
 
 type ProductPageProps = PageProps<"countryCode" | "handle">;
 
@@ -63,6 +64,7 @@ export default async function ProductPage(props: ProductPageProps) {
   }
 
   const product = await getProductByHandle(params.handle, region.id);
+  console.log(product);
 
   const content = await loadProductContent(params.handle);
 
@@ -70,9 +72,10 @@ export default async function ProductPage(props: ProductPageProps) {
     console.log("No product found");
     return notFound();
   }
+
   return (
     <>
-      <section className="mx-auto flex flex-col items-start justify-start gap-4 lg:flex-row lg:gap-2 lg:px-8 lg:py-5">
+      <section className="mx-auto flex flex-col items-start justify-start gap-4 lg:flex-row lg:gap-6 lg:py-5">
         <ProductImagesCarousel product={product} />
         <ProductInformation
           content={content}
@@ -80,6 +83,8 @@ export default async function ProductPage(props: ProductPageProps) {
           {...product}
         />
       </section>
+      {/*<ProductSpecs specs={content?.specs} />*/}
+      <ProductSpecs {...product} />
 
       {content?.sections && (
         <SectionsRenderer

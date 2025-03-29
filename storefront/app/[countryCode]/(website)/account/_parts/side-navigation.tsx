@@ -3,8 +3,7 @@
 import LocalizedLink from "@/components/shared/localized-link";
 import {buttonVariants} from "@merchify/ui";
 import {cx} from "cva";
-import Link from "next/link";
-import {useParams, usePathname} from "next/navigation";
+import {usePathname} from "next/navigation";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -19,7 +18,6 @@ export default function SideNavigation({
   ...props
 }: SidebarNavProps) {
   const pathname = usePathname();
-  const {countryCode} = useParams();
 
   return (
     <nav
@@ -33,7 +31,7 @@ export default function SideNavigation({
         <LocalizedLink
           className={cx(
             buttonVariants({variant: "ghost"}),
-            pathname === item.href
+            pathname.startsWith(item.href)
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start",

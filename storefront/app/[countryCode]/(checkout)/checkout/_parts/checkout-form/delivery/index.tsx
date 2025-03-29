@@ -1,13 +1,14 @@
 "use client";
-import type {StoreCart, StoreCartShippingOption} from "@medusajs/types";
-import type {Dispatch, SetStateAction} from "react";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 import {setShippingMethod} from "@/actions/medusa/order";
 import {Cta} from "@/components/shared/button";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {convertToLocale} from "@/utils/medusa/money";
-import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Form,
   FormField,
@@ -16,32 +17,20 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@merchify/ui";
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
+import {useCheckout} from "@/components/context/checkout-context";
 
 const formSchema = z.object({
   shipping_method_id: z.string().optional(),
 });
 
-export default function Delivery({
-  active,
-  cart,
-  currency_code,
-  methods,
-  setStep,
-}: {
-  active: boolean;
-  cart: StoreCart;
-  currency_code: string;
-  methods: StoreCartShippingOption[];
-  setStep: Dispatch<
-    SetStateAction<"addresses" | "delivery" | "payment" | "review">
-  >;
-}) {
+export default function Delivery({active}: {active: boolean}) {
+  const {cart, shippingMethods, setStep} = useCheckout();
+
+  const currency_code = cart.currency_code;
+
   const cartShippingMethod = cart.shipping_methods?.[0];
 
-  const activeShippingMethod = methods.find(
+  const activeShippingMethod = shippingMethods.find(
     ({id}) => id === cartShippingMethod?.shipping_option_id,
   );
 
@@ -117,7 +106,7 @@ export default function Delivery({
                     onValueChange={field.onChange}
                     value={field.value}
                   >
-                    {methods.map((item) => {
+                    {shippingMethods.map((item) => {
                       const price = convertToLocale({
                         amount: item.amount,
                         currency_code,
@@ -141,13 +130,7 @@ export default function Delivery({
                 </FormItem>
               )}
             />
-
-            <Cta
-              className="w-full"
-              loading={isSubmitting}
-              size="sm"
-              type="submit"
-            >
+            <Cta className="w-full" loading={isSubmitting} type="submit">
               تأكيد شركة الشحن
             </Cta>
           </div>

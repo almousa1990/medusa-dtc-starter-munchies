@@ -3,6 +3,7 @@
 import {generateOtp} from "@/actions/medusa/auth";
 import {Cta} from "@/components/shared/button";
 import {InputPhone} from "@/components/shared/input-phone";
+import Heading from "@/components/shared/typography/heading";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Form,
@@ -18,8 +19,28 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 const phoneRegex = /^5\d{8}$/; // Ensures exactly 9 digits, starting with '5'
 
+const formSchema = z
+  .object({
+    email: z.string().email().or(z.literal("")).optional(),
+    phone: z
+      .string()
+      .optional()
+      .refine((value) => !value || phoneRegex.test(value), {
+        message: "رقم الجوال غير صحيح.",
+      }),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.email && !data.phone) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Either email or phone must be provided.",
+        path: [], // applies to the whole object
+      });
+    }
+  });
+
 interface AuthMethodFormProps {
-  onErorr: (message: string) => void;
+  onError: (message: string) => void;
   onSuccess: (
     stateKey: string,
     type: "email" | "phone",
@@ -27,19 +48,8 @@ interface AuthMethodFormProps {
   ) => void;
 }
 
-const formSchema = z.object({
-  email: z.string().email().or(z.literal("")).optional(),
-  phone: z
-    .string()
-    .optional()
-    .refine((value) => !value || phoneRegex.test(value), {
-      message:
-        "Invalid phone number format. It must be exactly 9 digits and start with '5'.",
-    }),
-});
-
 export default function AuthMethodForm({
-  onErorr,
+  onError,
   onSuccess,
 }: AuthMethodFormProps) {
   const [method, setMethod] = useState<"email" | "phone">("phone");
@@ -50,6 +60,8 @@ export default function AuthMethodForm({
       phone: "",
     },
     resolver: zodResolver(formSchema),
+    mode: "onSubmit", // validate only when submitting
+    reValidateMode: "onSubmit", // don't re-validate on blur/change
   });
 
   // 2. Define a submit handler.
@@ -64,18 +76,31 @@ export default function AuthMethodForm({
       form.reset();
       onSuccess(data.stateKey, method, identifier);
     } else {
-      onErorr(data.error);
+      onError(data.error);
     }
   }
 
   const handleMethodChange = (method: "email" | "phone") => {
+    form.reset();
     setMethod(method);
   };
 
   return (
     <>
       <Form {...form}>
-        <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="grid w-full gap-6"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Heading tag="h1" mobileSize="2xl">
+              تسجيل الدخول أو إنشاء حساب جديد
+            </Heading>
+            <p className="text-muted-foreground text-sm text-balance">
+              أدخل {method === "phone" ? "رقم جوالك" : "بريدك الالكتروني"}{" "}
+              لتسجيل الدخول أو إنشاء حساب جديد.
+            </p>
+          </div>
           <>
             {method == "email" ? (
               <FormField
@@ -85,7 +110,15 @@ export default function AuthMethodForm({
                   <FormItem>
                     <FormLabel>البريد الالكتروني</FormLabel>
                     <FormControl>
-                      <Input placeholder="" type="email" {...field} />
+                      <Input
+                        placeholder=""
+                        type="email"
+                        {...field}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.clearErrors([field.name]);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +132,14 @@ export default function AuthMethodForm({
                   <FormItem>
                     <FormLabel>رقم الجوال</FormLabel>
                     <FormControl>
-                      <InputPhone placeholder="" {...field} />
+                      <InputPhone
+                        placeholder=""
+                        {...field}
+                        onChange={(value) => {
+                          field.onChange(value);
+                          form.clearErrors([field.name]);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -110,8 +150,8 @@ export default function AuthMethodForm({
 
           <div>
             <Cta
+              className="w-full"
               data-testid="sign-in-button"
-              disabled={!form.formState.isDirty || !form.formState.isValid}
               loading={form.formState.isSubmitting}
             >
               الاستمرار
@@ -121,11 +161,21 @@ export default function AuthMethodForm({
       </Form>
 
       {method == "email" ? (
-        <Cta className="w-full" onClick={() => handleMethodChange("phone")}>
+        <Cta
+          variant="ghost"
+          size="sm"
+          className="w-full"
+          onClick={() => handleMethodChange("phone")}
+        >
           تسجيل الدخول برقم الجوال
         </Cta>
       ) : (
-        <Cta className="w-full" onClick={() => handleMethodChange("email")}>
+        <Cta
+          variant="ghost"
+          size="sm"
+          className="w-full"
+          onClick={() => handleMethodChange("email")}
+        >
           تسجيل الدخول بالبريد الالكتروني
         </Cta>
       )}

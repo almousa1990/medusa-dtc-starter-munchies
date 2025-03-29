@@ -1,5 +1,5 @@
 "use client";
-import type {StoreCart, StorePaymentProvider} from "@medusajs/types";
+import {useEffect, useState, useTransition} from "react";
 
 import {initiatePaymentSession} from "@/actions/medusa/order";
 import {Cta} from "@/components/shared/button";
@@ -7,41 +7,23 @@ import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {useResetableActionState} from "@/hooks/use-resetable-action-state";
 import {Indicator, Item, Root} from "@radix-ui/react-radio-group";
-import {
-  type Dispatch,
-  type SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-  useTransition,
-} from "react";
 
 import PaymentButton from "./button";
 import {isStripe as isStripeFunc} from "./utils";
-import {StripeContext} from "./wrapper";
+import {useCheckout} from "@/components/context/checkout-context";
 
-export default function Payment({
-  active,
-  cart,
-  methods,
-  setStep,
-}: {
-  active: boolean;
-  cart: StoreCart;
-  methods: StorePaymentProvider[];
-  setStep: Dispatch<
-    SetStateAction<"addresses" | "delivery" | "payment" | "review">
-  >;
-}) {
+export default function Payment({active}: {active: boolean}) {
+  const {cart, paymentMethods, setStep} = useCheckout();
+
   const [error, setError] = useState<null | string>(null);
   const [cardComplete, setCardComplete] = useState(false);
 
   const activeSession = cart.payment_collection?.payment_sessions?.find(
-    (paymentSession: any) => paymentSession.status === "pending",
+    (session: any) => session.status === "pending",
   );
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
-    activeSession?.provider_id ?? methods[0].id,
+    activeSession?.provider_id ?? paymentMethods[0].id,
   );
 
   const [, resetTransition] = useTransition();
@@ -76,11 +58,11 @@ export default function Payment({
     }
   }, [status, setStep, reset]);
 
-  const activeMethod = methods.find(
+  const activeMethod = paymentMethods.find(
     ({id}) => id === activeSession?.provider_id,
   );
-  const isFilled = !!activeMethod && !active;
 
+  const isFilled = !!activeMethod && !active;
   const method = getMethodInfo(activeMethod?.id);
 
   return (
@@ -95,6 +77,7 @@ export default function Payment({
           </Cta>
         )}
       </div>
+
       {isFilled && (
         <div className="flex flex-1 flex-col gap-4">
           <Body className="font-semibold" font="sans">
@@ -103,6 +86,7 @@ export default function Payment({
           <Body font="sans">{method.name}</Body>
         </div>
       )}
+
       {active && (
         <Root
           className="flex w-full flex-col gap-4"
@@ -110,7 +94,7 @@ export default function Payment({
           name="shippingMethodId"
           onValueChange={(v) => setSelectedPaymentMethod(v)}
         >
-          {methods.map((item) => {
+          {paymentMethods.map((item) => {
             return (
               <Item
                 className="border-accent data-[state=checked]:bg-accent data-[state=checked]:text-background flex w-full items-center justify-between gap-[10px] rounded-lg border-[1.5px] px-[32px] py-[19px]"
@@ -128,20 +112,6 @@ export default function Payment({
               </Item>
             );
           })}
-          {/*isStripe && stripeReady && (
-            <div className="mt-5 flex flex-col gap-2 transition-all duration-150 ease-in-out">
-              <Body font="sans">Enter your card details:</Body>
-
-              <CardElement
-                onChange={(e) => {
-                  setError(e.error?.message || null);
-                  setCardComplete(e.complete);
-                }}
-                options={stripeCardElementOptions}
-              />
-              {error && <Body font="sans">{error}</Body>}
-            </div>
-          )*/}
 
           {isStripe && stripeReady ? (
             <PaymentButton cart={cart} disabled={!cardComplete} />
@@ -164,19 +134,10 @@ export default function Payment({
 function getMethodInfo(id?: string) {
   switch (id) {
     case "pp_system_default":
-      return {
-        id,
-        name: "Testing method",
-      };
+      return {id, name: "Testing method"};
     case "pp_stripe_stripe":
-      return {
-        id,
-        name: "Stripe",
-      };
+      return {id, name: "Stripe"};
     default:
-      return {
-        id,
-        name: "Unknown",
-      };
+      return {id, name: "Unknown"};
   }
 }

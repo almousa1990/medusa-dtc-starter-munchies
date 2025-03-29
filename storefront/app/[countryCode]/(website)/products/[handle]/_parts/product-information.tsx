@@ -4,23 +4,23 @@ import type {StoreProduct} from "@medusajs/types";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 
-import {ProductVariantsProvider} from "../product-context";
+import {ProductVariantsProvider} from "../../../../../../components/context/product-context";
 import AddToCart from "./add-to-cart";
 import Addons from "./addons";
 import BreadCrumbs from "./breadcrumbs";
 import OptionsSelect from "./options";
 import Price from "./price";
-import ProductSpecs from "./specs";
+import {MerchifyProduct} from "@/types";
 
 type Props = {
   content: PRODUCT_QUERYResult;
   region_id: string;
-} & StoreProduct;
+} & MerchifyProduct;
 
 export default function ProductInformation(props: Props) {
   return (
     <ProductVariantsProvider product={props}>
-      <div className="lg:y-4 pb-2xl flex w-full flex-col gap-6 px-5 pt-4 lg:max-w-[580px]">
+      <div className="lg:y-4 pb-2xl flex w-full flex-col gap-4 pt-4 lg:max-w-[580px]">
         <BreadCrumbs collection={props.collection} title={props.title} />
         <Heading
           className="leading-[100%]"
@@ -31,13 +31,16 @@ export default function ProductInformation(props: Props) {
           {props.title}
         </Heading>
         <Price product={{id: props.id, variants: props.variants}} />
-        <Body
-          className="font-normal"
-          desktopSize="lg"
-          font="sans"
-          mobileSize="base"
-        >
-          {props.subtitle}
+        <Body className="font-normal" font="sans" mobileSize="base">
+          {props.metadata?.details ? (
+            <ul className="mr-6 list-disc">
+              {props.metadata.details.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            props.subtitle
+          )}
         </Body>
         <div className="mt-4 flex flex-col gap-4">
           {props.options && <OptionsSelect options={props.options} />}
@@ -48,7 +51,6 @@ export default function ProductInformation(props: Props) {
           region_id={props.region_id}
           title={props.content?.addons?.title}
         />
-        <ProductSpecs specs={props.content?.specs} />
       </div>
     </ProductVariantsProvider>
   );

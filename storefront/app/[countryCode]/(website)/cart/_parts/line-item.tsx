@@ -6,6 +6,7 @@ import {convertToLocale} from "@/utils/medusa/money";
 import Image from "next/image";
 import {InputQuantity} from "@/components/shared/input-quantity";
 import {isOptimisticItemId, useCart} from "@/components/context/cart-context";
+import {X} from "lucide-react";
 
 export default function LineItem(props: StoreCartLineItem) {
   const {cart, handleDeleteItem, handleUpdateCartQuantity, isUpdating} =
@@ -68,9 +69,12 @@ export default function LineItem(props: StoreCartLineItem) {
             <div className="absolute top-0 left-0">
               <button
                 type="button"
-                className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500"
+                className="text-muted-foreground hover:text-primary -m-2 inline-flex p-2"
+                disabled={isOptimisticLine || isUpdating}
+                onClick={() => handleDeleteItem(props.id)}
               >
-                <span className="sr-only">Remove</span>x
+                <span className="sr-only">حذف</span>
+                <X className="size-4" />
               </button>
             </div>
           </div>

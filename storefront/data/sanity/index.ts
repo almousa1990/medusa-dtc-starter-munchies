@@ -13,6 +13,7 @@ import type {
 } from "@/types/sanity.generated";
 
 import {
+  CATEGORY_QUERY,
   COOKIE_BANNER_QUERY,
   DICTIONARY_QUERY,
   FAQS_PAGE_QUERY,
@@ -123,8 +124,17 @@ export function loadDictionary() {
 }
 
 export function loadProductContent(handle: string) {
+  console.log(handle);
   return sanityFetch<PRODUCT_QUERYResult>({
     params: {handle},
     query: PRODUCT_QUERY,
+  });
+}
+
+export function loadCategoryContent(handle: string) {
+  console.log(handle);
+  return sanityFetch<PRODUCT_QUERYResult>({
+    params: {handle},
+    query: CATEGORY_QUERY,
   });
 }

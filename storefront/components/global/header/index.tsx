@@ -9,8 +9,12 @@ import AnnouncementBar from "./parts/announcement-bar";
 import BottomBorder from "./parts/bottom-border";
 import HamburgerContainer from "./parts/hamburger/container";
 import Navigation from "./parts/navigation";
+import {CircleUserRound, Search, ShoppingBag} from "lucide-react";
+import {StoreCustomer} from "@medusajs/types";
 
-export default function Header(props: {countryCode: string} & Header) {
+export default function Header(
+  props: {countryCode: string; customer: StoreCustomer | null} & Header,
+) {
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full flex-col items-center">
       <AnnouncementBar {...props} />
@@ -18,7 +22,7 @@ export default function Header(props: {countryCode: string} & Header) {
         <Suspense>
           <Navigation data={props} />
         </Suspense>
-        <HamburgerContainer sanityData={props} />
+        <HamburgerContainer customer={props.customer} sanityData={props} />
 
         <div className="flex items-center gap-4">
           <LocalizedLink href="/" prefetch>
@@ -31,30 +35,21 @@ export default function Header(props: {countryCode: string} & Header) {
         </div>
 
         <div className="flex flex-1 items-center justify-end gap-6">
-          <div className="hidden lg:flex lg:gap-4">
-            <Suspense
-              fallback={
-                <div className="relative h-10 w-10 p-2">
-                  <Icon name="Search" />
-                </div>
-              }
+          <div className="hidden lg:flex lg:gap-2">
+            <LocalizedLink href="/" className="relative h-10 w-10 p-2">
+              <Search />
+            </LocalizedLink>
+            <LocalizedLink
+              href={props.customer ? "/account" : "/auth"}
+              className="relative h-10 w-10 p-2"
             >
-              <Icon name="Search" />
-            </Suspense>
-            <Suspense
-              fallback={
-                <div className="relative h-10 w-10 p-2">
-                  <Icon name="Account" />
-                </div>
-              }
-            >
-              <Icon name="Account" />
-            </Suspense>
+              <CircleUserRound />
+            </LocalizedLink>
           </div>
           <Suspense
             fallback={
               <div className="relative h-10 w-10 p-2">
-                <Icon name="Cart" />
+                <ShoppingBag />
               </div>
             }
           >

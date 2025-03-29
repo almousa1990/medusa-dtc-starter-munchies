@@ -13,31 +13,31 @@ import {
   RadioGroupItem,
   cn,
 } from "@merchify/ui";
+import Body from "@/components/shared/typography/body";
+import {Cta} from "@/components/shared/button";
+import {ChevronDown, ChevronUp} from "lucide-react";
+import FormattedAddress from "@/components/shared/formatted-address";
 
 export default function AddressItem({
   address,
   countries,
   isOpen,
-  isRemoving,
   isSelected,
   onEdit,
-  onRemove,
   onSelect, // ← NEW
   onToggleOpen,
 }: {
   address: StoreCustomerAddress;
   countries?: StoreRegionCountry[];
   isOpen: boolean;
-  isRemoving: boolean;
   isSelected: boolean;
-  onEdit: (id: string, values: StoreUpdateCustomerAddress) => Promise<any>;
-  onRemove: (id: string) => void;
+  onEdit: (id: string, data: StoreUpdateCustomerAddress) => Promise<any>;
   onSelect: (id: string) => void; // ← NEW
-  onToggleOpen: () => void;
+  onToggleOpen: (id: string) => void;
 }) {
   const handleEditClick = () => {
     onSelect(address.id); // ← Select the address
-    onToggleOpen(); // ← Open the form
+    onToggleOpen(address.id); // ← Open the form
   };
 
   return (
@@ -45,36 +45,30 @@ export default function AddressItem({
       className={cn("rounded-md border p-4", {
         "border-primary": isSelected,
       })}
-      onOpenChange={onToggleOpen}
+      onOpenChange={() => onToggleOpen(address.id)}
       open={isOpen}
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <RadioGroupItem id={address.id} value={address.id} />
-          <Label htmlFor={address.id}>
-            {address.country_code} - {address.city} - {address.address_1}
+          <Label htmlFor={address.id} className="font-normal">
+            <Body mobileSize="sm" className="block font-medium">
+              {address.first_name} {address.last_name}
+            </Body>
+            <Body mobileSize="sm" className="block">
+              <FormattedAddress address={address} />
+            </Body>
           </Label>
         </div>
         <div className="flex gap-2">
-          <Button
-            className="flex items-center gap-2"
-            disabled={isRemoving}
-            onClick={() => onRemove(address.id)}
-            size="sm"
-            type="button"
-            variant="ghost"
-          >
-            {isRemoving ? <>⏳</> : <>🗑️</>}
-            حذف
-          </Button>
-          <Button
+          <Cta
             onClick={handleEditClick}
             size="sm"
             type="button"
             variant="ghost"
           >
-            تعديل
-          </Button>
+            {isOpen ? <ChevronUp /> : <ChevronDown />}
+          </Cta>
         </div>
       </div>
       <CollapsibleContent className="pt-4">

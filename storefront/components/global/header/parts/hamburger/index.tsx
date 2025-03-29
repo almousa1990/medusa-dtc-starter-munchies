@@ -2,7 +2,7 @@
 import type {Header} from "@/types/sanity.generated";
 import type {Dispatch, SetStateAction} from "react";
 
-import {Link} from "@/components/shared/button";
+import {Cta, Link} from "@/components/shared/button";
 import Icon from "@/components/shared/icon";
 import {SanityImage} from "@/components/shared/sanity-image";
 import Body from "@/components/shared/typography/body";
@@ -16,8 +16,7 @@ import {useState} from "react";
 import {RemoveScroll} from "react-remove-scroll";
 
 import type {Country} from "../../country-selector/country-selector-dialog";
-
-import CountrySelectorDialog from "../../country-selector/country-selector-dialog";
+import {StoreCustomer} from "@medusajs/types";
 
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
@@ -26,9 +25,11 @@ type DropdownType = Extract<
 
 export default function Hamburger({
   countries,
+  customer,
   data,
 }: {
   countries: Country[];
+  customer: StoreCustomer | null;
   data: Header;
 }) {
   const [open, setOpen] = useState(false);
@@ -87,7 +88,9 @@ export default function Hamburger({
                 ))}
               </div>
               <div className="p-5">
-                <CountrySelectorDialog countries={countries} />
+                <Link variant="outline" href={customer ? "/account" : "/auth"}>
+                  الحساب
+                </Link>
               </div>
             </div>
             <div

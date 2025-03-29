@@ -10,6 +10,7 @@ import {Label, cn} from "@merchify/ui";
 import {useState} from "react";
 
 import LineItem from "./line-item";
+import {ChevronDown, ChevronUp} from "lucide-react";
 
 export default function CartDetails({cart}: {cart: HttpTypes.StoreCart}) {
   const [showDetails, setShowDetails] = useState(false);
@@ -29,9 +30,9 @@ export default function CartDetails({cart}: {cart: HttpTypes.StoreCart}) {
           className="lg:hidden"
           onClick={() => setShowDetails((prev) => !prev)}
           size="sm"
-          variant="outline"
+          variant="ghost"
         >
-          {showDetails ? "إخفاء" : "عرض"}
+          {showDetails ? <ChevronUp /> : <ChevronDown />}
         </Cta>
       </div>
 
