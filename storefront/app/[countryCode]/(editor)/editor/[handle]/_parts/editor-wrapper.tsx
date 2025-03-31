@@ -28,13 +28,12 @@ interface EditorWrapperProps {
 export function EditorWrapper(props: EditorWrapperProps) {
   const {product, selectedVariant} = props;
   const router = useRouter();
-  const [uploads, setUplaods] = useState([]);
 
   const handleSave = async (data: {
-    selectedVariant: string;
+    selected_variant: string;
     printfiles: any[];
   }) => {
-    const {selectedVariant, printfiles} = data;
+    const {selected_variant, printfiles} = data;
     const result = await medusa.client
       .fetch(`/store/printfiles`, {
         method: "POST",
@@ -82,6 +81,7 @@ export function EditorWrapper(props: EditorWrapperProps) {
       product={product}
       selectedVariant={selectedVariant}
       onSave={handleSave}
+      onBack={() => router.push(`/products/${product.handle}`)}
       onAssetCollectionList={listAssetCollections}
       onAssetCategoryList={listAssetCategories}
       onAssetList={listAssets}

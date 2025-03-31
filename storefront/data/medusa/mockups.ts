@@ -4,30 +4,41 @@ import medusa from "./client";
 import {getAuthHeaders} from "./cookies";
 
 export const createMockupRenditions = async (body: {
-  selectedVariant: string;
+  selected_variant: string;
+  session_key: string;
   printfiles: any[];
-}): Promise<{renditions: any[]; count: number; batch_key: string}> => {
+}): Promise<{
+  renditions: any[];
+  count: number;
+  batch_key: string;
+  session_key: string;
+}> => {
   //todo typing
 
-  const {selectedVariant: variantId, printfiles} = body;
   const headers = {
     ...(await getAuthHeaders()),
   };
 
   return medusa.client
-    .fetch<{renditions: any[]; batch_key: string}>("/store/mockup-renditions", { // todo typing
-      method: "POST",
-      headers,
-      body: {
-        product_variant_id: variantId,
-        printfiles: printfiles,
+    .fetch<{renditions: any[]; batch_key: string; session_key: string}>(
+      "/store/mockup-renditions",
+      {
+        // todo typing
+        method: "POST",
+        headers,
+        body: {
+          printfiles: body.printfiles,
+          session_key: body.session_key,
+          product_variant_id: body.selected_variant,
+        },
+        query: {},
       },
-      query: {},
-    })
-    .then(({renditions, batch_key}) => ({
+    )
+    .then(({renditions, batch_key, session_key}) => ({
       renditions,
       count: renditions.length,
       batch_key,
+      session_key,
     }));
 };
 

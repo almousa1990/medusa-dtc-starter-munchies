@@ -1,5 +1,6 @@
 "use server";
 
+import {isArray} from "lodash";
 import medusa from "./client";
 import {getAuthHeaders, getCacheTag} from "./cookies";
 
@@ -120,21 +121,21 @@ export const createCustomerAssets = async (input: any) => {
     },
     body: formData,
   });
-
-  return response; // Return response data
 };
 
-export const deleteCustomerAssets = async (id: string) => {
+export const deleteCustomerAssets = async (id: string | string[]) => {
   // Fetch auth headers
   const headers = await getAuthHeaders();
 
   // Perform the upload
-  const response = await medusa.client.fetch(`/store/customer-assets/${id}`, {
-    method: "DELETE",
-    headers: {
-      ...headers,
-    },
-  });
-
-  return response; // Return response data
+  if (isArray(id)) {
+    console.log("not implemented");
+  } else {
+    const response = await medusa.client.fetch(`/store/customer-assets/${id}`, {
+      method: "DELETE",
+      headers: {
+        ...headers,
+      },
+    });
+  }
 };
