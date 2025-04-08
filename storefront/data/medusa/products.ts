@@ -1,13 +1,9 @@
-import type {
-  StoreProduct,
-  StoreProductListParams,
-  StoreProductParams,
-} from "@medusajs/types";
+import type {MerchifyProduct} from "@/types";
+import type {StoreProductListParams} from "@medusajs/types";
 
 import {unstable_cache} from "next/cache";
 
 import medusa from "./client";
-import {MerchifyProduct} from "@/types";
 const PRODUCT_LIMIT = 12;
 
 export const getProductByHandle = unstable_cache(
@@ -71,8 +67,8 @@ export const getProducts = unstable_cache(
 
     return {
       count,
-      totalPages: Math.ceil(count / PRODUCT_LIMIT),
       products,
+      totalPages: Math.ceil(count / PRODUCT_LIMIT),
     };
   },
   ["products"],

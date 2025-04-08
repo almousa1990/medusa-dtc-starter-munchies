@@ -1,16 +1,16 @@
+import type {PageProps} from "@/types";
 import type {Metadata} from "next";
 
+import {CartProvider} from "@/components/context/cart-context";
 import {Link} from "@/components/shared/button";
+import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import Heading from "@/components/shared/typography/heading";
 import {getCart} from "@/data/medusa/cart";
 import {notFound} from "next/navigation";
 
 import PromotionForm from "../../../../components/shared/promotion-form";
-import LineItem from "./_parts/line-item";
-import {CartSummary} from "./_parts/summary";
-import {CartProvider} from "@/components/context/cart-context";
-import {PageProps} from "@/types";
 import EmptyCartMessage from "./_parts/empty-card-message";
+import LineItem from "./_parts/line-item";
 
 export const metadata: Metadata = {
   description: "View your cart",
@@ -23,9 +23,6 @@ export default async function CartPage(props: CartPageProps) {
   const cart = await getCart();
   const params = await props.params;
 
-  if (!cart) {
-    return notFound();
-  }
   return cart?.items?.length ? (
     <CartProvider cart={cart} countryCode={params.countryCode}>
       <Heading desktopSize="3xl" mobileSize="3xl" tag="h3">
@@ -51,7 +48,7 @@ export default async function CartPage(props: CartPageProps) {
               <Heading desktopSize="xl" mobileSize="2xl" tag="h5">
                 ملخص الطلب
               </Heading>
-              <CartSummary cart={cart} />
+              <TotalsBreakdown data={cart} />
               <Link
                 className="w-full"
                 href="/checkout"

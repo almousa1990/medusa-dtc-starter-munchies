@@ -4,7 +4,6 @@ import type {StoreCustomer} from "@medusajs/types";
 
 import {login, refresh, register} from "@/actions/medusa/auth";
 import {navigate} from "@/actions/medusa/navigate";
-import Body from "@/components/shared/typography/body";
 import {useState} from "react";
 
 import AuthMethodForm from "../auth-method-form";
@@ -78,7 +77,7 @@ export default function AuthFlow({customer, redirect}: AuthFlowProps) {
       )}
       {step === "otp" && stateKey && (
         <OtpForm
-          input={{stateKey, email: userInput.email, phone: userInput.phone}}
+          input={{email: userInput.email, phone: userInput.phone, stateKey}}
           onError={setError}
           onRestart={handleRestart}
           onSuccess={handleVerificationSuccess}

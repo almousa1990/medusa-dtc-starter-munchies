@@ -1,6 +1,8 @@
+import type {MerchifyPrintfile} from "@/types";
 import type {StoreProductVariant} from "@medusajs/types";
 
 export type AddToCartEventPayload = {
+  printfiles: MerchifyPrintfile[];
   productVariant: StoreProductVariant;
   regionId: string;
 };

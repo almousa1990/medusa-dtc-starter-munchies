@@ -1,4 +1,4 @@
-import {HttpTypes} from "@medusajs/types";
+import type {HttpTypes} from "@medusajs/types";
 
 export type Prettify<T> = {
   [K in keyof T]: T[K];
@@ -36,41 +36,41 @@ export interface MerchifyProduct extends HttpTypes.StoreProduct {
   care_instructions?: MerchifyProductCareInstruction[] | null;
   feature_entries?: MerchifyProductFeature[] | null;
   metadata?:
-    | (Record<string, unknown> & {
-        size_chart: MerchifyProductSizeChart;
+    | ({
         details: string[];
-      })
+        size_chart: MerchifyProductSizeChart;
+      } & Record<string, unknown>)
     | null;
 }
 
 export interface MerchifyProductOption
   extends Omit<HttpTypes.StoreProductOption, "values"> {
-  values: MerchifyProductOptionValue[];
   metadata?:
-    | (Record<string, unknown> & {
+    | ({
         type: string;
-      })
+      } & Record<string, unknown>)
     | null;
+  values: MerchifyProductOptionValue[];
 }
 
 export interface MerchifyProductOptionValue
   extends HttpTypes.StoreProductOptionValue {
   metadata?:
-    | (Record<string, unknown> & {
+    | ({
         color: {hex: string};
-      })
+      } & Record<string, unknown>)
     | null;
 }
 
 export interface MerchifyProductSizeChart {
-  rows: {[key: string]: string}[]; // Array of rows with dynamic keys
   columns: string[]; // Array of column headers
+  rows: {[key: string]: string}[]; // Array of rows with dynamic keys
 }
 
 export interface MerchifyProductCareInstruction {
   code: string;
-  title: string;
   symbol_url: string;
+  title: string;
 }
 
 export interface MerchifyProductFeature {
@@ -79,4 +79,24 @@ export interface MerchifyProductFeature {
     name: string;
     symbol_url: string;
   };
+}
+
+export interface MerchifyPrintfile {
+  filename: string;
+  metadata?: Record<string, unknown> | null;
+  objects: Record<string, unknown>[];
+  version?: number;
+}
+
+export interface MerchifyPrintfileLineItem {
+  filename: string;
+  id: string;
+  metadata?: Record<string, unknown> | null;
+  preview_url: string;
+  title: string;
+  unit_price: number;
+}
+
+export interface MerchifyCartLineItem extends HttpTypes.StoreCartLineItem {
+  printfile_line_items: MerchifyPrintfileLineItem[];
 }

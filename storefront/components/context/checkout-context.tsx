@@ -1,5 +1,4 @@
 "use client";
-import {createContext, useContext, useState} from "react";
 import type {
   StoreCart,
   StoreCartShippingOption,
@@ -7,13 +6,15 @@ import type {
   StorePaymentProvider,
 } from "@medusajs/types";
 
+import {createContext, useContext, useState} from "react";
+
 interface CheckoutContextType {
-  step: "addresses" | "delivery" | "payment" | "review";
-  setStep: (step: CheckoutContextType["step"]) => void;
   cart: StoreCart;
   customer: StoreCustomer;
-  shippingMethods: StoreCartShippingOption[];
   paymentMethods: StorePaymentProvider[];
+  setStep: (step: CheckoutContextType["step"]) => void;
+  shippingMethods: StoreCartShippingOption[];
+  step: "addresses" | "delivery" | "payment" | "review";
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(
@@ -32,9 +33,9 @@ export const CheckoutProvider = ({
   value,
 }: {
   children: React.ReactNode;
-  value: Omit<CheckoutContextType, "step" | "setStep"> & {
+  value: {
     initialStep?: CheckoutContextType["step"];
-  };
+  } & Omit<CheckoutContextType, "setStep" | "step">;
 }) => {
   const initialStep: CheckoutContextType["step"] = (() => {
     const shippingSet = !!value.cart.shipping_address?.address_1;
@@ -58,8 +59,8 @@ export const CheckoutProvider = ({
     <CheckoutContext.Provider
       value={{
         ...value,
-        step,
         setStep,
+        step,
       }}
     >
       {children}

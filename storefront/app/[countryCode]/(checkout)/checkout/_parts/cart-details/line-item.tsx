@@ -1,11 +1,13 @@
 "use client";
-import type {StoreCartLineItem} from "@medusajs/types";
 
+import type {MerchifyCartLineItem} from "@/types";
+
+import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
+import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
-import Image from "next/image";
 
-export default function LineItem(props: StoreCartLineItem) {
+export default function LineItem(props: MerchifyCartLineItem) {
   const item = props;
 
   if (!((item?.quantity || 0) > 0)) return null;
@@ -22,13 +24,7 @@ export default function LineItem(props: StoreCartLineItem) {
 
   return (
     <div className="flex items-start justify-between space-x-4">
-      <Image
-        alt={props.title}
-        className="size-20 rounded-md border object-cover"
-        height={100}
-        src={props.product?.thumbnail || ""}
-        width={100}
-      />
+      <LineItemThumbnail item={item} />
       <div className="flex w-full flex-col items-start justify-start gap-4">
         <div className="flex w-full justify-between gap-3">
           <div>
@@ -51,6 +47,16 @@ export default function LineItem(props: StoreCartLineItem) {
               {item_price}
             </Body>
           </div>
+        </div>
+
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] items-start gap-2">
+          {props.printfile_line_items.map((item) => (
+            <PrintfileLineItemPreviewer
+              currencyCode={item?.variant?.calculated_price?.currency_code}
+              item={item}
+              key={item.id}
+            />
+          ))}
         </div>
       </div>
     </div>

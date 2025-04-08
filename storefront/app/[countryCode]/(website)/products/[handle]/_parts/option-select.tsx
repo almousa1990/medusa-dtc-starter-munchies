@@ -1,29 +1,30 @@
 "use client";
 
-import {HttpTypes} from "@medusajs/types";
-import React, {useEffect, useMemo, useCallback} from "react";
-import * as RadioGroup from "@radix-ui/react-radio-group";
+import type {MerchifyProductOption} from "@/types";
+import type {HttpTypes} from "@medusajs/types";
+
 import {cn} from "@merchify/ui";
-import {MerchifyProductOption} from "@/types";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import React, {useEffect, useMemo} from "react";
 
 type OptionSelectProps = {
-  option: MerchifyProductOption;
   current: string | undefined;
-  updateOption: (value: string) => void;
-  product?: HttpTypes.StoreProduct | null;
-  disabled: boolean;
-  selectedOptions?: Record<string, string | undefined>;
   "data-testid"?: string;
+  disabled: boolean;
+  option: MerchifyProductOption;
+  product?: HttpTypes.StoreProduct | null;
+  selectedOptions?: Record<string, string | undefined>;
+  updateOption: (value: string) => void;
 };
 
 const OptionSelect: React.FC<OptionSelectProps> = ({
-  option,
   current,
-  updateOption,
-  product,
-  selectedOptions,
   "data-testid": dataTestId,
   disabled,
+  option,
+  product,
+  selectedOptions,
+  updateOption,
 }) => {
   const validValues = useMemo(() => {
     const validSet = new Set<string>();
@@ -68,14 +69,14 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 
       <fieldset aria-label={`تحديد ${option.title}`} className="mt-2">
         <RadioGroup.Root
-          dir="rtl"
-          value={current}
-          onValueChange={updateOption}
           className={cn(
             isColorOption
               ? "mr-1 flex items-center gap-x-3"
               : "grid grid-cols-3 gap-3 sm:grid-cols-6",
           )}
+          dir="rtl"
+          onValueChange={updateOption}
+          value={current}
         >
           {(option.values ?? []).map((v, index) => {
             const isValid = validValues.has(v.value);
@@ -84,16 +85,6 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 
             return (
               <RadioGroup.Item
-                key={index}
-                value={v.value}
-                disabled={shouldDisable}
-                style={
-                  isColorOption
-                    ? ({
-                        "--tw-ring-color": v.metadata?.color.hex,
-                      } as React.CSSProperties)
-                    : {}
-                }
                 className={cn(
                   "flex cursor-pointer",
                   !isValid && "opacity-50",
@@ -101,12 +92,22 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
                     ? "relative -m-0.5 rounded-full p-0.5 focus:outline-none data-[state=checked]:ring-2 data-[focus]:data-[state=checked]:ring data-[focus]:data-[state=checked]:ring-offset-1"
                     : "border-input bg-background hover:bg-accent data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[focus]:bg-primary/90 data-[state=checked]:hover:bg-primary items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase disabled:opacity-50 data-[focus]:ring-2 data-[focus]:ring-offset-2 data-[state=checked]:border-transparent sm:flex-1",
                 )}
+                disabled={shouldDisable}
+                key={index}
+                style={
+                  isColorOption
+                    ? ({
+                        "--tw-ring-color": v.metadata?.color.hex,
+                      } as React.CSSProperties)
+                    : {}
+                }
+                value={v.value}
               >
                 {isColorOption ? (
                   <span
                     aria-hidden="true"
-                    style={{backgroundColor: v.metadata?.color?.hex}}
                     className="size-8 rounded-full border border-black/10"
+                    style={{backgroundColor: v.metadata?.color?.hex}}
                   />
                 ) : (
                   <span>{v.value}</span>

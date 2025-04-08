@@ -1,5 +1,15 @@
+"use server";
 import {cookies} from "next/headers";
-import "server-only";
+
+export const getAuthToken = async (): Promise<null | string> => {
+  const token = (await cookies()).get("_medusa_jwt")?.value;
+
+  if (token) {
+    return token;
+  }
+
+  return null;
+};
 
 export const getAuthHeaders = async (): Promise<
   {authorization: string} | NonNullable<unknown>

@@ -1,25 +1,23 @@
 "use client";
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-
 import {setCheckoutAddresses} from "@/actions/medusa/order";
+import {useCheckout} from "@/components/context/checkout-context";
 import {Cta} from "@/components/shared/button";
+import FormattedAddress from "@/components/shared/formatted-address";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormField, FormItem} from "@merchify/ui";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 
 import AddressSelect from "../../address-select";
-import {useCheckout} from "@/components/context/checkout-context";
-import FormattedAddress from "@/components/shared/formatted-address";
 
 const formSchema = z.object({
   customer_address_id: z.string().nullable(),
 });
 
 export default function Address({active}: {active: boolean}) {
-  const {cart, customer, shippingMethods, setStep} = useCheckout();
+  const {cart, customer, setStep, shippingMethods} = useCheckout();
 
   const nextStep = shippingMethods.length > 0 ? "delivery" : "payment";
 

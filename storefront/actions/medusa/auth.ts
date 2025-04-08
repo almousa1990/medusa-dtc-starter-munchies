@@ -5,6 +5,7 @@ import type {HttpTypes} from "@medusajs/types";
 import medusa from "@/data/medusa/client";
 import {
   getAuthHeaders,
+  getAuthToken,
   getCacheHeaders,
   getCacheTag,
   removeAuthToken,
@@ -176,6 +177,11 @@ export async function login(verificationToken: string) {
       token: verificationToken,
     });
 
+    const oldToken = await getAuthToken();
+    if (oldToken) {
+      await transferSession(oldToken);
+    }
+
     await setAuthToken(token as string);
 
     const customerCacheTag = await getCacheTag("customers");
@@ -217,6 +223,53 @@ export async function signup(payload: {
     return {customer: createdCustomer, success: true};
   } catch (error) {
     console.error("Signup error:", error);
+    return {
+      error: error instanceof Error ? error.message : String(error),
+      success: false,
+    };
+  }
+}
+
+export async function createAnonymousSession() {
+  const headers = await getAuthHeaders();
+
+  try {
+    const data = await medusa.client.fetch<{token: string}>(
+      "/store/anonymous-sessions",
+      {
+        headers,
+        method: "POST",
+        query: {},
+      },
+    );
+
+    const token = data.token;
+    await setAuthToken(token as string);
+  } catch (error) {
+    console.error("Auth register error:", error);
+    return {
+      error: error instanceof Error ? error.message : String(error),
+      success: false,
+    };
+  }
+}
+
+export async function transferSession(token: string) {
+  const headers = await getAuthHeaders();
+
+  try {
+    const response = await medusa.client.fetch<{token: string}>(
+      "/store/anonymous-sessions/transfer",
+      {
+        body: {
+          token,
+        },
+        headers,
+        method: "POST",
+      },
+    );
+  } catch (error) {
+    console.error("Session transfer error:", error);
     return {
       error: error instanceof Error ? error.message : String(error),
       success: false,

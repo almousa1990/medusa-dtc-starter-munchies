@@ -1,16 +1,15 @@
+import type {MerchifyProduct} from "@/types";
 import type {PRODUCT_QUERYResult} from "@/types/sanity.generated";
-import type {StoreProduct} from "@medusajs/types";
 
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 
 import {ProductVariantsProvider} from "../../../../../../components/context/product-context";
-import AddToCart from "./add-to-cart";
 import Addons from "./addons";
 import BreadCrumbs from "./breadcrumbs";
+import InitiateEditor from "./initiate-editor-button";
 import OptionsSelect from "./options";
 import Price from "./price";
-import {MerchifyProduct} from "@/types";
 
 type Props = {
   content: PRODUCT_QUERYResult;
@@ -44,7 +43,11 @@ export default function ProductInformation(props: Props) {
         </Body>
         <div className="mt-4 flex flex-col gap-4">
           {props.options && <OptionsSelect options={props.options} />}
-          <AddToCart region_id={props.region_id} variant="PDP" />
+          <InitiateEditor
+            className="mt-4"
+            regionId={props.region_id}
+            variant="PDP"
+          />
         </div>
         <Addons
           products={props.content?.addons?.products}

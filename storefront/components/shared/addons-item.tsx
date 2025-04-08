@@ -1,6 +1,5 @@
 import type {StoreProduct} from "@medusajs/types";
 
-import {AddToCartButton} from "@/app/[countryCode]/(website)/products/[handle]/_parts/add-to-cart";
 import {getProductPrice} from "@/utils/medusa/get-product-price";
 import {cx} from "cva";
 import Image from "next/image";
@@ -52,16 +51,6 @@ export function AddonsItem({region_id, variant = "PDP", ...product}: Props) {
             {default_variant?.title} / {cheapestPrice?.calculated_price}
           </Body>
         </div>
-        <AddToCartButton
-          className={cx("self-end", {
-            "mr-4": variant === "cart",
-          })}
-          label="Add +"
-          productVariant={variantWithProduct}
-          regionId={region_id}
-          size={variant === "PDP" ? "md" : variant === "cart" ? "sm" : null}
-          variant="outline"
-        />
       </div>
     </LocalizedLink>
   );

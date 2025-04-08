@@ -1,5 +1,6 @@
 "use server";
 
+import type {MerchifyCartLineItem} from "@/types";
 import type {HttpTypes, StoreUpdateCart} from "@medusajs/types";
 
 import {getCart} from "@/data/medusa/cart";
@@ -14,7 +15,7 @@ import {getRegion} from "@/data/medusa/regions";
 import medusaError from "@/utils/medusa/error";
 import {revalidateTag} from "next/cache";
 
-async function createCart(region_id: string) {
+export async function createCart(region_id: string) {
   const body = {
     region_id,
   };
@@ -215,3 +216,9 @@ export async function removePromotions(codes: string[]) {
     })
     .catch(medusaError);
 }
+
+export const fetchCartLineItem = async (id: string) => {
+  const cart = await getCart();
+  const item = cart?.items?.find((item) => item.id === id);
+  return item as MerchifyCartLineItem | undefined;
+};

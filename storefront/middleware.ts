@@ -7,6 +7,7 @@ import {getCustomer} from "./data/medusa/customer";
 export async function middleware(request: NextRequest) {
   // Retrieve the `_medusa_jwt` token from cookies
   const customer = await getCustomer();
+  const response = NextResponse.next();
 
   // If no token is found, redirect to the login page
   if (
@@ -21,9 +22,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(authUrl);
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
-  matcher: ["/account/:path*", "/checkout/:path*"],
+  matcher: ["/account/:path*", "/checkout/:path*", "/editor/:path*"],
 };

@@ -1,16 +1,15 @@
 "use client";
-import {useEffect, useState, useTransition} from "react";
-
 import {initiatePaymentSession} from "@/actions/medusa/order";
+import {useCheckout} from "@/components/context/checkout-context";
 import {Cta} from "@/components/shared/button";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {useResetableActionState} from "@/hooks/use-resetable-action-state";
 import {Indicator, Item, Root} from "@radix-ui/react-radio-group";
+import {useEffect, useState, useTransition} from "react";
 
 import PaymentButton from "./button";
 import {isStripe as isStripeFunc} from "./utils";
-import {useCheckout} from "@/components/context/checkout-context";
 
 export default function Payment({active}: {active: boolean}) {
   const {cart, paymentMethods, setStep} = useCheckout();

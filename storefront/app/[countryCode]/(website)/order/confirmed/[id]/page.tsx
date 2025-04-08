@@ -1,5 +1,6 @@
 import type {PageProps} from "@/types";
 
+import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {enrichLineItems} from "@/data/medusa/line-items";
@@ -75,24 +76,7 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
             );
           })}
           <Separator />
-          <SubLineItem
-            title="المجموع الفرعي"
-            value={convertMoney(order.item_subtotal)}
-          />
-          <SubLineItem title="الضريبة" value={convertMoney(order.tax_total)} />
-          <SubLineItem
-            title="الشحن"
-            value={convertMoney(order.shipping_total)}
-          />
-          <Separator />
-          <div className="flex justify-between">
-            <Heading desktopSize="base" font="sans" mobileSize="sm" tag="h4">
-              الأجمالي
-            </Heading>
-            <Heading desktopSize="base" font="sans" mobileSize="sm" tag="h4">
-              {convertMoney(order.total)}
-            </Heading>
-          </div>
+          <TotalsBreakdown data={order} />
           <Separator />
         </div>
       </div>
@@ -109,14 +93,14 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
             >
               عنوان الشحن
             </Body>
-            <Body className="font-medium" desktopSize="base" font="sans">
+            <Body className="font-base" desktopSize="base" font="sans">
               {order.shipping_address?.first_name}{" "}
               {order.shipping_address?.last_name}
             </Body>
-            <Body className="font-medium" desktopSize="base" font="sans">
+            <Body className="font-base" desktopSize="base" font="sans">
               {order.shipping_address?.address_1}
             </Body>
-            <Body className="font-medium" desktopSize="base" font="sans">
+            <Body className="font-base" desktopSize="base" font="sans">
               {order.shipping_address?.postal_code},{" "}
               {order.shipping_address?.city}
             </Body>
@@ -129,7 +113,7 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
             >
               التواصل
             </Body>
-            <Body className="font-medium" desktopSize="base" font="sans">
+            <Body className="font-base" desktopSize="base" font="sans">
               {order.email}
             </Body>
           </div>
@@ -143,7 +127,7 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
               >
                 الشحن
               </Body>
-              <Body className="font-medium" desktopSize="base" font="sans">
+              <Body className="font-base" desktopSize="base" font="sans">
                 {shippingMethod?.name}
                 {shippingMethod?.amount
                   ? ` (${convertMoney(shippingMethod?.amount)})`

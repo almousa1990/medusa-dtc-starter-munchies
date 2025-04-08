@@ -11,8 +11,8 @@ import {notFound} from "next/navigation";
 
 import {ProductImagesCarousel} from "./_parts/image-carousel";
 import ProductInformation from "./_parts/product-information";
-import StickyAtc from "./_parts/sticky-atc";
 import ProductSpecs from "./_parts/specs";
+import StickyAtc from "./_parts/sticky-atc";
 
 type ProductPageProps = PageProps<"countryCode" | "handle">;
 
@@ -64,7 +64,6 @@ export default async function ProductPage(props: ProductPageProps) {
   }
 
   const product = await getProductByHandle(params.handle, region.id);
-  console.log(product);
 
   const content = await loadProductContent(params.handle);
 

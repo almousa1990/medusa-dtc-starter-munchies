@@ -1,9 +1,10 @@
 "use server";
 
+import type {HttpTypes} from "@medusajs/types";
+
 import medusa from "@/data/medusa/client";
 import {getAuthHeaders, getCacheTag} from "@/data/medusa/cookies";
 import medusaError from "@/utils/medusa/error";
-import {HttpTypes} from "@medusajs/types";
 import {revalidateTag} from "next/cache";
 
 export const updateCustomer = async (body: HttpTypes.StoreUpdateCustomer) => {
@@ -34,10 +35,10 @@ export const addCustomerAddress = async (
     .then(async ({customer}) => {
       const customerCacheTag = await getCacheTag("customers");
       revalidateTag(customerCacheTag);
-      return {success: true, error: null, customer};
+      return {customer, error: null, success: true};
     })
     .catch((err) => {
-      return {success: false, error: err.toString()};
+      return {error: err.toString(), success: false};
     });
 };
 
@@ -53,10 +54,10 @@ export const deleteCustomerAddress = async (
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers");
       revalidateTag(customerCacheTag);
-      return {success: true, error: null};
+      return {error: null, success: true};
     })
     .catch((err) => {
-      return {success: false, error: err.toString()};
+      return {error: err.toString(), success: false};
     });
 };
 
@@ -65,7 +66,7 @@ export const updateCustomerAddress = async (
   address: HttpTypes.StoreUpdateCustomerAddress,
 ): Promise<any> => {
   if (!id) {
-    return {success: false, error: "Address ID is required"};
+    return {error: "Address ID is required", success: false};
   }
 
   const headers = {
@@ -77,9 +78,9 @@ export const updateCustomerAddress = async (
     .then(async () => {
       const customerCacheTag = await getCacheTag("customers");
       revalidateTag(customerCacheTag);
-      return {success: true, error: null};
+      return {error: null, success: true};
     })
     .catch((err) => {
-      return {success: false, error: err.toString()};
+      return {error: err.toString(), success: false};
     });
 };

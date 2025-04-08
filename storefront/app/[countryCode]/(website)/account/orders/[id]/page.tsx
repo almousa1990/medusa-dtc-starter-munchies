@@ -1,13 +1,13 @@
+import type {HttpTypes} from "@medusajs/types";
+import type {Metadata} from "next";
+
 import {retrieveOrder} from "@/actions/medusa/order";
-import {Metadata} from "next";
-import {notFound} from "next/navigation";
-import LineItem, {LineItemSkeleton} from "../_parts/line-item";
+import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import {repeat} from "@/utils/repeat";
-import Heading from "@/components/shared/typography/heading";
-import {convertToLocale} from "@/utils/medusa/money";
-import Body from "@/components/shared/typography/body";
-import {HttpTypes} from "@medusajs/types";
 import {Separator} from "@merchify/ui";
+import {notFound} from "next/navigation";
+
+import LineItem, {LineItemSkeleton} from "../_parts/line-item";
 
 type Props = {
   params: Promise<{id: string}>;
@@ -22,8 +22,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Order #${order.display_id}`,
     description: `View your order`,
+    title: `Order #${order.display_id}`,
   };
 }
 
@@ -96,7 +96,7 @@ export function OrderDetails({order}: {order: HttpTypes.StoreOrder}) {
             })}
       </div>
       <dl className="space-y-6 pt-6">
-        <OrderSummary order={order} />
+        <TotalsBreakdown data={order} />
       </dl>
       <dl className="mt-16 grid grid-cols-1 gap-x-4 gap-y-6 text-gray-600 sm:grid-cols-2 lg:grid-cols-3">
         <div>
@@ -136,90 +136,6 @@ export function OrderDetails({order}: {order: HttpTypes.StoreOrder}) {
           )
         }
       </dl>
-    </>
-  );
-}
-
-export function OrderSummary({order}: {order: HttpTypes.StoreOrder}) {
-  const summaryItems = [
-    {amount: order.original_item_subtotal, label: "مجموع المنتجات"},
-    {amount: order.shipping_total, label: "الشحن"},
-    {amount: -order.discount_total, label: "الخصم"},
-    {amount: order.tax_total, label: "الضريبة"},
-  ];
-
-  const total = {amount: order.total, label: "الاجمالي", type: "total"};
-
-  return (
-    <div className="flex flex-col gap-2">
-      {summaryItems.map((item) => (
-        <OrderSummaryItem
-          amount={item.amount}
-          currency_code={order.currency_code}
-          key={item.label}
-          label={item.label}
-        />
-      ))}
-      <OrderTotal {...total} currency_code={order.currency_code} />
-    </div>
-  );
-}
-
-export function OrderSummaryItem({
-  amount,
-  currency_code,
-  label,
-}: {
-  amount: number;
-  currency_code: string;
-  label: string;
-}) {
-  const display = convertToLocale({
-    amount,
-    currency_code: currency_code,
-  });
-
-  return (
-    <>
-      <div className="flex items-center justify-between">
-        <Body font="sans" mobileSize="base">
-          {label}
-        </Body>
-
-        <Body font="sans" mobileSize="base">
-          {display}
-        </Body>
-      </div>
-    </>
-  );
-}
-
-export function OrderTotal({
-  amount,
-  currency_code,
-  label,
-}: {
-  amount: number;
-  currency_code: string;
-  label: string;
-}) {
-  const display = convertToLocale({
-    amount,
-    currency_code: currency_code,
-  });
-
-  return (
-    <>
-      <div className="bg-accent h-px w-full" />
-      <div className="flex items-center justify-between">
-        <Heading desktopSize="lg" font="sans" mobileSize="xl" tag="h3">
-          {label}
-        </Heading>
-
-        <Heading desktopSize="lg" font="sans" mobileSize="xl" tag="h3">
-          {display}
-        </Heading>
-      </div>
     </>
   );
 }

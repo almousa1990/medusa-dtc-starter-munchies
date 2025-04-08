@@ -6,8 +6,8 @@ import type {PropsWithChildren} from "react";
 import React, {createContext, useContext, useState} from "react";
 
 interface ProductVariantsContextType {
-  product: StoreProduct | undefined;
   activeVariant: StoreProductVariant | undefined;
+  product: StoreProduct | undefined;
   selectedOptions: Record<string, string | undefined>;
   setSelectedOptions: React.Dispatch<
     React.SetStateAction<Record<string, string | undefined>>
@@ -59,8 +59,8 @@ export function ProductVariantsProvider({
   return (
     <ProductVariantsContext.Provider
       value={{
-        product,
         activeVariant: activeVariantWithProduct,
+        product,
         selectedOptions,
         setSelectedOptions,
         updateOption, // include it

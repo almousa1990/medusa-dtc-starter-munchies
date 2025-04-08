@@ -8,10 +8,7 @@ const EmptyCartMessage = () => {
       className="flex flex-col items-start justify-center px-2 py-48"
       data-testid="empty-cart-message"
     >
-      <Heading
-        tag="h1"
-        className="text-3xl-regular flex flex-row items-baseline gap-x-2"
-      >
+      <Heading desktopSize="3xl" mobileSize="2xl" tag="h1">
         سلة التسوق
       </Heading>
       <Body className="text-base-regular mt-4 mb-6 max-w-[32rem]">

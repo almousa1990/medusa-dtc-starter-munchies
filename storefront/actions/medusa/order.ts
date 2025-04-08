@@ -9,11 +9,11 @@ import {
   removeCartId,
 } from "@/data/medusa/cookies";
 import {getCustomer} from "@/data/medusa/customer";
+import medusaError from "@/utils/medusa/error";
 import {revalidateTag} from "next/cache";
 import {redirect} from "next/navigation";
 
 import {updateCart} from "./cart";
-import medusaError from "@/utils/medusa/error";
 
 type ActionState =
   | {error: null; status: "idle" | "success"}
@@ -88,6 +88,7 @@ export async function setCheckoutAddresses(
 
     const data = {
       billing_address: address,
+      email: customer?.email,
       shipping_address: address,
     } as any;
 
@@ -120,12 +121,12 @@ export const retrieveOrder = async (id: string) => {
 
   return medusa.client
     .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
+      headers,
       method: "GET",
       query: {
         fields:
           "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
       },
-      headers,
     })
     .then(({order}) => order)
     .catch((err) => medusaError(err));

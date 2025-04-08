@@ -8,6 +8,7 @@ import type {
 import type {Dispatch, PropsWithChildren, SetStateAction} from "react";
 
 import {addToCart, updateCartQuantity} from "@/actions/medusa/cart";
+import {addPrintfilesToCart} from "@/actions/medusa/printfile";
 import {usePathname} from "next/navigation";
 import {
   createContext,
@@ -62,8 +63,6 @@ export function CartProvider({
 
       startTransition(async () => {
         setOptimisticCart((prev) => {
-          console.log({prev: cart?.items?.length});
-
           const items = [...(prev?.items || [])];
 
           const existingItemIndex = items.findIndex(
@@ -114,7 +113,8 @@ export function CartProvider({
           return {...prev, item_total: newTotal, items: newItems} as Cart;
         });
 
-        await addToCart({
+        await addPrintfilesToCart({
+          printfiles: payload.printfiles,
           quantity: 1,
           region_id: payload.regionId,
           variantId: payload.productVariant.id,

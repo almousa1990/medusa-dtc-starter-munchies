@@ -6,8 +6,7 @@ import {cx} from "cva";
 import {useEffect, useState} from "react";
 
 import {ProductVariantsProvider} from "../../../../../../components/context/product-context";
-import AddToCart from "./add-to-cart";
-import OptionsSelect from "./options";
+import InitiateEditor from "./initiate-editor-button";
 
 export default function StickyAtc({
   region_id,
@@ -42,7 +41,7 @@ export default function StickyAtc({
         )}
       >
         <div className="flex items-center justify-center gap-3">
-          <AddToCart region_id={region_id} variant="sticky" />
+          <InitiateEditor regionId={region_id} variant="sticky" />
         </div>
       </div>
     </ProductVariantsProvider>

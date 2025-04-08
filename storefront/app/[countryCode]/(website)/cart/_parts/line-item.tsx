@@ -1,14 +1,15 @@
 "use client";
-import type {StoreCartLineItem} from "@medusajs/types";
+import type {MerchifyCartLineItem} from "@/types";
 
+import {isOptimisticItemId, useCart} from "@/components/context/cart-context";
+import {InputQuantity} from "@/components/shared/input-quantity";
+import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
+import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
-import Image from "next/image";
-import {InputQuantity} from "@/components/shared/input-quantity";
-import {isOptimisticItemId, useCart} from "@/components/context/cart-context";
 import {X} from "lucide-react";
 
-export default function LineItem(props: StoreCartLineItem) {
+export default function LineItem(props: MerchifyCartLineItem) {
   const {cart, handleDeleteItem, handleUpdateCartQuantity, isUpdating} =
     useCart();
   const item = props;
@@ -22,24 +23,18 @@ export default function LineItem(props: StoreCartLineItem) {
 
   const item_price = convertToLocale({
     amount: (item?.unit_price || 0) * (item?.quantity || 1),
-    currency_code: (item?.variant?.calculated_price?.currency_code || null)!,
+    currency_code: (cart?.currency_code || null)!,
   });
 
   const isOptimisticLine = isOptimisticItemId(props.id);
 
   return (
-    <div key={item.id} className="flex py-6 sm:py-10">
+    <div className="flex py-6 sm:py-10" key={item.id}>
       <div className="shrink-0">
-        <Image
-          alt={props.title}
-          className="border-accent h-[100px] w-[100px] rounded-md border-[1.5px] object-cover"
-          height={100}
-          src={props.product?.thumbnail || ""}
-          width={100}
-        />
+        <LineItemThumbnail item={item} />
       </div>
 
-      <div className="mr-4 flex flex-1 flex-col justify-between sm:mr-6">
+      <div className="mr-4 flex flex-1 flex-col justify-between gap-2 sm:mr-6">
         <div className="relative pl-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pl-0">
           <div>
             <div className="flex justify-between">
@@ -58,20 +53,20 @@ export default function LineItem(props: StoreCartLineItem) {
           <div className="mt-4 sm:mt-0 sm:pr-9">
             <div className="inline-grid w-full max-w-16 grid-cols-1">
               <InputQuantity
-                quantity={item?.quantity || 0}
                 disabled={isOptimisticLine || isUpdating}
                 onChange={(newQty) =>
                   handleUpdateCartQuantity(props.id, newQty)
                 }
+                quantity={item?.quantity || 0}
               />
             </div>
 
             <div className="absolute top-0 left-0">
               <button
-                type="button"
                 className="text-muted-foreground hover:text-primary -m-2 inline-flex p-2"
                 disabled={isOptimisticLine || isUpdating}
                 onClick={() => handleDeleteItem(props.id)}
+                type="button"
               >
                 <span className="sr-only">حذف</span>
                 <X className="size-4" />
@@ -80,7 +75,15 @@ export default function LineItem(props: StoreCartLineItem) {
           </div>
         </div>
 
-        <p className="mt-4 flex space-x-2 text-sm text-gray-700">stock</p>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] items-start gap-2">
+          {props.printfile_line_items.map((item) => (
+            <PrintfileLineItemPreviewer
+              currencyCode={cart?.currency_code}
+              item={item}
+              key={item.id}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

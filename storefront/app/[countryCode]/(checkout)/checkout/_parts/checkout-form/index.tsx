@@ -1,14 +1,14 @@
 "use client";
+import {useCheckout} from "@/components/context/checkout-context";
 import Heading from "@/components/shared/typography/heading";
 
 import Address from "./address";
 import Delivery from "./delivery";
 import Payment from "./payment";
 import Review from "./review";
-import {useCheckout} from "@/components/context/checkout-context";
 
 export default function CheckoutForm() {
-  const {step, shippingMethods} = useCheckout();
+  const {cart, shippingMethods, step} = useCheckout();
 
   return (
     <>
@@ -21,7 +21,7 @@ export default function CheckoutForm() {
       {shippingMethods.length > 0 && <Delivery active={step === "delivery"} />}
 
       <Payment active={step === "payment"} />
-      <Review active={step === "review"} />
+      <Review active={step === "review"} cart={cart} />
     </>
   );
 }

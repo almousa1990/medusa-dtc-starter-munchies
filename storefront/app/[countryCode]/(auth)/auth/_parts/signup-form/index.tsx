@@ -2,6 +2,8 @@ import type {HttpTypes} from "@medusajs/types";
 
 import {signup} from "@/actions/medusa/auth";
 import {Cta} from "@/components/shared/button";
+import {InputPhone} from "@/components/shared/input-phone";
+import Heading from "@/components/shared/typography/heading";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Form,
@@ -14,8 +16,6 @@ import {
 } from "@merchify/ui";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {InputPhone} from "@/components/shared/input-phone";
-import Heading from "@/components/shared/typography/heading";
 const phoneRegex = /^5\d{8}$/; // Ensures exactly 9 digits, starting with '5'
 
 interface SignupFormProps {
@@ -45,9 +45,9 @@ export default function SignupForm({
       last_name: "",
       phone: input.phone ?? "",
     },
-    resolver: zodResolver(formSchema),
     mode: "onSubmit", // validate only when submitting
     reValidateMode: "onSubmit", // don't re-validate on blur/change
+    resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -72,7 +72,7 @@ export default function SignupForm({
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center gap-2 text-center">
-          <Heading tag="h1" mobileSize="2xl">
+          <Heading mobileSize="2xl" tag="h1">
             إنشاء حساب جديد
           </Heading>
           <p className="text-muted-foreground text-sm text-balance">
@@ -89,11 +89,11 @@ export default function SignupForm({
                 <Input
                   placeholder=""
                   {...field}
+                  disabled={!!input.email}
                   onChange={(value) => {
                     field.onChange(value);
                     form.clearErrors([field.name]);
                   }}
-                  disabled={!!input.email}
                 />
               </FormControl>
               <FormMessage />
@@ -153,11 +153,11 @@ export default function SignupForm({
                 <InputPhone
                   placeholder=""
                   {...field}
+                  disabled={!!input.phone}
                   onChange={(value) => {
                     field.onChange(value);
                     form.clearErrors([field.name]);
                   }}
-                  disabled={!!input.phone}
                 />
               </FormControl>
               <FormMessage />

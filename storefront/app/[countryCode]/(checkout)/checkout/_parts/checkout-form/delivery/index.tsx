@@ -1,14 +1,11 @@
 "use client";
-import {useEffect} from "react";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-
 import {setShippingMethod} from "@/actions/medusa/order";
+import {useCheckout} from "@/components/context/checkout-context";
 import {Cta} from "@/components/shared/button";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {convertToLocale} from "@/utils/medusa/money";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Form,
   FormField,
@@ -17,14 +14,16 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@merchify/ui";
-import {useCheckout} from "@/components/context/checkout-context";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 
 const formSchema = z.object({
   shipping_method_id: z.string().optional(),
 });
 
 export default function Delivery({active}: {active: boolean}) {
-  const {cart, shippingMethods, setStep} = useCheckout();
+  const {cart, setStep, shippingMethods} = useCheckout();
 
   const currency_code = cart.currency_code;
 
