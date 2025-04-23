@@ -1,14 +1,11 @@
 import type {PageProps} from "@/types";
 import type {Metadata} from "next";
 import type {PropsWithChildren} from "react";
-import Image from "next/image";
-import Link from "next/link";
 
+import LocalizedLink from "@/components/shared/localized-link";
 import config from "@/config";
 import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
-import {buttonVariants, cn} from "@merchify/ui";
-import LocalizedLink from "@/components/shared/localized-link";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">

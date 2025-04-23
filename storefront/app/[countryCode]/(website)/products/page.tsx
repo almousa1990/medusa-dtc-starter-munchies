@@ -17,14 +17,13 @@ export default async function ProductsPage(props: ProductsPageProps) {
   const params = await props.params;
   console.log(searchParams);
   return (
-    <section className="max-w-max-screen mx-auto flex flex-col gap-10 px-5 pt-[6.5rem] pb-10 lg:px-8">
+    <section className="max-w-max-screen mx-auto flex flex-col gap-10 pt-[6.5rem] pb-10">
       <div>
         <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
           عرض جميع المنتجات
         </Heading>
       </div>
       <div className="flex flex-col gap-6">
-        <Refinement />
         <Suspense fallback={<ProductsSkeleton />}>
           <PaginatedProducts
             countryCode={params.countryCode}

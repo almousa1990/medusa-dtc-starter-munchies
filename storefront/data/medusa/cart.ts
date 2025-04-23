@@ -18,7 +18,7 @@ export const getCart = cache(async function () {
       cartId,
       {
         fields:
-          "+region, +items, +items.product.*, +items.printfile_line_items.*, +items.variant.image, +items.variant.*, +items.thumbnail, +items.metadata, +promotions.*, shipping_address.*",
+          "+region, +items, +items.product.*, +items.printfile_line_items.*,+items.printfile_line_items.rendition.preview_url,+items.printfile_line_items.printfile.preview_url, +items.variant.image, +items.variant.*, +items.thumbnail, +items.metadata, +promotions.*, shipping_address.*",
       },
       {next: {tags: ["cart"]}, ...(await getAuthHeaders())},
     )

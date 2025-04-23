@@ -7,8 +7,10 @@ import type {
 } from "@medusajs/types";
 import type {Dispatch, PropsWithChildren, SetStateAction} from "react";
 
-import {addToCart, updateCartQuantity} from "@/actions/medusa/cart";
-import {addPrintfilesToCart} from "@/actions/medusa/printfile";
+import {
+  addDecoratedToCart,
+  updateCartDecoratedLineItem,
+} from "@/actions/medusa/cart";
 import {usePathname} from "next/navigation";
 import {
   createContext,
@@ -33,9 +35,12 @@ const CartContext = createContext<
       cart: Cart | null;
       cartOpen: boolean;
       handleDeleteItem: (lineItem: string) => Promise<void>;
-      handleUpdateCartQuantity: (
+      handleUpdateItem: (
         lineItem: string,
-        newQuantity: number,
+        update: {
+          printfiles?: any[];
+          quantity?: number;
+        },
       ) => Promise<void>;
       isUpdating: boolean;
       setCartOpen: Dispatch<SetStateAction<boolean>>;
@@ -113,7 +118,7 @@ export function CartProvider({
           return {...prev, item_total: newTotal, items: newItems} as Cart;
         });
 
-        await addPrintfilesToCart({
+        await addDecoratedToCart({
           printfiles: payload.printfiles,
           quantity: 1,
           region_id: payload.regionId,
@@ -133,12 +138,12 @@ export function CartProvider({
   }, [pathname]);
 
   const handleDeleteItem = async (lineItem: string) => {
-    handleUpdateCartQuantity(lineItem, 0);
+    handleUpdateItem(lineItem, {quantity: 0});
   };
 
-  const handleUpdateCartQuantity = async (
+  const handleUpdateItem = async (
     lineItem: string,
-    quantity: number,
+    update: {printfiles?: any[]; quantity?: number},
   ) => {
     const item = optimisticCart?.items?.find(({id}) => id === lineItem);
 
@@ -151,7 +156,12 @@ export function CartProvider({
         const optimisticItems = prev.items?.reduce(
           (acc: StoreCartLineItem[], item) => {
             if (item.id === lineItem) {
-              return quantity === 0 ? acc : [...acc, {...item, quantity}];
+              return update.quantity === 0
+                ? acc
+                : [
+                    ...acc,
+                    {...item, quantity: update.quantity ?? item.quantity},
+                  ];
             }
             return [...acc, item];
           },
@@ -172,10 +182,11 @@ export function CartProvider({
     });
 
     if (!isOptimisticItemId(lineItem)) {
-      await updateCartQuantity({
+      await updateCartDecoratedLineItem({
         countryCode,
         lineItem,
-        quantity,
+        printfiles: update.printfiles,
+        quantity: update.quantity,
       });
     }
   };
@@ -186,7 +197,7 @@ export function CartProvider({
         cart: optimisticCart,
         cartOpen,
         handleDeleteItem,
-        handleUpdateCartQuantity,
+        handleUpdateItem,
         isUpdating: JSON.stringify(cart) !== JSON.stringify(optimisticCart),
         setCartOpen,
       }}

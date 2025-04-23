@@ -58,14 +58,14 @@ const InputPhone = React.forwardRef<
   return (
     <div className="relative w-full">
       <span
-        className="ltr absolute top-1/2 left-3 -translate-y-1/2 transform cursor-not-allowed text-base opacity-50 md:text-sm"
+        className="absolute top-1/2 left-3 -translate-y-1/2 transform cursor-not-allowed text-base opacity-50 md:text-sm"
         dir="ltr"
       >
         {countryCode}
       </span>
 
       <Input
-        className={cn("pl-12", className)}
+        className={cn("pl-14 sm:pl-12", className)}
         inputMode="numeric"
         pattern="\d{1,10}"
         ref={ref}

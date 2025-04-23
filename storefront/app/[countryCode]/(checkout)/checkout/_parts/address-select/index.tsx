@@ -97,7 +97,7 @@ export default function AddressSelect({
           <AddressItem
             address={address}
             countries={countries}
-            isOpen={editFormOpenId === address.id}
+            isOpen={editFormOpenId === address.id && value === address.id}
             isSelected={value === address.id}
             key={address.id}
             onEdit={handleEditCustomerAddress}

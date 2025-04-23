@@ -11,7 +11,7 @@ export const getPrintfileProductByHandle = unstable_cache(
       .list(
         {
           fields:
-            "*variants.calculated_price,+variants.options.option.metadata,+variants.inventory_quantity,+metadata,+care_instructions.*,+variants.printfile_templates.*,+variants.printfile_templates.editor.*, +variants.printfile_templates.decoration_method.*, *variants.printfile_templates.calculated_price",
+            "*variants.calculated_price,+variants.options.option.metadata,+variants.inventory_quantity,+metadata,+care_instructions.*, +variants.printfile_templates.decoration_method.handle, *variants.printfile_templates.filename",
           handle,
 
           region_id,
@@ -26,19 +26,39 @@ export const getPrintfileProductByHandle = unstable_cache(
   },
 );
 
-export const getPrintfileEditorSessions = async (productId: string) => {
+export const getPrintfileEditorSessions = async (input: {
+  line_item_id?: string;
+  product_id?: string;
+}) => {
   //todo typing
   const headers = await getAuthHeaders();
   return medusa.client
     .fetch<{sessions: any[]}>( //todo typing
-      `/store/products/${productId}/printfile-editor-sessions`,
+      `/store/printfile-editor-sessions`,
       {
         headers,
         query: {
           fields: "*editor",
+          line_item_id: input.line_item_id,
+          product_id: input.product_id,
         },
       },
     )
     .then(({sessions}) => sessions)
+    .catch(() => null);
+};
+
+export const getProductPrintfiles = async (product_id: string) => {
+  //todo typing
+  const headers = await getAuthHeaders();
+  return medusa.client
+    .fetch<{printfiles: any[]}>( //todo typing
+      `/store/products/${product_id}/printfiles`,
+      {
+        headers,
+        query: {},
+      },
+    )
+    .then(({printfiles}) => printfiles)
     .catch(() => null);
 };

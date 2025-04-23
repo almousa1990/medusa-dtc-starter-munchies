@@ -50,21 +50,21 @@ export default function LineItemThumbnail({
   }, [isLoading, item.id, pollingInterval]);
 
   return (
-    <div className="relative h-[100px] w-[100px]">
+    <div className="relative size-24 sm:size-36">
       <Image
         alt={item.title}
         className={clsx(
-          "border-accent h-full w-full rounded-md border-[1.5px] object-cover transition-opacity duration-300",
+          "aspect-square rounded-md object-cover transition-opacity duration-300",
           {"opacity-70": isLoading},
         )}
-        height={100}
+        height={144}
         key={item.thumbnail}
         src={item.thumbnail || "/placeholder.png"}
-        width={100}
+        width={144}
       />
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center rounded-md bg-white/50 backdrop-blur-sm">
-          <div className="border-accent h-6 w-6 animate-spin rounded-full border-2 border-t-transparent" />
+        <div className="bg-secondary absolute inset-0 flex items-center justify-center rounded-md backdrop-blur-sm">
+          <div className="border-border h-6 w-6 animate-spin rounded-full border-2 border-t-transparent" />
         </div>
       )}
     </div>

@@ -26,7 +26,11 @@ const config = {
   },
   experimental: {
     taint: true,
+    serverActions: {
+      bodySizeLimit: '30mb',
+    },
   },
+
   rewrites() {
     return [
       {

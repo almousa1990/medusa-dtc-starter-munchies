@@ -3,7 +3,7 @@ import type {LinkProps} from "next/link";
 import type {ComponentProps} from "react";
 
 import {Button, ButtonProps, buttonVariants, cn} from "@merchify/ui";
-import {cva, cx} from "cva";
+import {cva} from "cva";
 
 import LocalizedLink from "./localized-link";
 import {Loader2} from "lucide-react";
@@ -97,7 +97,7 @@ export function Link({
   return (
     <LocalizedLink
       className={cn(
-        buttonVariants({size, variant}),
+        buttonVariants({size, variant, className}),
         styles({
           className,
           size,

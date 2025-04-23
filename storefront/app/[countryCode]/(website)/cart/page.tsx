@@ -6,7 +6,8 @@ import {Link} from "@/components/shared/button";
 import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import Heading from "@/components/shared/typography/heading";
 import {getCart} from "@/data/medusa/cart";
-import {notFound} from "next/navigation";
+import {Label} from "@merchify/ui";
+import {TicketPercent} from "lucide-react";
 
 import PromotionForm from "../../../../components/shared/promotion-form";
 import EmptyCartMessage from "./_parts/empty-card-message";
@@ -41,21 +42,23 @@ export default async function CartPage(props: CartPageProps) {
           className="mt-16 lg:col-span-5 lg:mt-0"
         >
           <div className="grid gap-4">
-            <div className="bg-secondary rounded-md p-4">
-              <PromotionForm cart={cart} />
-            </div>
-            <div className="bg-secondary grid gap-4 rounded-md p-4">
-              <Heading desktopSize="xl" mobileSize="2xl" tag="h5">
+            <div className="bg-background grid gap-4 rounded-md border px-4 py-6 sm:p-6 lg:py-8">
+              <Heading desktopSize="lg" mobileSize="xl" tag="h5">
                 ملخص الطلب
               </Heading>
               <TotalsBreakdown data={cart} />
-              <Link
-                className="w-full"
-                href="/checkout"
-                size="lg"
-                variant="default"
-              >
+              <div className="bg-secondary -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
+                <Label>
+                  <TicketPercent className="me-1 inline-block" /> هل لديك كود
+                  خصم؟
+                </Label>
+                <PromotionForm cart={cart} />
+              </div>
+              <Link className="w-full" href="/checkout" variant="default">
                 إتمام الطلب
+              </Link>
+              <Link className="w-full" href="/products" variant="secondary">
+                العودة للتسوق
               </Link>
             </div>
           </div>

@@ -14,6 +14,8 @@ import {revalidateTag} from "next/cache";
 import {redirect} from "next/navigation";
 
 import {updateCart} from "./cart";
+import {getCart} from "@/data/medusa/cart";
+import {compareAddress} from "@/utils/medusa/compare-address";
 
 type ActionState =
   | {error: null; status: "idle" | "success"}
@@ -79,10 +81,10 @@ export async function setCheckoutAddresses(
       throw new Error("No data found when setting addresses");
     }
 
-    const cartId = await getCartId();
+    const cart = await getCart();
     const customer = await getCustomer();
 
-    if (!cartId) {
+    if (!cart) {
       throw new Error("No existing cart found when setting addresses");
     }
 
@@ -92,7 +94,14 @@ export async function setCheckoutAddresses(
       shipping_address: address,
     } as any;
 
-    await updateCart(data);
+    const isSameAddress = compareAddress(cart.shipping_address, address);
+
+    if (!isSameAddress) {
+      console.log("updated");
+      await updateCart(data);
+    } else {
+      console.log("skip update");
+    }
 
     return {error: null, status: "success"};
   } catch (e: any) {

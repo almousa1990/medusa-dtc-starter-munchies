@@ -16,9 +16,9 @@ import {
   Input,
   cn,
 } from "@merchify/ui";
+import {X} from "lucide-react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {X} from "lucide-react";
 
 export const formSchema = z.object({
   code: z.string().min(1),
@@ -56,7 +56,12 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
     const {cart} = await addPromotions(codes);
     const isValidCode = cart.promotions.some((p) => p.code === values.code);
     if (!isValidCode) {
-      throw new Error("Invalid promotion code.");
+      form.setError("code", {
+        message: `الكود (${values.code.toUpperCase()}) منتهي أو غير صحيح.`,
+        type: "manual",
+      });
+    } else {
+      form.reset();
     }
   };
 
@@ -73,13 +78,22 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
             render={({field}) => (
               <FormItem className="w-full overflow-visible">
                 <FormControl>
-                  <Input placeholder="SUMMER_20" {...field} />
+                  <Input
+                    placeholder="SUMMER_20"
+                    className="uppercase"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Cta loading={form.formState.isSubmitting}>تطبيق</Cta>
+          <Cta
+            disabled={!form.getValues("code").length}
+            loading={form.formState.isSubmitting}
+          >
+            تطبيق
+          </Cta>
         </form>
       </Form>
       {promotions.length > 0 && (
@@ -92,13 +106,16 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
                   data-testid="discount-row"
                   key={promotion.id}
                 >
-                  <Body className="txt-small-plus flex w-4/5 items-baseline gap-x-1 pr-1">
+                  <Body className="items-baseline gap-x-1 pr-1 text-sm">
                     <span className="truncate" data-testid="discount-code">
                       <Badge
-                        variant={promotion.is_automatic ? "primary" : "outline"}
+                        className={cn({
+                          "bg-background": !promotion.is_automatic,
+                        })}
                         size="small"
+                        variant={promotion.is_automatic ? "primary" : "outline"}
                       >
-                        {promotion.code}
+                        {promotion.code?.toUpperCase()}
                       </Badge>{" "}
                       (
                       {promotion.application_method?.value !== undefined &&
@@ -135,9 +152,7 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
                       }}
                     >
                       <X className="size-4" />
-                      <span className="sr-only">
-                        Remove discount code from order
-                      </span>
+                      <span className="sr-only">حذف كود الخصم</span>
                     </button>
                   )}
                 </div>

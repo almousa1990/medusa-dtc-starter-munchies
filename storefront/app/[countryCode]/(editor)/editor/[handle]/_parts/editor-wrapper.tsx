@@ -1,6 +1,7 @@
 "use client";
 
 import type {MerchifyPrintfile, MerchifyProduct} from "@/types";
+import type {StoreRegion} from "@medusajs/types";
 
 import {
   createCustomerAssets,
@@ -8,6 +9,7 @@ import {
 } from "@/actions/medusa/assets";
 import {createMockupRenditions} from "@/actions/medusa/mockups";
 import {updatePrintfileEditorSessions} from "@/actions/medusa/printfile";
+import {useCart} from "@/components/context/cart-context";
 import {
   listAssetCategories,
   listAssetCollections,
@@ -18,24 +20,25 @@ import {
 } from "@/data/medusa/assets";
 import {listMockupRenditions} from "@/data/medusa/mockups";
 import {addToCartEventBus} from "@/utils/event-bus";
-import {PrintfileEditor} from "@merchify/editor";
-import {track} from "@vercel/analytics";
+import {Editor} from "@merchify/editor";
 import {useRouter} from "next/navigation";
 
 interface EditorWrapperProps {
+  countryCode: string;
+  lineItem?: string;
   onVariantSelectionChange?: (id: string) => void;
+  printfiles: any[];
   product: MerchifyProduct;
-  regionId: string;
+  region: StoreRegion;
   selectedVariant?: string;
-  sessions?: any[] | null;
+  sessions: any[] | null;
 }
 
 export function EditorWrapper(props: EditorWrapperProps) {
-  const {product, regionId, selectedVariant, sessions} = props;
+  const {lineItem, printfiles, product, region, selectedVariant, sessions} =
+    props;
   const router = useRouter();
-  if (!sessions?.length) {
-    return <>loading</>;
-  }
+  const {handleUpdateItem} = useCart();
 
   const handleSubmit = async (data: {
     printfiles: MerchifyPrintfile[];
@@ -50,27 +53,30 @@ export function EditorWrapper(props: EditorWrapperProps) {
       return;
     }
 
-    addToCartEventBus.emitCartAdd({
-      printfiles,
-      productVariant,
-      regionId,
-    });
+    if (!lineItem) {
+      addToCartEventBus.emitCartAdd({
+        printfiles,
+        productVariant,
+        regionId: region.id,
+      });
+    } else {
+      await handleUpdateItem(lineItem, {
+        printfiles: printfiles,
+      });
+    }
 
-    track("add-to-cart", {
-      quantity: 1,
-      region_id: regionId,
-      variantId: productVariant.id,
-    });
     router.push(`/products/${product.handle}`);
   };
 
   const handleSave = async (data: {sessions: any[]}) => {
     const {sessions} = data;
-    await updatePrintfileEditorSessions(product.id, sessions);
+    return await updatePrintfileEditorSessions(sessions);
   };
 
   return (
-    <PrintfileEditor
+    <Editor
+      currencyCode={region.currency_code}
+      lockedVariant={!!lineItem}
       onAssetCategoryList={listAssetCategories}
       onAssetCollectionList={listAssetCollections}
       onAssetList={listAssets}
@@ -84,6 +90,7 @@ export function EditorWrapper(props: EditorWrapperProps) {
       onMockupRenditionsList={listMockupRenditions}
       onSave={handleSave}
       onSubmit={handleSubmit}
+      printfiles={printfiles}
       product={product}
       selectedVariant={selectedVariant}
       sessions={sessions}

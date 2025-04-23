@@ -13,7 +13,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
       <div className="bg-secondary flex min-h-[470px] w-full flex-col items-center justify-center gap-4 rounded-lg px-5 py-12 text-center lg:w-1/2 lg:py-5">
         <Heading
           className="leading-[100%]!"
-          desktopSize="5xl"
+          desktopSize="4xl"
           font="serif"
           mobileSize="3xl"
           tag="h1"
@@ -33,7 +33,7 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
             className="mt-6"
             href={props.cta.link}
             prefetch
-            size="md"
+            size="default"
             variant="default"
           >
             {props.cta.label}

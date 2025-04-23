@@ -11,7 +11,7 @@ export default function CheckoutForm() {
   const {cart, shippingMethods, step} = useCheckout();
 
   return (
-    <>
+    <div className="mx-auto max-w-lg lg:max-w-none">
       <Heading className="sr-only" tag="h1">
         إتمام الطلب
       </Heading>
@@ -22,6 +22,6 @@ export default function CheckoutForm() {
 
       <Payment active={step === "payment"} />
       <Review active={step === "review"} cart={cart} />
-    </>
+    </div>
   );
 }

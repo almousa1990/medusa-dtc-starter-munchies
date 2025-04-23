@@ -4,7 +4,10 @@ import medusa from "@/data/medusa/client";
 import {getAuthHeaders} from "@/data/medusa/cookies";
 
 export const createMockupRenditions = async (body: {
-  printfiles: any[];
+  printfiles: {
+    filename: string;
+    editor_session_id: string;
+  }[];
   selected_variant: string;
 }): Promise<{
   batch_id: string;
@@ -14,6 +17,8 @@ export const createMockupRenditions = async (body: {
   //todo typing
 
   const headers = await getAuthHeaders();
+
+  console.log(body.printfiles);
 
   return medusa.client
     .fetch<{batch_id: string; renditions: any[]}>("/store/mockup-renditions", {

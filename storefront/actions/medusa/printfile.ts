@@ -1,70 +1,16 @@
 "use server";
 
-import type {MerchifyPrintfile} from "@/types";
-
 import medusa from "@/data/medusa/client";
-import {getAuthHeaders, getCacheTag, getCartId} from "@/data/medusa/cookies";
-import medusaError from "@/utils/medusa/error";
-import {revalidateTag} from "next/cache";
-
-import {createCart} from "./cart";
-
-export async function addPrintfilesToCart({
-  printfiles,
-  quantity,
-  region_id,
-  variantId,
-}: {
-  printfiles: MerchifyPrintfile[];
-  quantity: number;
-  region_id: string;
-  variantId: string;
-}) {
-  if (!variantId) {
-    throw new Error("Missing variant ID when adding to cart");
-  }
-
-  let cartId = await getCartId();
-
-  if (!cartId) {
-    if (!region_id) throw new Error("Error missing region id");
-
-    cartId = (await createCart(region_id)).id;
-  }
-
-  if (!cartId) {
-    throw new Error("Error retrieving or creating cart");
-  }
-
-  const headers = await getAuthHeaders();
-
-  const cacheTag = await getCacheTag("carts");
-
-  return medusa.client
-    .fetch(`/store/carts/${cartId}/line-item-printfiles`, {
-      body: {
-        printfiles,
-        quantity,
-        variant_id: variantId,
-      },
-      headers,
-      method: "POST",
-      query: {},
-    })
-    .then(() => {
-      revalidateTag(cacheTag);
-    })
-    .catch(medusaError);
-}
+import {getAuthHeaders} from "@/data/medusa/cookies";
 
 export const createPrintfileEditorSessions = async (productId: string) => {
   //todo typing
   const headers = await getAuthHeaders();
   return medusa.client
     .fetch<{sessions: any[]}>( //todo typing
-      `/store/products/${productId}/printfile-editor-sessions`,
+      `/store/printfile-editor-sessions`,
       {
-        body: {},
+        body: {product_id: productId},
         headers,
         method: "POST",
       },
@@ -73,27 +19,28 @@ export const createPrintfileEditorSessions = async (productId: string) => {
 };
 
 export const updatePrintfileEditorSessions = async (
-  productId: any,
-  payload: any,
+  payload: {id?: null | string}[],
 ) => {
   //todo typing
   const headers = {
     ...(await getAuthHeaders()),
   };
-
-  console.log(payload);
+  const toUpdate = payload.filter((s) => s.id);
+  const toCreate = payload.filter((s) => !s.id);
   return medusa.client
-    .fetch<{sessions: any[]}>( //todo typing
-      `/store/products/${productId}/printfile-editor-sessions/batch`,
+    .fetch<{created: {id: string}[]; updated: {id: string}[]}>( //todo typing
+      `/store/printfile-editor-sessions/batch`,
       {
         body: {
-          create: [],
+          create: toCreate,
           delete: [],
-          update: payload,
+          update: toUpdate,
         },
         headers,
         method: "POST",
       },
     )
-    .then(({sessions}) => sessions);
+    .then((respose) => {
+      return respose;
+    });
 };

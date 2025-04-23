@@ -21,17 +21,19 @@ export const createCustomerAssets = async (input: any) => {
   const headers = await getAuthHeaders();
 
   // Perform the upload
-  const response = await medusa.client.fetch<{
-    files: {id: string; url: string}[];
-  }>(`/store/customer-assets`, {
-    body: formData,
-    headers: {
-      ...headers,
-      // Let the browser handle multipart boundaries
-      "Content-Type": null,
-    },
-    method: "POST",
-  });
+  //todo. this needs type response
+  return medusa.client
+    .fetch(`/store/customer-assets`, {
+      body: formData,
+      headers: {
+        ...headers,
+        // Let the browser handle multipart boundaries
+        "Content-Type": null,
+      },
+      method: "POST",
+    })
+    .then((response) => response)
+    .catch((error) => error);
 };
 
 export const deleteCustomerAssets = async (id: string | string[]) => {

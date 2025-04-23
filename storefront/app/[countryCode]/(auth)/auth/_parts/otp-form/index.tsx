@@ -5,17 +5,15 @@ import {Cta} from "@/components/shared/button";
 import Heading from "@/components/shared/typography/heading";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
-  cn,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
+  cn,
 } from "@merchify/ui";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -25,9 +23,9 @@ const REFRESH_COOLDOWN = 30;
 
 interface OtpFormProps {
   input: {
-    stateKey: string;
     email?: string;
     phone?: string;
+    stateKey: string;
   };
   onError: (message: string) => void;
   onRestart: () => void;
@@ -51,9 +49,9 @@ export default function OtpForm({
     defaultValues: {
       otp: "",
     },
-    resolver: zodResolver(formSchema),
     mode: "onSubmit", // validate only when submitting
     reValidateMode: "onSubmit", // don't re-validate on blur/change
+    resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -67,8 +65,8 @@ export default function OtpForm({
     } else {
       form.reset();
       form.setError("otp", {
-        type: "manual",
         message: response.error, // ✅ this will show inside <FormMessage />
+        type: "manual",
       });
       onError(response.error);
     }
@@ -97,7 +95,7 @@ export default function OtpForm({
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="flex flex-col items-center gap-2 text-center">
-            <Heading tag="h1" mobileSize="2xl">
+            <Heading mobileSize="2xl" tag="h1">
               رمز التحقق
             </Heading>
             <p className="text-muted-foreground text-sm text-balance">
@@ -138,8 +136,8 @@ export default function OtpForm({
               )}
             />
             <ResendButton
-              onClick={onResend}
               className={cn({hidden: form.formState.isSubmitting})}
+              onClick={onResend}
             />
           </div>
 
@@ -154,11 +152,11 @@ export default function OtpForm({
       </Form>
 
       <Cta
-        variant="ghost"
-        size="sm"
         className="w-full"
-        onClick={onRestart}
         disabled={form.formState.isSubmitting}
+        onClick={onRestart}
+        size="sm"
+        variant="ghost"
       >
         تغيير طريقة الدخول
       </Cta>
@@ -167,11 +165,11 @@ export default function OtpForm({
 }
 
 function ResendButton({
-  onClick,
   className,
+  onClick,
 }: {
-  onClick: () => void;
   className?: string;
+  onClick: () => void;
 }) {
   const [countdown, setCountdown] = useState(REFRESH_COOLDOWN);
   const [showButton, setShowButton] = useState(false);
@@ -196,16 +194,16 @@ function ResendButton({
     <div className={cn("flex w-full flex-col items-center", className)}>
       {showButton ? (
         <Cta
-          type="button"
-          variant="ghost"
-          size="sm"
           className="w-full"
           onClick={handleSubmit}
+          size="sm"
+          type="button"
+          variant="ghost"
         >
           إعادة إرسال رمز التحقق
         </Cta>
       ) : (
-        <Cta variant="ghost" size="sm" className="w-full" disabled>
+        <Cta className="w-full" disabled size="sm" variant="ghost">
           يمكنك إعادة الإرسال بعد {countdown} ثانية
         </Cta>
       )}

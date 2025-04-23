@@ -1,19 +1,21 @@
+import {cn} from "@merchify/ui";
 import React from "react";
+
 import Body from "./typography/body";
 
 interface InputQuantityProps {
-  quantity: number;
   disabled?: boolean;
   onChange: (newQuantity: number) => void;
+  quantity: number;
 }
 
 export const InputQuantity: React.FC<InputQuantityProps> = ({
-  quantity,
   disabled = false,
   onChange,
+  quantity,
 }) => {
   return (
-    <div className="border-input flex h-10 w-32 items-center justify-center gap-1 overflow-hidden rounded-md border">
+    <div className="border-input flex h-10 w-24 items-center justify-center gap-1 overflow-hidden rounded-md border">
       <button
         className="group hover:bg-secondary active:bg-accent flex h-full w-full flex-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-50"
         disabled={disabled}
@@ -21,7 +23,13 @@ export const InputQuantity: React.FC<InputQuantityProps> = ({
       >
         <span className="bg-primary h-px w-2 transition-all duration-300" />
       </button>
-      <Body className="flex-1 text-center" font="sans" mobileSize="base">
+      <Body
+        className={cn("flex-1 text-center", {
+          "text-muted-foreground": disabled,
+        })}
+        font="sans"
+        mobileSize="base"
+      >
         {quantity}
       </Body>
       <button

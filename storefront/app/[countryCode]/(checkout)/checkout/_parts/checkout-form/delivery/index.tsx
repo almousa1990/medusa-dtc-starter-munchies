@@ -7,6 +7,7 @@ import Heading from "@/components/shared/typography/heading";
 import {convertToLocale} from "@/utils/medusa/money";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
+  cn,
   Form,
   FormField,
   FormItem,
@@ -14,6 +15,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@merchify/ui";
+import {Check} from "lucide-react";
 import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
@@ -46,6 +48,12 @@ export default function Delivery({active}: {active: boolean}) {
     reset,
   } = form;
 
+  useEffect(() => {
+    if (!active) {
+      reset();
+    }
+  }, [active]);
+
   const activeShippingMethodPrice = convertToLocale({
     amount: activeShippingMethod?.amount || 0,
     currency_code,
@@ -53,88 +61,122 @@ export default function Delivery({active}: {active: boolean}) {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     if (data.shipping_method_id) {
-      await setShippingMethod(data.shipping_method_id);
+      if (data.shipping_method_id != activeShippingMethod?.id) {
+        await setShippingMethod(data.shipping_method_id);
+      }
+      setStep("payment");
     }
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      setStep("payment");
-      reset();
-    }
-  }, [isSubmitSuccessful, setStep, reset]);
 
   const isFilled = !active && !!activeShippingMethod;
 
   return (
-    <Form {...form}>
-      <form
-        className="flex flex-col gap-2 border-t py-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="flex h-10 items-center justify-between">
-          <Heading desktopSize="xl" font="serif" mobileSize="xl" tag="h3">
-            شركة الشحن
-          </Heading>
-          {isFilled && (
-            <Cta
-              onClick={() => setStep("delivery")}
-              size="sm"
-              variant="outline"
+    <div
+      onClick={() => (isFilled ? setStep("delivery") : {})}
+      className={cn({"cursor-pointer": !active})}
+    >
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-2 border-t py-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="flex h-10 items-center justify-between">
+            <Heading
+              desktopSize="xl"
+              font="serif"
+              mobileSize="xl"
+              tag="h3"
+              className={cn({"text-muted-foreground": !active})}
             >
-              تعديل
-            </Cta>
+              شركة الشحن
+            </Heading>
+            {isFilled && (
+              <div className="bg-secondary flex size-10 items-center justify-center rounded-full">
+                <Check className="size-4" />
+              </div>
+            )}
+          </div>
+          {isFilled && (
+            <div className="flex flex-1 flex-col gap-4">
+              <Body font="sans" className="text-muted-foreground text-sm">
+                {activeShippingMethod.name} ({activeShippingMethodPrice})
+              </Body>
+            </div>
           )}
-        </div>
-        {isFilled && (
-          <div className="flex flex-1 flex-col gap-4">
-            <Body font="sans">
-              {activeShippingMethod.name} ({activeShippingMethodPrice})
-            </Body>
-          </div>
-        )}
-        {active && (
-          <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="shipping_method_id"
-              render={({field}) => (
-                <FormItem>
-                  <RadioGroup
-                    dir="rtl"
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    {shippingMethods.map((item) => {
-                      const price = convertToLocale({
-                        amount: item.amount,
-                        currency_code,
-                      });
+          {active && (
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="shipping_method_id"
+                render={({field}) => (
+                  <FormItem>
+                    <RadioGroup
+                      dir="rtl"
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
+                      {shippingMethods.map((item) => {
+                        const price = convertToLocale({
+                          amount: item.amount,
+                          currency_code,
+                        });
 
-                      return (
-                        <div className="rounded-md border p-4" key={item.id}>
-                          <div className="flex items-center gap-3">
-                            <RadioGroupItem id={item.id} value={item.id} />
-                            <Label className="w-full" htmlFor={item.id}>
-                              <div className="flex w-full items-center justify-between">
-                                <Body font="sans">{item.name}</Body>
-                                <Body font="sans">{price}</Body>
-                              </div>
-                            </Label>
+                        const isSelected = field.value == item.id;
+
+                        return (
+                          <div
+                            className={cn("rounded-md border-2 p-4", {
+                              "border-primary": isSelected,
+                            })}
+                            key={item.id}
+                          >
+                            <div className="flex items-center gap-3">
+                              <RadioGroupItem id={item.id} value={item.id} />
+                              <Label
+                                className="w-full font-normal"
+                                htmlFor={item.id}
+                              >
+                                <div className="flex w-full items-center justify-between">
+                                  <div>
+                                    <Body
+                                      mobileSize="sm"
+                                      font="sans"
+                                      className="font-medium"
+                                    >
+                                      {item.name}
+                                    </Body>
+                                    <Body
+                                      mobileSize="sm"
+                                      className="text-muted-foreground block"
+                                    >
+                                      {item.type.description}
+                                    </Body>
+                                  </div>
+                                  <Body mobileSize="sm" font="sans">
+                                    {price}
+                                  </Body>
+                                </div>
+                              </Label>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </RadioGroup>
-                </FormItem>
-              )}
-            />
-            <Cta className="w-full" loading={isSubmitting} type="submit">
-              تأكيد شركة الشحن
-            </Cta>
-          </div>
-        )}
-      </form>
-    </Form>
+                        );
+                      })}
+                    </RadioGroup>
+                  </FormItem>
+                )}
+              />
+              <Cta
+                className="w-full"
+                disabled={!form.formState.isValid}
+                loading={isSubmitting}
+                type="submit"
+              >
+                تأكيد شركة الشحن
+              </Cta>
+            </div>
+          )}
+        </form>
+      </Form>
+    </div>
   );
 }

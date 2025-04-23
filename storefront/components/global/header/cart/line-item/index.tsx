@@ -10,8 +10,7 @@ import {convertToLocale} from "@/utils/medusa/money";
 import {File, X} from "lucide-react";
 
 export default function LineItem(props: MerchifyCartLineItem) {
-  const {cart, handleDeleteItem, handleUpdateCartQuantity, isUpdating} =
-    useCart();
+  const {cart, handleDeleteItem, handleUpdateItem, isUpdating} = useCart();
 
   const item = cart?.items?.find(({id}) => id === props.id);
 
@@ -56,7 +55,9 @@ export default function LineItem(props: MerchifyCartLineItem) {
         <div className="flex w-full items-center justify-between gap-4">
           <InputQuantity
             disabled={isOptimisticLine || isUpdating}
-            onChange={(newQty) => handleUpdateCartQuantity(props.id, newQty)}
+            onChange={(newQty) =>
+              handleUpdateItem(props.id, {quantity: newQty})
+            }
             quantity={item?.quantity || 0}
           />
           <button

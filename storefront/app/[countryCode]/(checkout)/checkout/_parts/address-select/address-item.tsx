@@ -42,20 +42,20 @@ export default function AddressItem({
 
   return (
     <Collapsible
-      className={cn("rounded-md border p-4", {
+      className={cn("rounded-md border-2 p-4", {
         "border-primary": isSelected,
       })}
       onOpenChange={() => onToggleOpen(address.id)}
       open={isOpen}
     >
       <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex w-full items-center gap-3">
           <RadioGroupItem id={address.id} value={address.id} />
-          <Label htmlFor={address.id} className="font-normal">
+          <Label htmlFor={address.id} className="w-full font-normal">
             <Body mobileSize="sm" className="block font-medium">
               {address.first_name} {address.last_name}
             </Body>
-            <Body mobileSize="sm" className="block">
+            <Body mobileSize="sm" className="text-muted-foreground block">
               <FormattedAddress address={address} />
             </Body>
           </Label>

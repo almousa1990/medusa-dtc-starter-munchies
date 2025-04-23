@@ -1,13 +1,5 @@
+import {GeolocationAddress} from "@/types";
 import {useState} from "react";
-
-type GeolocationAddress = {
-  address_1: string;
-  address_2: string;
-  city: string;
-  province?: string;
-  postal_code?: string;
-  country_code: string;
-};
 
 export function useGeolocationAddress() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,26 +21,12 @@ export function useGeolocationAddress() {
             const {latitude, longitude} = position.coords;
 
             try {
-              const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyD6tgox_10l0s1CUC6t26HhEbkkoCd_He0&language=ar`,
-              );
-              const data = await response.json();
-              const result = data.results?.[0];
-              const components = result?.address_components || [];
-
-              const getComponent = (type: string) =>
-                components.find((c: any) => c.types.includes(type))
-                  ?.short_name || "";
-
-              const values: GeolocationAddress = {
-                address_1:
-                  getComponent("sublocality") || getComponent("neighborhood"),
-                address_2: getComponent("route"),
-                city: getComponent("locality"),
-                province: getComponent("administrative_area_level_1"),
-                postal_code: getComponent("postal_code"),
-                country_code: getComponent("country").toLowerCase(),
-              };
+              const response = await fetch("/api/geocode", {
+                method: "POST",
+                body: JSON.stringify({latitude, longitude}),
+                headers: {"Content-Type": "application/json"},
+              });
+              const values: GeolocationAddress = await response.json();
 
               resolve(values);
             } catch (error) {

@@ -6,6 +6,9 @@ import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
+import {Badge} from "@merchify/ui";
+import {ExternalLink} from "lucide-react";
+import Heading from "@/components/shared/typography/heading";
 
 export default function LineItem(props: MerchifyCartLineItem) {
   const item = props;
@@ -28,35 +31,32 @@ export default function LineItem(props: MerchifyCartLineItem) {
       <div className="flex w-full flex-col items-start justify-start gap-4">
         <div className="flex w-full justify-between gap-3">
           <div>
-            <Body className="leading-[130%]" font="sans" mobileSize="lg">
+            <Heading font="sans" mobileSize="base" tag="h3">
               {props.product?.title}
-            </Body>
-            <Body className="mt-1" font="sans" mobileSize="sm">
+            </Heading>
+            <Body
+              className="text-muted-foreground mt-1"
+              font="sans"
+              mobileSize="sm"
+            >
               {props.title}
             </Body>
           </div>
           <div className="flex min-w-[100px] flex-col items-end">
-            <Body
-              className="font-semibold opacity-80"
-              font="sans"
-              mobileSize="base"
-            >
+            <Body dir="ltr" font="sans" mobileSize="sm">
               {item.quantity} x {unit_price}
             </Body>
-            <Body className="font-semibold" font="sans" mobileSize="base">
+            <Body className="font-medium" font="sans" mobileSize="sm">
               {item_price}
             </Body>
           </div>
         </div>
-
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] items-start gap-2">
-          {props.printfile_line_items.map((item) => (
-            <PrintfileLineItemPreviewer
-              currencyCode={item?.variant?.calculated_price?.currency_code}
-              item={item}
-              key={item.id}
-            />
-          ))}
+        <div>
+          <PrintfileLineItemPreviewer
+            currencyCode={item?.variant?.calculated_price?.currency_code}
+            items={item.printfile_line_items}
+            key={item.id}
+          />
         </div>
       </div>
     </div>

@@ -91,8 +91,14 @@ export interface MerchifyPrintfile {
 export interface MerchifyPrintfileLineItem {
   filename: string;
   id: string;
+  is_rendered_source: boolean;
   metadata?: Record<string, unknown> | null;
-  preview_url: string;
+  printfile?: {
+    preview_url: string;
+  };
+  rendition?: {
+    preview_url: string;
+  };
   title: string;
   unit_price: number;
 }
@@ -100,3 +106,12 @@ export interface MerchifyPrintfileLineItem {
 export interface MerchifyCartLineItem extends HttpTypes.StoreCartLineItem {
   printfile_line_items: MerchifyPrintfileLineItem[];
 }
+
+export type GeolocationAddress = {
+  address_1: string;
+  address_2: string;
+  city: string;
+  province?: string;
+  postal_code?: string;
+  country_code: string;
+};

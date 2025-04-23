@@ -2,17 +2,19 @@
 import type {MerchifyCartLineItem} from "@/types";
 
 import {isOptimisticItemId, useCart} from "@/components/context/cart-context";
+import {Cta} from "@/components/shared/button";
 import {InputQuantity} from "@/components/shared/input-quantity";
 import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
-import {X} from "lucide-react";
+import {Edit2, PencilRuler, X} from "lucide-react";
+import {useRouter} from "next/navigation";
 
 export default function LineItem(props: MerchifyCartLineItem) {
-  const {cart, handleDeleteItem, handleUpdateCartQuantity, isUpdating} =
-    useCart();
+  const {cart, handleDeleteItem, handleUpdateItem, isUpdating} = useCart();
   const item = props;
+  const router = useRouter();
 
   if (!((item?.quantity || 0) > 0)) return null;
 
@@ -55,22 +57,37 @@ export default function LineItem(props: MerchifyCartLineItem) {
               <InputQuantity
                 disabled={isOptimisticLine || isUpdating}
                 onChange={(newQty) =>
-                  handleUpdateCartQuantity(props.id, newQty)
+                  handleUpdateItem(props.id, {quantity: newQty})
                 }
                 quantity={item?.quantity || 0}
               />
             </div>
 
-            <div className="absolute top-0 left-0">
-              <button
-                className="text-muted-foreground hover:text-primary -m-2 inline-flex p-2"
+            <div className="absolute top-0 left-0 flex gap-2">
+              <Cta
+                className="px-2"
+                disabled={isOptimisticLine || isUpdating}
+                onClick={() =>
+                  router.push(
+                    `/editor/${props.product_handle}?lineItem=${props.id}`,
+                  )
+                }
+                type="button"
+                variant="secondary"
+              >
+                <span className="sr-only">تعديل</span>
+                <PencilRuler className="size-3" />
+              </Cta>
+              <Cta
+                className="px-2"
                 disabled={isOptimisticLine || isUpdating}
                 onClick={() => handleDeleteItem(props.id)}
                 type="button"
+                variant="secondary"
               >
                 <span className="sr-only">حذف</span>
-                <X className="size-4" />
-              </button>
+                <X className="size-3" />
+              </Cta>
             </div>
           </div>
         </div>

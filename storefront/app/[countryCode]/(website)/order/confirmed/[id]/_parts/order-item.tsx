@@ -7,9 +7,12 @@ import Image from "next/image";
 export default function OrderItem({
   currency_code,
   product,
+  product_title,
   quantity,
+  thumbnail,
   unit_price,
   variant,
+  variant_title,
 }: {currency_code: string} & StoreOrderLineItem) {
   const price = convertToLocale({
     amount: unit_price * quantity,
@@ -21,13 +24,14 @@ export default function OrderItem({
     currency_code: currency_code,
   });
 
-  const image = product?.images?.[0]?.url;
+  const image = thumbnail ?? product?.images?.[0]?.url;
+  const alt = product_title ?? "" + variant_title ?? "";
 
   return (
     <div className="flex w-full gap-2">
       {image && (
         <Image
-          alt={product.title + variant?.title}
+          alt={alt}
           className="border-accent aspect-square h-[100px] w-[100px] rounded-lg border-[1.5px]"
           height={100}
           src={image}
@@ -47,9 +51,9 @@ export default function OrderItem({
           <div className="flex flex-col items-end justify-end gap-1">
             <Body
               className="opacity-80"
+              dir="ltr"
               font="sans"
               mobileSize="base"
-              dir="ltr"
             >
               {quantity} x {unit_price_to_locale}
             </Body>

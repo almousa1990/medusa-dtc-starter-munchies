@@ -19,8 +19,8 @@ export const headingStyles = cva("", {
       xs: "lg:text-xs",
     },
     font: {
-      sans: "font-sans font-semibold leading-[120%]",
-      serif: "font-serif font-semibold leading-[120%]",
+      sans: "font-sans font-medium ",
+      serif: "font-serif font-medium ",
     },
     mobileSize: {
       "2xl": "text-2xl text-pretty tracking-[-1.12px]",

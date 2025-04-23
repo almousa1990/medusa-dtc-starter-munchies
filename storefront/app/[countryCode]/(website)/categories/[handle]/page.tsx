@@ -3,7 +3,6 @@ import type {PageProps} from "@/types";
 import PaginatedProducts, {
   ProductsSkeleton,
 } from "@/components/products/paginated-product";
-import Refinement from "@/components/products/product-refinement";
 import Heading from "@/components/shared/typography/heading";
 import {Suspense} from "react";
 import {getCategories, getCategoryByHandle} from "@/data/medusa/categories";

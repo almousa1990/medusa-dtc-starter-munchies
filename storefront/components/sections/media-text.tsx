@@ -23,7 +23,7 @@ export default function MediaText(
         },
       )}
     >
-      <div className="border-accent relative flex min-h-[390px] flex-col items-center justify-start gap-11 rounded-lg border p-4 sm:justify-center lg:w-1/2 lg:py-[4.5rem]">
+      <div className="relative flex min-h-[390px] flex-col items-center justify-start gap-11 rounded-lg border p-4 sm:justify-center lg:w-1/2 lg:py-[4.5rem]">
         <Label
           className="whitespace-nowrap sm:absolute sm:top-8 sm:left-1/2 sm:-translate-x-1/2"
           desktopSize="base"
@@ -34,9 +34,9 @@ export default function MediaText(
         </Label>
         <Body
           className="max-w-[580px] text-center text-pretty"
-          desktopSize="6xl"
+          desktopSize="4xl"
           font="serif"
-          mobileSize="4xl"
+          mobileSize="3xl"
         >
           {props.description}
         </Body>

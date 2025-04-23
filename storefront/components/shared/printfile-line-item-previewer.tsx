@@ -5,54 +5,95 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
+  Badge,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@merchify/ui";
-import {AlertCircle, Fullscreen} from "lucide-react";
+import {AlertCircle, ExternalLink, Fullscreen} from "lucide-react";
 import Image from "next/image";
 
 export default function PrintfileLineItemPreviewer({
   currencyCode,
-  item,
+  items,
 }: {
   currencyCode?: string;
-  item?: MerchifyPrintfileLineItem;
+  items?: MerchifyPrintfileLineItem[];
 }) {
-  if (!item) return null;
+  if (!items) return null;
 
-  const unit_price = convertToLocale({
-    amount: item?.unit_price || 0,
-    currency_code: (currencyCode || null)!,
-  });
+  const getPrice = (item: MerchifyPrintfileLineItem) =>
+    convertToLocale({
+      amount: item?.unit_price || 0,
+      currency_code: (currencyCode || null)!,
+    });
 
   return (
     <Dialog>
-      <DialogTrigger className="flex items-center gap-2 rounded-md border px-4 py-1 text-sm">
-        <Fullscreen className="h-4 w-4" />
-        {item.title}
-        <span className="ms-auto">{unit_price}</span>
+      <DialogTrigger className="flex items-center justify-between gap-2 rounded-md border px-4 py-1 text-sm">
+        <div className="flex gap-1">
+          <Badge>{items.length}</Badge> ملفات طباعة
+        </div>
+        <ExternalLink className="size-4" />
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>{item.title}</DialogTitle>
+        <DialogTitle> ملفات الطباعة</DialogTitle>
+        <DialogDescription className="sr-only">
+          استعراض ملفات الطباعة
+        </DialogDescription>
 
-        <Alert className="[&>svg]:right-4 [&>svg+div]:translate-y-[3px] [&>svg~*]:pr-7">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>معاينة</AlertTitle>
-          <AlertDescription>
-            الصورة لغرض المعاينة ولا توضح الأبعاد الفعلية لملف الطباعة.
-          </AlertDescription>
-        </Alert>
-        <div className="flex items-center justify-center">
-          <Image
-            alt={item.title}
-            className="h-[200px] w-[200px] object-cover"
-            height={200}
-            src={item?.preview_url || ""}
-            width={200}
-          />
-        </div>
+        <Tabs dir="rtl" className="grid gap-2">
+          <TabsList className="bg-background scrollbar-hide flex w-full justify-start gap-2 overflow-x-auto">
+            {items.map((i) => (
+              <TabsTrigger
+                className="bg-secondary text-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 data-[state=active]:shadow-none"
+                key={i.id}
+                value={i.filename}
+              >
+                {i.title}
+                <span className="text-sm font-normal">({getPrice(i)})</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          <Alert className="[&>svg]:right-4 [&>svg+div]:translate-y-[3px] [&>svg~*]:pr-7">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>معاينة</AlertTitle>
+            <AlertDescription>
+              الصورة لغرض المعاينة ولا توضح الأبعاد الفعلية لملف الطباعة.
+            </AlertDescription>
+          </Alert>
+
+          {items.map((i) => (
+            <TabsContent key={i.filename} value={i.filename}>
+              <div className="flex items-center justify-center">
+                <div
+                  style={{
+                    background: `repeating-conic-gradient(#f2f2f2 0% 25%, transparent 0% 50%) 50% / 20px 20px`,
+                  }}
+                >
+                  <Image
+                    alt={i.title}
+                    className="h-[200px] w-[200px] object-cover"
+                    height={200}
+                    src={
+                      i.is_rendered_source
+                        ? (i.rendition?.preview_url ?? "")
+                        : (i.printfile?.preview_url ?? "")
+                    }
+                    width={200}
+                  />
+                </div>
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

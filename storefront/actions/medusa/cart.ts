@@ -222,3 +222,103 @@ export const fetchCartLineItem = async (id: string) => {
   const item = cart?.items?.find((item) => item.id === id);
   return item as MerchifyCartLineItem | undefined;
 };
+
+export async function addDecoratedToCart({
+  printfiles,
+  quantity,
+  region_id,
+  variantId,
+}: {
+  printfiles: {editor_session_id: string; filename: string}[];
+  quantity: number;
+  region_id: string;
+  variantId: string;
+}) {
+  if (!variantId) {
+    throw new Error("Missing variant ID when adding to cart");
+  }
+
+  let cartId = await getCartId();
+
+  if (!cartId) {
+    if (!region_id) throw new Error("Error missing region id");
+
+    cartId = (await createCart(region_id)).id;
+  }
+
+  if (!cartId) {
+    throw new Error("Error retrieving or creating cart");
+  }
+
+  const headers = await getAuthHeaders();
+
+  const cacheTag = await getCacheTag("carts");
+
+  return medusa.client
+    .fetch(`/store/carts/${cartId}/decorated-line-items`, {
+      body: {
+        items: [
+          {
+            quantity,
+            variant_id: variantId,
+          },
+        ],
+        printfiles,
+      },
+      headers,
+      method: "POST",
+      query: {},
+    })
+    .then(() => {
+      revalidateTag(cacheTag);
+    })
+    .catch(medusaError);
+}
+
+export async function updateCartDecoratedLineItem({
+  countryCode = "us",
+  lineItem,
+  printfiles,
+  quantity,
+}: {
+  countryCode: string;
+  lineItem: string;
+  printfiles?: {editor_session_id: string; filename: string}[];
+  quantity?: number;
+}) {
+  const cart = await getOrSetCart(countryCode);
+
+  if (!cart) {
+    throw new Error("Error retrieving or creating cart");
+  }
+
+  const cacheTag = await getCacheTag("carts");
+
+  const headers = await getAuthHeaders();
+
+  if (quantity != undefined && !(quantity > 0)) {
+    await medusa.client
+      .fetch(`/store/carts/${cart.id}/decorated-line-items/${lineItem}`, {
+        headers,
+        method: "DELETE",
+      })
+      .then(() => {
+        revalidateTag(cacheTag);
+      })
+      .catch(medusaError);
+  } else {
+    await medusa.client
+      .fetch(`/store/carts/${cart.id}/decorated-line-items/${lineItem}`, {
+        body: {
+          printfiles,
+          quantity,
+        },
+        headers,
+        method: "POST",
+      })
+      .then(() => {
+        revalidateTag(cacheTag);
+      })
+      .catch(medusaError);
+  }
+}

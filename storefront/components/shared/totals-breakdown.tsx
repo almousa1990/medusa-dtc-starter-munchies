@@ -4,11 +4,14 @@ import {convertToLocale} from "@/utils/medusa/money";
 
 import Body from "./typography/body";
 import Heading from "./typography/heading";
+import {cn} from "@merchify/ui";
 
 export function TotalsBreakdown({
   data,
+  className,
 }: {
   data: HttpTypes.StoreCart | HttpTypes.StoreOrder;
+  className?: string;
 }) {
   const summaryItems = [
     {amount: data.original_item_subtotal, label: "مجموع المنتجات"},
@@ -22,7 +25,7 @@ export function TotalsBreakdown({
   const total = {amount: data.total, label: "الاجمالي"};
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex flex-col gap-2", className)}>
       {summaryItems.map((item) => (
         <TotalsItem
           amount={item.amount}
@@ -48,7 +51,7 @@ function GrandTotal({
 
   return (
     <>
-      <div className="bg-accent h-px w-full" />
+      <div className="bg-border mt-4 h-px w-full" />
       <div className="flex items-center justify-between">
         <Heading desktopSize="lg" font="sans" mobileSize="xl" tag="h3">
           {label}
@@ -74,7 +77,7 @@ function TotalsItem({
 
   return (
     <div className="flex items-center justify-between">
-      <Body font="sans" mobileSize="base">
+      <Body font="sans" mobileSize="base" className="text-muted-foreground">
         {label}
       </Body>
       <Body font="sans" mobileSize="base">

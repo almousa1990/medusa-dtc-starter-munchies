@@ -12,6 +12,7 @@ import {
   Label,
   cn,
 } from "@merchify/ui";
+import {Plus} from "lucide-react";
 
 export default function AddAddressItem({
   defaultAddress,
@@ -28,7 +29,7 @@ export default function AddAddressItem({
 }) {
   return (
     <Collapsible
-      className={cn("w-full rounded-md border p-4 text-right", {
+      className={cn("w-full rounded-md border-2 p-4 text-right", {
         "border-dashed": !open,
         "border-primary": open,
       })}
@@ -37,7 +38,10 @@ export default function AddAddressItem({
     >
       <CollapsibleTrigger asChild>
         <div className="flex items-center gap-2">
-          <Label htmlFor="new">إضافة عنوان جديد</Label>
+          <Label htmlFor="new">
+            <Plus className="me-1 inline-block" />
+            إضافة عنوان جديد
+          </Label>
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="pt-4">

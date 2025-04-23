@@ -6,11 +6,13 @@ import FormattedAddress from "@/components/shared/formatted-address";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormField, FormItem} from "@merchify/ui";
+import {cn, Form, FormField, FormItem} from "@merchify/ui";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 import AddressSelect from "../../address-select";
+import {useEffect, useState} from "react";
+import {Check} from "lucide-react";
 
 const formSchema = z.object({
   customer_address_id: z.string().nullable(),
@@ -36,6 +38,12 @@ export default function Address({active}: {active: boolean}) {
     reset,
   } = form;
 
+  useEffect(() => {
+    if (!active) {
+      reset();
+    }
+  }, [active]);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const address = customer.addresses.find(
       (address) => address.id == data.customer_address_id,
@@ -58,6 +66,7 @@ export default function Address({active}: {active: boolean}) {
         postal_code: address.postal_code || undefined,
         province: address.province || undefined,
       });
+
       form.setValue("customer_address_id", address.id);
       setStep(nextStep);
     }
@@ -67,57 +76,64 @@ export default function Address({active}: {active: boolean}) {
   const customerAddressId = form.watch("customer_address_id");
 
   return (
-    <Form {...form}>
-      <form
-        className="border-accent flex flex-col gap-2 pb-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="flex h-10 items-center justify-between">
-          <Heading desktopSize="xl" font="serif" mobileSize="xl" tag="h3">
-            عنوان التوصيل
-          </Heading>
-          {isFilled && (
-            <Cta
-              onClick={() => setStep("addresses")}
-              size="sm"
-              variant="outline"
+    <div
+      onClick={() => (isFilled ? setStep("addresses") : {})}
+      className={cn({"cursor-pointer": !active})}
+    >
+      <Form {...form}>
+        <form
+          className="border-accent flex flex-col gap-2 pb-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="flex h-10 items-center justify-between">
+            <Heading
+              desktopSize="xl"
+              font="serif"
+              mobileSize="xl"
+              tag="h3"
+              className={cn({"text-muted-foreground": !active})}
             >
-              تعديل
-            </Cta>
-          )}
-        </div>
-        {isFilled && cart.shipping_address && (
-          <Body font="sans">
-            <FormattedAddress address={cart.shipping_address} />
-          </Body>
-        )}
-        {active && (
-          <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="customer_address_id"
-              render={({field}) => (
-                <FormItem>
-                  <AddressSelect
-                    countries={cart.region?.countries}
-                    customer={customer}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  />
-                </FormItem>
-              )}
-            />
-            <Cta
-              className="w-full"
-              disabled={!customerAddressId}
-              loading={isSubmitting}
-              type="submit"
-            >
-              تأكيد العنوان
-            </Cta>
+              عنوان التوصيل
+            </Heading>
+            {isFilled && (
+              <div className="bg-secondary flex size-10 items-center justify-center rounded-full">
+                <Check className="size-4" />
+              </div>
+            )}
           </div>
-        )}
-      </form>
-    </Form>
+          {isFilled && cart.shipping_address && (
+            <Body font="sans" className="text-muted-foreground text-sm">
+              <FormattedAddress address={cart.shipping_address} />
+            </Body>
+          )}
+          {active && (
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="customer_address_id"
+                render={({field}) => (
+                  <FormItem>
+                    <AddressSelect
+                      countries={cart.region?.countries}
+                      customer={customer}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    />
+                  </FormItem>
+                )}
+              />
+              <Cta
+                className="w-full"
+                disabled={!customerAddressId}
+                loading={isSubmitting}
+                type="submit"
+              >
+                تأكيد العنوان
+              </Cta>
+            </div>
+          )}
+        </form>
+      </Form>
+    </div>
   );
 }

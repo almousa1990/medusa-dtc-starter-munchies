@@ -178,14 +178,15 @@ export async function login(verificationToken: string) {
     });
 
     const oldToken = await getAuthToken();
-    if (oldToken) {
-      await transferSession(oldToken);
-    }
 
     await setAuthToken(token as string);
 
     const customerCacheTag = await getCacheTag("customers");
     revalidateTag(customerCacheTag);
+
+    if (oldToken) {
+      await transferSession(oldToken);
+    }
 
     const customer = await getCustomer();
 
