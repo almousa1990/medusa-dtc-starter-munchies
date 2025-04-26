@@ -1,8 +1,9 @@
-import type {PageProps} from "@/types";
-import type {HttpTypes} from "@medusajs/types";
+import type {MerchifyCartLineItem, PageProps} from "@/types";
 
-import {CheckoutProvider} from "@/components/context/checkout-context";
-import LocalizedLink from "@/components/shared/localized-link";
+import {
+  CheckoutProvider,
+  CheckoutStep,
+} from "@/components/context/checkout-context";
 import {getCart} from "@/data/medusa/cart";
 import {getCustomer} from "@/data/medusa/customer";
 import {
@@ -15,9 +16,12 @@ import {redirect} from "next/navigation";
 import CartDetails from "./_parts/cart-details";
 import CheckoutForm from "./_parts/checkout-form";
 
-export default async function CheckoutPage(props: PageProps<"countryCode">) {
+export default async function CheckoutPage(
+  props: PageProps<"countryCode", "step" | "error">,
+) {
   const params = await props.params;
-
+  const step = (await props.searchParams).step as CheckoutStep;
+  const error = (await props.searchParams).error as string;
   const {countryCode} = params;
 
   const cart = await getCart();
@@ -31,7 +35,7 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
     cart.items = (await enrichLineItems(
       cart.items,
       cart.region_id,
-    )) as HttpTypes.StoreCartLineItem[];
+    )) as MerchifyCartLineItem[];
   }
 
   const shippingMethods = (await listCartShippingMethods(cart.id)) || [];
@@ -40,6 +44,8 @@ export default async function CheckoutPage(props: PageProps<"countryCode">) {
   return (
     <CheckoutProvider
       value={{
+        error,
+        initialStep: step,
         cart,
         customer,
         paymentMethods,

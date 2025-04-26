@@ -72,7 +72,7 @@ export default function Delivery({active}: {active: boolean}) {
 
   return (
     <div
-      onClick={() => (isFilled ? setStep("delivery") : {})}
+      onClick={() => (shippingMethods.length ? setStep("delivery") : {})}
       className={cn({"cursor-pointer": !active})}
     >
       <Form {...form}>
@@ -125,9 +125,12 @@ export default function Delivery({active}: {active: boolean}) {
 
                         return (
                           <div
-                            className={cn("rounded-md border-2 p-4", {
-                              "border-primary": isSelected,
-                            })}
+                            className={cn(
+                              "border-muted rounded-md border-2 bg-transparent p-4",
+                              {
+                                "border-primary": isSelected,
+                              },
+                            )}
                             key={item.id}
                           >
                             <div className="flex items-center gap-3">

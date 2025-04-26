@@ -23,7 +23,7 @@ export default function PrintfileLineItemPreviewer({
   currencyCode,
   items,
 }: {
-  currencyCode?: string;
+  currencyCode?: string | null;
   items?: MerchifyPrintfileLineItem[];
 }) {
   if (!items) return null;
@@ -36,10 +36,8 @@ export default function PrintfileLineItemPreviewer({
 
   return (
     <Dialog>
-      <DialogTrigger className="flex items-center justify-between gap-2 rounded-md border px-4 py-1 text-sm">
-        <div className="flex gap-1">
-          <Badge>{items.length}</Badge> ملفات طباعة
-        </div>
+      <DialogTrigger className="flex w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm">
+        <div className="flex gap-1">{items.length} x ملفات طباعة</div>
         <ExternalLink className="size-4" />
       </DialogTrigger>
       <DialogContent>

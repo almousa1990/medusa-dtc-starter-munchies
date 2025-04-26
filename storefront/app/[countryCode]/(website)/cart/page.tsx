@@ -23,6 +23,7 @@ type CartPageProps = PageProps<"countryCode">;
 export default async function CartPage(props: CartPageProps) {
   const cart = await getCart();
   const params = await props.params;
+  console.log(cart);
 
   return cart?.items?.length ? (
     <CartProvider cart={cart} countryCode={params.countryCode}>
@@ -49,8 +50,8 @@ export default async function CartPage(props: CartPageProps) {
               <TotalsBreakdown data={cart} />
               <div className="bg-secondary -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
                 <Label>
-                  <TicketPercent className="me-1 inline-block" /> هل لديك كود
-                  خصم؟
+                  <TicketPercent className="me-1 inline-block size-5" /> هل لديك
+                  كود خصم؟
                 </Label>
                 <PromotionForm cart={cart} />
               </div>

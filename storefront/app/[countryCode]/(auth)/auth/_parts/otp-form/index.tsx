@@ -14,6 +14,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
   cn,
+  useToast,
 } from "@merchify/ui";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -22,12 +23,13 @@ import {z} from "zod";
 const REFRESH_COOLDOWN = 30;
 
 interface OtpFormProps {
+  disabled?: boolean;
+
   input: {
     email?: string;
     phone?: string;
     stateKey: string;
   };
-  onError: (message: string) => void;
   onRestart: () => void;
   onSuccess: (token: string) => Promise<void>;
 }
@@ -38,11 +40,11 @@ const formSchema = z.object({
 
 export default function OtpForm({
   input,
-  onError,
   onRestart,
   onSuccess,
+  disabled,
 }: OtpFormProps) {
-  const method = input.phone ? "phone" : "email";
+  const {toast} = useToast();
 
   const [stateKey, setStateKey] = useState(input.stateKey);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,6 +57,9 @@ export default function OtpForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (disabled) {
+      return;
+    }
     const response = await verifyOtp({
       otp: values.otp,
       stateKey: stateKey,
@@ -68,7 +73,6 @@ export default function OtpForm({
         message: response.error, // ✅ this will show inside <FormMessage />
         type: "manual",
       });
-      onError(response.error);
     }
   }
 
@@ -82,10 +86,16 @@ export default function OtpForm({
       setStateKey(response.stateKey);
     } else {
       setStateKey("");
-      onError(response.error);
+
+      toast({
+        description: response.error,
+        variant: "destructive",
+      });
       onRestart();
     }
   }
+
+  const isDisabled = disabled || form.formState.isSubmitting;
 
   return (
     <>
@@ -112,7 +122,7 @@ export default function OtpForm({
                   <FormControl>
                     <InputOTP
                       className="mx-auto"
-                      disabled={form.formState.isSubmitting}
+                      disabled={isDisabled}
                       maxLength={6}
                       onComplete={() => form.handleSubmit(onSubmit)()}
                       {...field}
@@ -131,12 +141,12 @@ export default function OtpForm({
                       </InputOTPGroup>
                     </InputOTP>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-center" />
                 </FormItem>
               )}
             />
             <ResendButton
-              className={cn({hidden: form.formState.isSubmitting})}
+              className={cn({hidden: isDisabled})}
               onClick={onResend}
             />
           </div>
@@ -144,7 +154,7 @@ export default function OtpForm({
           <Cta
             className="w-full"
             data-testid="sign-in-button"
-            loading={form.formState.isSubmitting}
+            loading={isDisabled}
           >
             الاستمرار
           </Cta>
@@ -153,7 +163,7 @@ export default function OtpForm({
 
       <Cta
         className="w-full"
-        disabled={form.formState.isSubmitting}
+        disabled={isDisabled}
         onClick={onRestart}
         size="sm"
         variant="ghost"

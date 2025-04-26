@@ -47,32 +47,6 @@ export async function placeOrder() {
   return cartRes.cart;
 }
 
-export async function initiatePaymentSession(
-  state: ActionState,
-  payaload: {
-    cart: StoreCart;
-    data: {
-      context?: Record<string, unknown>;
-      provider_id: string;
-    };
-  },
-): Promise<ActionState> {
-  return medusa.store.payment
-    .initiatePaymentSession(
-      payaload.cart,
-      payaload.data,
-      {},
-      await getAuthHeaders(),
-    )
-    .then(async () => {
-      revalidateTag(await getCacheTag("carts"));
-      return {error: null, status: "success"} as const;
-    })
-    .catch((e) => {
-      return {error: e.message, status: "error"};
-    });
-}
-
 export async function setCheckoutAddresses(
   address: HttpTypes.StoreUpdateCustomerAddress,
 ): Promise<ActionState> {

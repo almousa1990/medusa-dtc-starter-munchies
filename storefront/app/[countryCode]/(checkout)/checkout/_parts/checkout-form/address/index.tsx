@@ -39,10 +39,13 @@ export default function Address({active}: {active: boolean}) {
   } = form;
 
   useEffect(() => {
-    if (!active) {
-      reset();
+    if (active && cart?.shipping_address?.metadata?.customer_address_id) {
+      reset({
+        customer_address_id: cart.shipping_address.metadata
+          .customer_address_id as string,
+      });
     }
-  }, [active]);
+  }, [active, cart?.shipping_address?.metadata?.customer_address_id]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     const address = customer.addresses.find(
@@ -77,7 +80,7 @@ export default function Address({active}: {active: boolean}) {
 
   return (
     <div
-      onClick={() => (isFilled ? setStep("addresses") : {})}
+      onClick={() => (isFilled ? setStep("address") : {})}
       className={cn({"cursor-pointer": !active})}
     >
       <Form {...form}>
@@ -106,8 +109,12 @@ export default function Address({active}: {active: boolean}) {
               <FormattedAddress address={cart.shipping_address} />
             </Body>
           )}
+
           {active && (
             <div className="flex flex-col gap-4">
+              {!customer.addresses?.length && cart.shipping_address && (
+                <FormattedAddress address={cart.shipping_address} />
+              )}
               <FormField
                 control={form.control}
                 name="customer_address_id"
@@ -117,7 +124,7 @@ export default function Address({active}: {active: boolean}) {
                       countries={cart.region?.countries}
                       customer={customer}
                       onValueChange={field.onChange}
-                      value={field.value}
+                      value={customerAddressId}
                     />
                   </FormItem>
                 )}

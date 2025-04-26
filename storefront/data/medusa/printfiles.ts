@@ -1,4 +1,4 @@
-import type {MerchifyProduct} from "@/types";
+import type {MerchifyPrintfileTemplate, MerchifyProduct} from "@/types";
 
 import {unstable_cache} from "next/cache";
 
@@ -52,7 +52,7 @@ export const getProductPrintfiles = async (product_id: string) => {
   //todo typing
   const headers = await getAuthHeaders();
   return medusa.client
-    .fetch<{printfiles: any[]}>( //todo typing
+    .fetch<{printfiles: MerchifyPrintfileTemplate[]}>( //todo typing
       `/store/products/${product_id}/printfiles`,
       {
         headers,

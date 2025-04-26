@@ -3,6 +3,9 @@ import {type ComponentProps} from "react";
 import {preload} from "react-dom";
 
 export const icons = {
+  ApplePay: "/icons/apple-pay.svg",
+  Mada: "/icons/mada.svg",
+  CreditCard: "/icons/credit-card.svg",
   AccordionBottom: "/icons/accordion-bottom.svg",
   AccordionLeft: "/icons/accordion-left.svg",
   AccordionRight: "/icons/accordion-right.svg",
@@ -27,6 +30,9 @@ export const icons = {
 type Icon = keyof typeof icons;
 
 export const iconAlts: Record<Icon, string> = {
+  ApplePay: "Apple Pay",
+  Mada: "Mada",
+  CreditCard: "Credit Card",
   AccordionBottom: "Accordion Bottom",
   AccordionLeft: "Accordion Left",
   AccordionRight: "Accordion Right",

@@ -6,8 +6,6 @@ import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
-import {Badge} from "@merchify/ui";
-import {ExternalLink} from "lucide-react";
 import Heading from "@/components/shared/typography/heading";
 
 export default function LineItem(props: MerchifyCartLineItem) {
@@ -26,9 +24,9 @@ export default function LineItem(props: MerchifyCartLineItem) {
   });
 
   return (
-    <div className="flex items-start justify-between space-x-4">
-      <LineItemThumbnail item={item} />
-      <div className="flex w-full flex-col items-start justify-start gap-4">
+    <div className="flex items-start justify-between space-x-4 pb-4">
+      <LineItemThumbnail item={item} className="size-24 sm:size-24" />
+      <div className="flex w-full flex-col items-start justify-start gap-2">
         <div className="flex w-full justify-between gap-3">
           <div>
             <Heading font="sans" mobileSize="base" tag="h3">
@@ -51,7 +49,7 @@ export default function LineItem(props: MerchifyCartLineItem) {
             </Body>
           </div>
         </div>
-        <div>
+        <div className="w-full">
           <PrintfileLineItemPreviewer
             currencyCode={item?.variant?.calculated_price?.currency_code}
             items={item.printfile_line_items}

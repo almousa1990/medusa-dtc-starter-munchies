@@ -1,6 +1,6 @@
 "use client";
 
-import type {MerchifyPrintfile, MerchifyProduct} from "@/types";
+import type {MerchifyPrintfileRenderInput, MerchifyProduct} from "@/types";
 import type {StoreRegion} from "@medusajs/types";
 
 import {
@@ -41,7 +41,7 @@ export function EditorWrapper(props: EditorWrapperProps) {
   const {handleUpdateItem} = useCart();
 
   const handleSubmit = async (data: {
-    printfiles: MerchifyPrintfile[];
+    printfiles: MerchifyPrintfileRenderInput[];
     selected_variant: string;
   }) => {
     const {printfiles, selected_variant} = data;

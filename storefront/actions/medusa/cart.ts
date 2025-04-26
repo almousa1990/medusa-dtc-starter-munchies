@@ -1,6 +1,6 @@
 "use server";
 
-import type {MerchifyCartLineItem} from "@/types";
+import type {MerchifyCartLineItem, MerchifyPrintfileRenderInput} from "@/types";
 import type {HttpTypes, StoreUpdateCart} from "@medusajs/types";
 
 import {getCart} from "@/data/medusa/cart";
@@ -229,7 +229,7 @@ export async function addDecoratedToCart({
   region_id,
   variantId,
 }: {
-  printfiles: {editor_session_id: string; filename: string}[];
+  printfiles: MerchifyPrintfileRenderInput[];
   quantity: number;
   region_id: string;
   variantId: string;
@@ -283,7 +283,7 @@ export async function updateCartDecoratedLineItem({
 }: {
   countryCode: string;
   lineItem: string;
-  printfiles?: {editor_session_id: string; filename: string}[];
+  printfiles?: MerchifyPrintfileRenderInput[];
   quantity?: number;
 }) {
   const cart = await getOrSetCart(countryCode);

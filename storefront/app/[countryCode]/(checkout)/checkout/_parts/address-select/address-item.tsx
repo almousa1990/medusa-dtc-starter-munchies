@@ -42,11 +42,26 @@ export default function AddressItem({
 
   return (
     <Collapsible
-      className={cn("rounded-md border-2 p-4", {
+      className={cn("border-muted rounded-md border-2 bg-transparent p-4", {
         "border-primary": isSelected,
       })}
       onOpenChange={() => onToggleOpen(address.id)}
       open={isOpen}
+      onClick={(e) => {
+        const target = e.target as HTMLElement;
+
+        // Prevent triggering if clicking inside the radio or label
+        if (
+          target.closest("label") || // this might include the Label or any nested child like <Body>
+          target.closest("input[type='radio']")
+        ) {
+          return;
+        }
+
+        console.log("clicked");
+
+        onSelect(address.id);
+      }}
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex w-full items-center gap-3">

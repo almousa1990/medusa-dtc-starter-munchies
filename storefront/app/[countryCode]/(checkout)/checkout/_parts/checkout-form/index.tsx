@@ -5,10 +5,9 @@ import Heading from "@/components/shared/typography/heading";
 import Address from "./address";
 import Delivery from "./delivery";
 import Payment from "./payment";
-import Review from "./review";
 
 export default function CheckoutForm() {
-  const {cart, shippingMethods, step} = useCheckout();
+  const {shippingMethods, error, step} = useCheckout();
 
   return (
     <div className="mx-auto max-w-lg lg:max-w-none">
@@ -16,12 +15,11 @@ export default function CheckoutForm() {
         إتمام الطلب
       </Heading>
 
-      <Address active={step === "addresses"} />
+      <Address active={step === "address"} />
 
       {shippingMethods.length > 0 && <Delivery active={step === "delivery"} />}
 
       <Payment active={step === "payment"} />
-      <Review active={step === "review"} cart={cart} />
     </div>
   );
 }

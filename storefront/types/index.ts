@@ -1,4 +1,5 @@
 import type {HttpTypes} from "@medusajs/types";
+import {BaseCalculatedPriceSet} from "@medusajs/types/dist/http/pricing/common";
 
 export type Prettify<T> = {
   [K in keyof T]: T[K];
@@ -81,11 +82,43 @@ export interface MerchifyProductFeature {
   };
 }
 
-export interface MerchifyPrintfile {
+export interface MerchifyPrintfileRenderInput {
   filename: string;
+  editor_session_id: string;
+}
+
+export interface MerchifyPrintfileTemplate {
+  id: string;
+  filename: string;
+  display_name: string;
+  width: number;
+  height: number;
+  minDpi: number;
+  dpi: number;
+  editor_id: string;
+  editor: MerchifyPrintfileEditor;
+  rank: number;
+  calculated_price?: BaseCalculatedPriceSet;
+  decoration_method: MerchifyPrintfileDecorationMethod;
   metadata?: Record<string, unknown> | null;
-  objects: Record<string, unknown>[];
-  version?: number;
+}
+
+export interface MerchifyPrintfileEditor {
+  id: string;
+  layout_file: string;
+  configuations?: Record<string, unknown> | null;
+  default_objects?: Record<string, Record<string, unknown>> | null;
+  metadata?: Record<string, unknown> | null;
+}
+
+export interface MerchifyPrintfileDecorationMethod {
+  id: string;
+  name: string;
+  description: string;
+  handle: number;
+  restrictions: Record<string, boolean> | null;
+  color_palette?: Record<string, string> | null;
+  metadata?: Record<string, unknown> | null;
 }
 
 export interface MerchifyPrintfileLineItem {
@@ -101,6 +134,10 @@ export interface MerchifyPrintfileLineItem {
   };
   title: string;
   unit_price: number;
+}
+
+export interface MerchifyCart extends Omit<HttpTypes.StoreCart, "items"> {
+  items?: MerchifyCartLineItem[];
 }
 
 export interface MerchifyCartLineItem extends HttpTypes.StoreCartLineItem {

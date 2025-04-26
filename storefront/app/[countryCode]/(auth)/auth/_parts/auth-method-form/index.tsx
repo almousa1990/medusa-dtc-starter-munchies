@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  useToast,
 } from "@merchify/ui";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -40,7 +41,7 @@ const formSchema = z
   });
 
 interface AuthMethodFormProps {
-  onError: (message: string) => void;
+  disabled?: boolean;
   onSuccess: (
     stateKey: string,
     type: "email" | "phone",
@@ -49,10 +50,11 @@ interface AuthMethodFormProps {
 }
 
 export default function AuthMethodForm({
-  onError,
   onSuccess,
+  disabled,
 }: AuthMethodFormProps) {
   const [method, setMethod] = useState<"email" | "phone">("phone");
+  const {toast} = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -66,17 +68,23 @@ export default function AuthMethodForm({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (disabled) {
+      return;
+    }
     const identifier = values.phone || values.email;
-    const data = await generateOtp({
+    const response = await generateOtp({
       identifier,
       type: method,
     });
 
-    if (data.success) {
+    if (response.success) {
       form.reset();
-      onSuccess(data.stateKey, method, identifier);
+      onSuccess(response.stateKey, method, identifier);
     } else {
-      onError(data.error);
+      toast({
+        description: response.error,
+        variant: "destructive",
+      });
     }
   }
 

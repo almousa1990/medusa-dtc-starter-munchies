@@ -52,8 +52,8 @@ export default function LineItem(props: MerchifyCartLineItem) {
             </Body>
           </div>
 
-          <div className="mt-4 sm:mt-0 sm:pr-9">
-            <div className="inline-grid w-full max-w-16 grid-cols-1">
+          <div className="mt-4 sm:mt-0">
+            <div className="inline-grid w-full max-w-24 grid-cols-1">
               <InputQuantity
                 disabled={isOptimisticLine || isUpdating}
                 onChange={(newQty) =>
@@ -92,15 +92,10 @@ export default function LineItem(props: MerchifyCartLineItem) {
           </div>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] items-start gap-2">
-          {props.printfile_line_items.map((item) => (
-            <PrintfileLineItemPreviewer
-              currencyCode={cart?.currency_code}
-              item={item}
-              key={item.id}
-            />
-          ))}
-        </div>
+        <PrintfileLineItemPreviewer
+          currencyCode={cart?.currency_code}
+          items={props.printfile_line_items}
+        />
       </div>
     </div>
   );

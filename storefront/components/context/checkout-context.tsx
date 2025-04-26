@@ -5,16 +5,20 @@ import type {
   StoreCustomer,
   StorePaymentProvider,
 } from "@medusajs/types";
+import {useToast} from "@merchify/ui";
 
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
+
+export type CheckoutStep = "address" | "delivery" | "payment" | "review";
 
 interface CheckoutContextType {
   cart: StoreCart;
+  error: string;
   customer: StoreCustomer;
   paymentMethods: StorePaymentProvider[];
   setStep: (step: CheckoutContextType["step"]) => void;
   shippingMethods: StoreCartShippingOption[];
-  step: "addresses" | "delivery" | "payment" | "review";
+  step: CheckoutStep;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(
@@ -34,10 +38,29 @@ export const CheckoutProvider = ({
 }: {
   children: React.ReactNode;
   value: {
+    error?: string;
     initialStep?: CheckoutContextType["step"];
   } & Omit<CheckoutContextType, "setStep" | "step">;
 }) => {
+  const {toast} = useToast();
+
+  useEffect(() => {
+    if (!value.error) return;
+
+    const timeout = setTimeout(() => {
+      toast({
+        description: value.error,
+        variant: "destructive",
+      });
+    }, 0);
+
+    return () => clearTimeout(timeout);
+  }, [value.error, toast]);
+
   const initialStep: CheckoutContextType["step"] = (() => {
+    if (value.initialStep) {
+      return value.initialStep;
+    }
     const shippingSet = !!value.cart.shipping_address?.address_1;
     const shippingMethodsAvailable = value.shippingMethods.length > 0;
     const shippingMethodSelected = !!value.cart.shipping_methods?.[0];
@@ -50,7 +73,7 @@ export const CheckoutProvider = ({
       }
     }
 
-    return "addresses";
+    return "address";
   })();
 
   const [step, setStep] = useState<CheckoutContextType["step"]>(initialStep);

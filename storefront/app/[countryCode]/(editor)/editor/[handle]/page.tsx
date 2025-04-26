@@ -23,8 +23,8 @@ type EditorPageProps = PageProps<
 export default async function EditorPage(props: EditorPageProps) {
   const params = await props.params;
   const searchParams = await props.searchParams;
-  const variant = (searchParams.variant as string) ?? undefined;
-  const lineItem = (searchParams.lineItem as string) ?? undefined;
+  const variantId = (searchParams.variant as string) ?? undefined;
+  const lineItemId = (searchParams.lineItem as string) ?? undefined;
 
   const region = await getRegion(params.countryCode);
 
@@ -34,6 +34,10 @@ export default async function EditorPage(props: EditorPageProps) {
   }
 
   const cart = await getCart();
+
+  const lineItem = cart?.items?.find((i) => i.id == lineItemId);
+
+  const selectedVariantId = lineItem?.variant_id ?? variantId;
 
   const product = await getPrintfileProductByHandle(params.handle, region.id);
 
@@ -46,13 +50,16 @@ export default async function EditorPage(props: EditorPageProps) {
   const session = await getSession();
 
   const sessions = await getPrintfileEditorSessions({
-    line_item_id: lineItem,
+    line_item_id: lineItemId,
     product_id: product.id,
   });
 
   const printfiles = await getProductPrintfiles(product.id);
 
-  console.log("sessions", sessions);
+  if (!printfiles) {
+    console.log("No templates found");
+    return notFound();
+  }
 
   return (
     <CartProvider cart={cart} countryCode={params.countryCode}>
@@ -60,11 +67,11 @@ export default async function EditorPage(props: EditorPageProps) {
 
       <EditorWrapper
         countryCode={params.countryCode}
-        lineItem={lineItem}
+        lineItem={lineItemId}
         printfiles={printfiles}
         product={product}
         region={region}
-        selectedVariant={variant}
+        selectedVariant={selectedVariantId}
         sessions={sessions}
       />
     </CartProvider>

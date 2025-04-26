@@ -6,9 +6,10 @@ import PreventBackNavigationSmoothScroll from "@/components/prevent-back-navigat
 import config from "@/config";
 import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
-import {Cta} from "@/components/shared/button";
+import {Cta, Link} from "@/components/shared/button";
 import {ChevronRight} from "lucide-react";
 import LocalizedLink from "@/components/shared/localized-link";
+import {Toaster} from "@merchify/ui";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">
@@ -46,16 +47,12 @@ export default async function Layout(props: LayoutProps) {
       <header className="bg-background relative border-b text-sm font-medium">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between">
-            <Cta variant="secondary">
+            <Link href={`/cart`} variant="secondary">
               <ChevronRight />
               <span className="hidden lg:block">العودة للسلة</span>
-            </Cta>
+            </Link>
             <LocalizedLink className="" href="/" prefetch>
-              <img
-                alt="Mubchies logo"
-                className="h-4 w-fit"
-                src="/images/logo.svg"
-              />
+              <img alt="Mubchies logo" className="h-4" src="/images/logo.svg" />
             </LocalizedLink>
           </div>
         </div>
@@ -64,6 +61,8 @@ export default async function Layout(props: LayoutProps) {
       <main className="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8">
         {children}
       </main>
+
+      <Toaster />
     </>
   );
 }

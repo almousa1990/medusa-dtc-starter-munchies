@@ -6,20 +6,21 @@ import {fetchCartLineItem} from "@/actions/medusa/cart";
 import clsx from "clsx";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";
+import {cn} from "@merchify/ui";
+import {Loader2} from "lucide-react";
 
 export default function LineItemThumbnail({
   item: initialItem,
+  className,
   pollingInterval = 5000,
 }: {
   item: MerchifyCartLineItem;
   pollingInterval?: number;
+  className?: string;
 }) {
   const [item, setItem] = useState<MerchifyCartLineItem>(initialItem);
   const [isLoading, setIsLoading] = useState(
-    Boolean(
-      item.metadata?.mockup_rendition_id &&
-        !item.metadata?.mockup_thumbnail_generated,
-    ),
+    Boolean(item.metadata?.pending_mockup),
   );
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -31,10 +32,7 @@ export default function LineItemThumbnail({
       const updatedItem = await fetchCartLineItem(item.id);
       if (!updatedItem) return;
 
-      const shouldStillLoad = Boolean(
-        updatedItem.metadata?.mockup_rendition_id &&
-          !updatedItem.metadata?.mockup_thumbnail_generated,
-      );
+      const shouldStillLoad = Boolean(updatedItem.metadata?.pending_mockup);
 
       setItem(updatedItem);
 
@@ -50,7 +48,7 @@ export default function LineItemThumbnail({
   }, [isLoading, item.id, pollingInterval]);
 
   return (
-    <div className="relative size-24 sm:size-36">
+    <div className={cn("relative size-24 sm:size-36", className)}>
       <Image
         alt={item.title}
         className={clsx(
@@ -64,7 +62,7 @@ export default function LineItemThumbnail({
       />
       {isLoading && (
         <div className="bg-secondary absolute inset-0 flex items-center justify-center rounded-md backdrop-blur-sm">
-          <div className="border-border h-6 w-6 animate-spin rounded-full border-2 border-t-transparent" />
+          <Loader2 className="animate-spin" />
         </div>
       )}
     </div>

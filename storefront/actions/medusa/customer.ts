@@ -3,7 +3,7 @@
 import type {HttpTypes} from "@medusajs/types";
 
 import medusa from "@/data/medusa/client";
-import {getAuthHeaders, getCacheTag} from "@/data/medusa/cookies";
+import {getAuthHeaders, getCacheTag, getCartId} from "@/data/medusa/cookies";
 import medusaError from "@/utils/medusa/error";
 import {revalidateTag} from "next/cache";
 
@@ -84,3 +84,17 @@ export const updateCustomerAddress = async (
       return {error: err.toString(), success: false};
     });
 };
+
+export async function transferCart() {
+  const cartId = await getCartId();
+
+  if (!cartId) {
+    return;
+  }
+
+  const headers = await getAuthHeaders();
+
+  await medusa.store.cart.transferCart(cartId, {}, headers);
+
+  revalidateTag("cart");
+}

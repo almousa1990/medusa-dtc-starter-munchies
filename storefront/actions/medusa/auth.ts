@@ -8,12 +8,15 @@ import {
   getAuthToken,
   getCacheHeaders,
   getCacheTag,
+  getCartId,
   removeAuthToken,
   setAuthToken,
+  setCartId,
 } from "@/data/medusa/cookies";
 import {getCustomer} from "@/data/medusa/customer";
 import {revalidateTag} from "next/cache";
 import {redirect} from "next/navigation";
+import {transferCart} from "./customer";
 
 export async function signout() {
   await medusa.auth.logout();
@@ -31,13 +34,13 @@ export async function generateOtp(payload: {
 > {
   const {identifier, type} = payload;
 
-  if (!identifier) {
-    return {error: "Identifier must be defined", success: false};
-  }
+  const headers = await getAuthHeaders();
+  const next = await getCacheHeaders("customers");
 
   try {
-    const headers = await getAuthHeaders();
-    const next = await getCacheHeaders("customers");
+    if (!identifier) {
+      throw new Error(`Identifier must be defined`);
+    }
 
     const response = await medusa.client.fetch<{stateKey: string}>(
       "/verification/generate",
@@ -65,10 +68,10 @@ export async function verifyOtp(payload: {
 }): Promise<{error: string; success: false} | {success: true; token: string}> {
   const {otp, stateKey} = payload;
 
-  try {
-    const headers = await getAuthHeaders();
-    const next = await getCacheHeaders("customers");
+  const headers = await getAuthHeaders();
+  const next = await getCacheHeaders("customers");
 
+  try {
     const response = await medusa.client.fetch<{token: string}>(
       "/verification/verify",
       {
@@ -190,6 +193,17 @@ export async function login(verificationToken: string) {
 
     const customer = await getCustomer();
 
+    const cartId = await getCartId();
+
+    if (cartId) {
+      await transferCart();
+    } else if (customer) {
+      const storedCartId = customer.metadata?.current_cart_id as string;
+      if (storedCartId) {
+        setCartId(storedCartId);
+        revalidateTag(await getCacheTag("carts"));
+      }
+    }
     return {customer, success: true};
   } catch (error) {
     console.error("Login error:", error);

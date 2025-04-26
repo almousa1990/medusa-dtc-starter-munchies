@@ -13,14 +13,15 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  useToast,
 } from "@merchify/ui";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 const phoneRegex = /^5\d{8}$/; // Ensures exactly 9 digits, starting with '5'
 
 interface SignupFormProps {
+  disabled?: boolean;
   input: {email?: string; phone?: string};
-  onError: (message: string) => void;
   onSuccess: (customer: HttpTypes.StoreCustomer) => void;
 }
 
@@ -35,9 +36,11 @@ const formSchema = z.object({
 
 export default function SignupForm({
   input,
-  onError,
   onSuccess,
+  disabled,
 }: SignupFormProps) {
+  const {toast} = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       email: input.email ?? "",
@@ -51,6 +54,9 @@ export default function SignupForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (disabled) {
+      return;
+    }
     if (input.phone) {
       values.phone = input.phone;
     }
@@ -64,7 +70,7 @@ export default function SignupForm({
     if (response.success) {
       onSuccess(response.customer);
     } else {
-      onError(response.error);
+      toast({description: response.error, variant: "destructive"});
     }
   }
 

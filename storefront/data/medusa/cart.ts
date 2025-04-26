@@ -5,6 +5,7 @@ import {cache} from "react";
 import client from "./client";
 import {getAuthHeaders, getCartId} from "./cookies";
 import {enrichLineItems} from "./line-items";
+import {MerchifyCart} from "@/types";
 
 export const getCart = cache(async function () {
   const cartId = await getCartId();
@@ -26,7 +27,7 @@ export const getCart = cache(async function () {
       ({cart}) =>
         cart as {
           promotions?: HttpTypes.StorePromotion[];
-        } & HttpTypes.StoreCart,
+        } & MerchifyCart,
     )
     .catch(() => {
       return null;
