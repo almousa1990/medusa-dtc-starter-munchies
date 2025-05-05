@@ -11,7 +11,8 @@ interface ApplePayFormProps {
 export function ApplePayForm(props: ApplePayFormProps) {
   const {customer, onTokenCreated} = props;
   const onApplePayButtonClicked = () => {
-    if (typeof window !== "undefined" && (window as any).ApplePaySession) {
+    console.log("clicked");
+    if (typeof window !== "undefined" && !(window as any).ApplePaySession) {
       return;
     }
     // Define ApplePayPaymentRequest

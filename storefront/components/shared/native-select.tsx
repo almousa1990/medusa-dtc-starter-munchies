@@ -1,5 +1,5 @@
 import {buttonVariants, cn} from "@merchify/ui";
-import {ChevronDown} from "lucide-react";
+import {ChevronsUpDown} from "lucide-react";
 import * as React from "react";
 
 export interface NativeSelectProps
@@ -34,7 +34,7 @@ export const NativeSelect = React.forwardRef<
           </option>
         ))}
       </select>
-      <ChevronDown className="absolute inset-y-0 left-3 my-auto h-4 w-4 opacity-50" />
+      <ChevronsUpDown className="absolute inset-y-0 left-3 my-auto h-4 w-4 opacity-50" />
     </div>
   );
 });

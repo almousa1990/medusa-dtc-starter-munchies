@@ -91,7 +91,7 @@ export default function Delivery({active}: {active: boolean}) {
               شركة الشحن
             </Heading>
             {isFilled && (
-              <div className="bg-secondary flex size-10 items-center justify-center rounded-full">
+              <div className="bg-secondary flex size-8 items-center justify-center rounded-full">
                 <Check className="size-4" />
               </div>
             )}
@@ -112,6 +112,7 @@ export default function Delivery({active}: {active: boolean}) {
                   <FormItem>
                     <RadioGroup
                       dir="rtl"
+                      className="gap-0"
                       onValueChange={field.onChange}
                       value={field.value}
                     >
@@ -121,19 +122,33 @@ export default function Delivery({active}: {active: boolean}) {
                           currency_code,
                         });
 
-                        const isSelected = field.value == item.id;
+                        const selected = field.value == item.id;
 
                         return (
                           <div
                             className={cn(
-                              "border-muted rounded-md border-2 bg-transparent p-4",
+                              "-mt-px overflow-hidden border first:rounded-t-md last:rounded-b-md",
                               {
-                                "border-primary": isSelected,
+                                "bg-muted border-primary relative z-10":
+                                  selected,
                               },
                             )}
                             key={item.id}
+                            onClick={(e) => {
+                              const target = e.target as HTMLElement;
+
+                              // Prevent triggering if clicking inside the radio or label
+                              if (
+                                target.closest("label") || // this might include the Label or any nested child like <Body>
+                                target.closest("input[type='radio']")
+                              ) {
+                                return;
+                              }
+
+                              field.onChange(item.id);
+                            }}
                           >
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 p-4">
                               <RadioGroupItem id={item.id} value={item.id} />
                               <Label
                                 className="w-full font-normal"

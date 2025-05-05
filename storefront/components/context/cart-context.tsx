@@ -9,6 +9,7 @@ import type {Dispatch, PropsWithChildren, SetStateAction} from "react";
 
 import {
   addDecoratedToCart,
+  refreshCartDecoratedLineItem,
   updateCartDecoratedLineItem,
 } from "@/actions/medusa/cart";
 import {usePathname} from "next/navigation";
@@ -42,6 +43,7 @@ const CartContext = createContext<
           quantity?: number;
         },
       ) => Promise<void>;
+      handleRefreshItem: (lineItem: string) => Promise<void>;
       isUpdating: boolean;
       setCartOpen: Dispatch<SetStateAction<boolean>>;
     }
@@ -191,6 +193,10 @@ export function CartProvider({
     }
   };
 
+  const handleRefreshItem = async (lineItem: string) => {
+    await refreshCartDecoratedLineItem(lineItem);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -198,6 +204,7 @@ export function CartProvider({
         cartOpen,
         handleDeleteItem,
         handleUpdateItem,
+        handleRefreshItem,
         isUpdating: JSON.stringify(cart) !== JSON.stringify(optimisticCart),
         setCartOpen,
       }}

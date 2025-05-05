@@ -54,23 +54,14 @@ export default async function CheckoutPage(
     >
       <section
         aria-labelledby="checkout-summary"
-        className="bg-secondary px-4 py-6 sm:px-6 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:px-0 lg:pt-16 lg:pb-16"
+        className="bg-secondary border-b px-4 py-4 lg:col-start-2 lg:row-start-1 lg:border-b-0 lg:bg-transparent lg:px-0 lg:py-6 lg:pt-16 lg:pb-16"
       >
         <CartDetails cart={cart} />
       </section>
       <section
         aria-labelledby="checkout-form"
-        className="px-4 pt-16 pb-36 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
+        className="px-4 pt-16 pb-36 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
       >
-        {/* <div className="hidden py-8 lg:block">
-          <LocalizedLink href="/" prefetch>
-            <img
-              alt="Mubchies logo"
-              className="h-6 w-fit"
-              src="/images/logo.svg"
-            />
-          </LocalizedLink>
-        </div>*/}
         <CheckoutForm />
       </section>
     </CheckoutProvider>

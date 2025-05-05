@@ -21,7 +21,7 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 export const formSchema = z.object({
-  code: z.string().min(1),
+  code: z.string(),
 });
 
 export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {

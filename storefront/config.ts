@@ -5,7 +5,7 @@ const baseUrlWithoutProtocol =
 
 const baseUrl = baseUrlWithoutProtocol
   ? `https://${baseUrlWithoutProtocol}`
-  : "http://localhost:3000";
+  : "https://localhost:3000";
 
 const config = {
   backendUrl:
@@ -21,7 +21,7 @@ const config = {
     // Not exposed to the front-end, used solely by the server
     token: process.env.SANITY_API_TOKEN || "",
   },
-  siteName: "Munchies",
+  siteName: "Merchify",
 };
 
 export default config;

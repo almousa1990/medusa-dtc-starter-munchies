@@ -130,6 +130,10 @@ export interface MerchifyPrintfileLineItem {
     preview_url: string;
   };
   rendition?: {
+    objects?: Record<string, unknown> | null;
+    all_objects?: Record<string, unknown> | null;
+    configurations?: Record<string, unknown> | null;
+    default_objects?: Record<string, unknown> | null;
     preview_url: string;
   };
   title: string;

@@ -8,11 +8,18 @@ import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
-import {Edit2, PencilRuler, X} from "lucide-react";
+import {PencilRuler, X} from "lucide-react";
 import {useRouter} from "next/navigation";
+import {useState} from "react";
 
 export default function LineItem(props: MerchifyCartLineItem) {
-  const {cart, handleDeleteItem, handleUpdateItem, isUpdating} = useCart();
+  const {
+    cart,
+    handleDeleteItem,
+    handleRefreshItem,
+    handleUpdateItem,
+    isUpdating,
+  } = useCart();
   const item = props;
   const router = useRouter();
 
@@ -64,20 +71,10 @@ export default function LineItem(props: MerchifyCartLineItem) {
             </div>
 
             <div className="absolute top-0 left-0 flex gap-2">
-              <Cta
-                className="px-2"
+              <EditButton
+                {...props}
                 disabled={isOptimisticLine || isUpdating}
-                onClick={() =>
-                  router.push(
-                    `/editor/${props.product_handle}?lineItem=${props.id}`,
-                  )
-                }
-                type="button"
-                variant="secondary"
-              >
-                <span className="sr-only">تعديل</span>
-                <PencilRuler className="size-3" />
-              </Cta>
+              />
               <Cta
                 className="px-2"
                 disabled={isOptimisticLine || isUpdating}
@@ -98,6 +95,33 @@ export default function LineItem(props: MerchifyCartLineItem) {
         />
       </div>
     </div>
+  );
+}
+
+function EditButton(props: MerchifyCartLineItem & {disabled: boolean}) {
+  const {handleRefreshItem} = useCart();
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
+
+  const handleEdit = async () => {
+    setPending(true);
+    await handleRefreshItem(props.id);
+    setPending(false);
+    router.push(`/editor/${props.product_handle}?lineItem=${props.id}`);
+  };
+
+  return (
+    <Cta
+      className="px-2"
+      disabled={props.disabled}
+      loading={pending}
+      onClick={handleEdit}
+      type="button"
+      variant="secondary"
+    >
+      <span className="sr-only">تعديل</span>
+      <PencilRuler className="size-3" />
+    </Cta>
   );
 }
 

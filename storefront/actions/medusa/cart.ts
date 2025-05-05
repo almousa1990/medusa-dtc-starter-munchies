@@ -322,3 +322,27 @@ export async function updateCartDecoratedLineItem({
       .catch(medusaError);
   }
 }
+
+export async function refreshCartDecoratedLineItem(id: string) {
+  const cart = await getCart();
+
+  if (!cart) {
+    throw new Error("Error retrieving or creating cart");
+  }
+
+  const headers = await getAuthHeaders();
+  const cacheTag = await getCacheTag("carts");
+
+  await medusa.client
+    .fetch(
+      `/store/carts/${cart.id}/decorated-line-items/${id}/refresh-sessions`,
+      {
+        headers,
+        method: "POST",
+      },
+    )
+    .then(() => {
+      revalidateTag(cacheTag);
+    })
+    .catch(medusaError);
+}

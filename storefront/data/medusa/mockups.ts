@@ -1,5 +1,6 @@
 "use server";
 
+import {normalizeMockupRenditions} from "@/utils/medusa/normalize-mockup-renditions";
 import medusa from "./client";
 import {getAuthHeaders} from "./cookies";
 
@@ -18,5 +19,8 @@ export const listMockupRenditions = async (
         query: {},
       },
     )
-    .then(({renditions}) => ({count: renditions.length, renditions}));
+    .then(({renditions}) => ({
+      count: renditions.length,
+      renditions: normalizeMockupRenditions(renditions),
+    }));
 };

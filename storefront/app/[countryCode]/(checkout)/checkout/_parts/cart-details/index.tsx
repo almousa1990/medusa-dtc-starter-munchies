@@ -11,19 +11,24 @@ import {useState} from "react";
 
 import LineItem from "./line-item";
 import {MerchifyCart} from "@/types";
+import {convertToLocale} from "@/utils/medusa/money";
 
 export default function CartDetails({cart}: {cart: MerchifyCart}) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="mx-auto max-w-lg lg:max-w-none">
       <div
-        className="flex items-center justify-between lg:block"
+        className="flex items-center justify-between lg:hidden"
         onClick={() => setExpanded((prev) => !prev)}
       >
-        <Heading desktopSize="xl" font="serif" mobileSize="xl" tag="h3">
+        <Heading font="serif" mobileSize="base" tag="h3">
           تفاصيل الطلب
         </Heading>
-        <Cta className="lg:hidden" size="sm" variant="ghost">
+        <Cta className="p-0" size="sm" variant="ghost">
+          {convertToLocale({
+            amount: cart.total,
+            currency_code: cart.currency_code,
+          })}
           {expanded ? <ChevronUp /> : <ChevronDown />}
         </Cta>
       </div>
@@ -36,7 +41,7 @@ export default function CartDetails({cart}: {cart: MerchifyCart}) {
         )}
         data-mobile-state={expanded ? "open" : "closed"}
       >
-        <div className="flex flex-col gap-4 py-2">
+        <div className="flex flex-col gap-4 py-2 lg:py-0">
           <div className="divide-border mt-2 flex flex-col gap-4 divide-y">
             {cart.items?.map((item) => <LineItem key={item.id} {...item} />)}
           </div>

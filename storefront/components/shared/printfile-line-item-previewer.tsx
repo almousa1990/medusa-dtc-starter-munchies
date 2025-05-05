@@ -36,9 +36,12 @@ export default function PrintfileLineItemPreviewer({
 
   return (
     <Dialog>
-      <DialogTrigger className="flex w-full items-center justify-between gap-2 rounded-md border px-3 py-1 text-sm">
-        <div className="flex gap-1">{items.length} x ملفات طباعة</div>
+      <DialogTrigger className="flex w-fit items-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm">
         <ExternalLink className="size-4" />
+        <div className="flex gap-1">
+          <span className="font-medium">{items.length}</span>{" "}
+          <span className="font-xs">x</span> ملف طباعة
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle> ملفات الطباعة</DialogTitle>
@@ -78,14 +81,14 @@ export default function PrintfileLineItemPreviewer({
                 >
                   <Image
                     alt={i.title}
-                    className="h-[200px] w-[200px] object-cover"
-                    height={200}
+                    className="max-h-80 object-contain"
+                    height={360}
                     src={
                       i.is_rendered_source
                         ? (i.rendition?.preview_url ?? "")
                         : (i.printfile?.preview_url ?? "")
                     }
-                    width={200}
+                    width={360}
                   />
                 </div>
               </div>

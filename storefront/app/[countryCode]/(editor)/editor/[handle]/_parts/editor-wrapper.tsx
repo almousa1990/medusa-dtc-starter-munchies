@@ -68,11 +68,6 @@ export function EditorWrapper(props: EditorWrapperProps) {
     router.push(`/products/${product.handle}`);
   };
 
-  const handleSave = async (data: {sessions: any[]}) => {
-    const {sessions} = data;
-    return await updatePrintfileEditorSessions(sessions);
-  };
-
   return (
     <Editor
       currencyCode={region.currency_code}
@@ -88,7 +83,7 @@ export function EditorWrapper(props: EditorWrapperProps) {
       onCustomerAssetList={listCustomerAssets}
       onMockupRenditionsCreate={createMockupRenditions}
       onMockupRenditionsList={listMockupRenditions}
-      onSave={handleSave}
+      onSave={updatePrintfileEditorSessions}
       onSubmit={handleSubmit}
       printfiles={printfiles}
       product={product}

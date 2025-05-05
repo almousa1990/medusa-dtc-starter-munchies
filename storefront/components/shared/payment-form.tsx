@@ -1,7 +1,7 @@
 "use client";
 
-import {Label, RadioGroup, RadioGroupItem} from "@merchify/ui";
-import {useEffect, useState} from "react";
+import {cn, Label, RadioGroup, RadioGroupItem} from "@merchify/ui";
+import {ReactNode, useEffect, useState} from "react";
 import Icon from "./icon";
 import {CreditCardForm} from "./credit-card-form";
 import {ApplePayForm} from "./apple-pay-form";
@@ -29,28 +29,43 @@ export function PaymentForm(props: PaymentFormProps) {
       <RadioGroup
         defaultValue={type}
         dir="rtl"
+        className="divide-y border"
         value={paymentMethod}
         onValueChange={setPaymentMethod}
-        className="grid grid-cols-3 gap-4"
       >
-        <PaymentOption value="mada" label="مدى" icon="Mada" />
         <PaymentOption
+          selected={paymentMethod == "mada"}
+          value="mada"
+          label="مدى"
+          icon="Mada"
+        >
+          <CreditCardForm
+            customer={customer}
+            onTokenCreated={(token) => onSubmit("token", token)}
+          />
+        </PaymentOption>
+        <PaymentOption
+          selected={paymentMethod == "creditcard"}
+          value="creditcard"
+          label="البطاقة الائتمانية"
+          icon="CreditCard"
+        >
+          <CreditCardForm
+            customer={customer}
+            onTokenCreated={(token) => onSubmit("token", token)}
+          />
+        </PaymentOption>
+        {/*<PaymentOption
           value="creditcard"
           label="البطاقة الائتمانية"
           icon="CreditCard"
         />
         {canUseApplePay && (
           <PaymentOption value="applepay" label="آبل باي" icon="ApplePay" />
-        )}
+        )}*/}
       </RadioGroup>
 
-      {["creditcard", "mada"].includes(paymentMethod) && (
-        <CreditCardForm
-          customer={customer}
-          onTokenCreated={(token) => onSubmit("token", token)}
-        />
-      )}
-      {paymentMethod === "apple" && (
+      {paymentMethod === "applepay" && (
         <ApplePayForm
           customer={customer}
           onTokenCreated={(token) => onSubmit("applepay", token)}
@@ -62,26 +77,27 @@ export function PaymentForm(props: PaymentFormProps) {
 
 interface PaymentOptionProps {
   value: string;
+  selected: boolean;
   label: string;
   icon: "Mada" | "ApplePay" | "CreditCard";
+  children: ReactNode;
 }
 
-function PaymentOption({value, label, icon}: PaymentOptionProps) {
+function PaymentOption({
+  value,
+  label,
+  icon,
+  selected,
+  children,
+}: PaymentOptionProps) {
   return (
-    <div>
-      <RadioGroupItem
-        value={value}
-        id={value}
-        className="peer sr-only"
-        aria-label={label}
-      />
-      <Label
-        htmlFor={value}
-        className="border-muted peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 bg-transparent p-4"
-      >
+    <div className="bg-transparent p-4">
+      <RadioGroupItem value={value} id={value} aria-label={label} />
+      <Label htmlFor={value} className="">
         <Icon name={icon} className="h-6" />
         <span className="sr-only">{label}</span>
       </Label>
+      <div className={cn({hidden: !selected})}>{children}</div>
     </div>
   );
 }

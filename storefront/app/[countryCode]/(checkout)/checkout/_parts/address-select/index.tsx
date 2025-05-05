@@ -9,11 +9,12 @@ import {
   addCustomerAddress,
   updateCustomerAddress,
 } from "@/actions/medusa/customer";
-import {RadioGroup} from "@merchify/ui";
+import {Accordion, RadioGroup} from "@merchify/ui";
 import {useCallback, useState} from "react";
 
 import AddAddressItem from "./add-address-item";
 import AddressItem from "./address-item";
+import {CHECKOUT_ADD_ADDRESS_ID} from "@/utils/constants";
 
 type AddressSelectProps = {
   countries?: StoreRegionCountry[];
@@ -34,14 +35,18 @@ export default function AddressSelect({
   onValueChange,
   value,
 }: AddressSelectProps) {
-  const [editFormOpenId, setEditFormOpenId] = useState<null | string>(null);
-  const [addFormOpen, setAddFormOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<
+    typeof CHECKOUT_ADD_ADDRESS_ID | string
+  >("");
+  const [selectedItem, setSelectedItem] = useState<
+    typeof CHECKOUT_ADD_ADDRESS_ID | string
+  >(value ?? CHECKOUT_ADD_ADDRESS_ID);
 
   const handleEditCustomerAddress = useCallback(
     async (id: string, address: StoreUpdateCustomerAddress) => {
       const result = await updateCustomerAddress(id, address);
       if (!result.success) return result;
-      if (result.success) setEditFormOpenId(null);
+      setExpandedItem("");
       return result;
     },
     [],
@@ -56,68 +61,72 @@ export default function AddressSelect({
         const latest = getMostRecentAddress(result.customer.addresses);
 
         onValueChange(latest.id);
-        setAddFormOpen(false);
+        setSelectedItem(latest.id);
+        setExpandedItem("");
       }
       return result;
     },
     [onValueChange],
   );
-
   const handleSelect = useCallback(
     (value: string) => {
-      onValueChange(value);
-      setAddFormOpen(false);
-    },
-    [onValueChange],
-  );
-
-  const handleAddAddressOpenChange = useCallback(
-    (open: boolean) => {
-      setAddFormOpen(open);
-      if (open) {
-        setEditFormOpenId(null);
+      if (selectedItem === value) return;
+      if (value == CHECKOUT_ADD_ADDRESS_ID) {
+        setExpandedItem(CHECKOUT_ADD_ADDRESS_ID);
+        setSelectedItem(CHECKOUT_ADD_ADDRESS_ID);
         onValueChange(null);
+      } else {
+        onValueChange(value);
+        setSelectedItem(value);
+        setExpandedItem("");
       }
     },
-    [onValueChange],
+    [onValueChange, expandedItem, selectedItem, setSelectedItem],
   );
 
   const handleExpand = useCallback((id: string) => {
-    setEditFormOpenId((prev) => (prev === id ? null : id));
+    setExpandedItem((prev) => {
+      return prev === id ? "" : id;
+    });
   }, []);
 
   return (
-    <>
+    <Accordion
+      type="single"
+      collapsible
+      value={expandedItem}
+      className="grid w-full gap-2"
+    >
       <RadioGroup
         dir="rtl"
         onValueChange={handleSelect}
-        value={value ?? ""} // null → undefined
+        className="gap-0"
+        value={selectedItem} // null → undefined
       >
         {(customer.addresses ?? []).map((address) => (
           <AddressItem
             address={address}
             countries={countries}
-            isOpen={editFormOpenId === address.id && value === address.id}
-            isSelected={value === address.id}
+            selected={selectedItem === address.id}
             key={address.id}
             onEdit={handleEditCustomerAddress}
-            onSelect={handleSelect} // ← NEW
+            onSelect={handleSelect}
             onToggleOpen={handleExpand}
           />
         ))}
-      </RadioGroup>
 
-      <AddAddressItem
-        defaultAddress={{
-          first_name: customer.first_name,
-          last_name: customer.last_name,
-          phone: customer.phone,
-        }}
-        countries={countries}
-        onOpenChange={handleAddAddressOpenChange}
-        onSubmit={handleAddCustomerAddress}
-        open={addFormOpen}
-      />
-    </>
+        <AddAddressItem
+          defaultAddress={{
+            first_name: customer.first_name,
+            last_name: customer.last_name,
+            phone: customer.phone,
+          }}
+          countries={countries}
+          selected={selectedItem === CHECKOUT_ADD_ADDRESS_ID}
+          onSelect={handleSelect}
+          onSubmit={handleAddCustomerAddress}
+        />
+      </RadioGroup>
+    </Accordion>
   );
 }

@@ -2,6 +2,7 @@
 
 import medusa from "@/data/medusa/client";
 import {getAuthHeaders} from "@/data/medusa/cookies";
+import {normalizeMockupRenditions} from "@/utils/medusa/normalize-mockup-renditions";
 
 export const createMockupRenditions = async (body: {
   printfiles: {
@@ -23,17 +24,18 @@ export const createMockupRenditions = async (body: {
   return medusa.client
     .fetch<{batch_id: string; renditions: any[]}>("/store/mockup-renditions", {
       body: {
+        store: false,
         printfiles: body.printfiles,
         product_variant_id: body.selected_variant,
       },
       headers,
-      // todo typing
+
       method: "POST",
       query: {},
     })
     .then(({batch_id, renditions}) => ({
       batch_id,
       count: renditions?.length ?? 0,
-      renditions,
+      renditions: normalizeMockupRenditions(renditions),
     }));
 };

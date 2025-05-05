@@ -25,7 +25,14 @@ export default function LineItem(props: MerchifyCartLineItem) {
 
   return (
     <div className="flex items-start justify-between space-x-4 pb-4">
-      <LineItemThumbnail item={item} className="size-24 sm:size-24" />
+      <div className="relative inline-block">
+        <LineItemThumbnail item={item} className="size-24 sm:size-24" />
+        {
+          <span className="bg-primary text-primary-foreground absolute -top-2 -left-2 flex size-6 items-center justify-center rounded-full text-xs font-medium">
+            {item.quantity}
+          </span>
+        }
+      </div>
       <div className="flex w-full flex-col items-start justify-start gap-2">
         <div className="flex w-full justify-between gap-3">
           <div>
@@ -41,10 +48,7 @@ export default function LineItem(props: MerchifyCartLineItem) {
             </Body>
           </div>
           <div className="flex min-w-[100px] flex-col items-end">
-            <Body dir="ltr" font="sans" mobileSize="sm">
-              {item.quantity} x {unit_price}
-            </Body>
-            <Body className="font-medium" font="sans" mobileSize="sm">
+            <Body font="sans" mobileSize="sm">
               {item_price}
             </Body>
           </div>

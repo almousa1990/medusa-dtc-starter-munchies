@@ -9,9 +9,9 @@ import {getCart} from "@/data/medusa/cart";
 import {Label} from "@merchify/ui";
 import {TicketPercent} from "lucide-react";
 
-import PromotionForm from "../../../../components/shared/promotion-form";
 import EmptyCartMessage from "./_parts/empty-card-message";
 import LineItem from "./_parts/line-item";
+import PromotionForm from "@/components/shared/promotion-form";
 
 export const metadata: Metadata = {
   description: "View your cart",
