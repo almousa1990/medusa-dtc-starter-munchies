@@ -52,7 +52,7 @@ export default definePage({
   },
   preview: {
     select: {
-      title: "title",
+      title: "internalTitle",
     },
   },
   title: "Product Page",

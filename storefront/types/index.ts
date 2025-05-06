@@ -1,5 +1,5 @@
 import type {HttpTypes} from "@medusajs/types";
-import {BaseCalculatedPriceSet} from "@medusajs/types/dist/http/pricing/common";
+import type {BaseCalculatedPriceSet} from "@medusajs/types/dist/http/pricing/common";
 
 export type Prettify<T> = {
   [K in keyof T]: T[K];
@@ -83,42 +83,42 @@ export interface MerchifyProductFeature {
 }
 
 export interface MerchifyPrintfileRenderInput {
-  filename: string;
   editor_session_id: string;
+  filename: string;
 }
 
 export interface MerchifyPrintfileTemplate {
-  id: string;
-  filename: string;
-  display_name: string;
-  width: number;
-  height: number;
-  minDpi: number;
-  dpi: number;
-  editor_id: string;
-  editor: MerchifyPrintfileEditor;
-  rank: number;
   calculated_price?: BaseCalculatedPriceSet;
   decoration_method: MerchifyPrintfileDecorationMethod;
+  display_name: string;
+  dpi: number;
+  editor: MerchifyPrintfileEditor;
+  editor_id: string;
+  filename: string;
+  height: number;
+  id: string;
   metadata?: Record<string, unknown> | null;
+  minDpi: number;
+  rank: number;
+  width: number;
 }
 
 export interface MerchifyPrintfileEditor {
-  id: string;
-  layout_file: string;
   configuations?: Record<string, unknown> | null;
   default_objects?: Record<string, Record<string, unknown>> | null;
+  id: string;
+  layout_file: string;
   metadata?: Record<string, unknown> | null;
 }
 
 export interface MerchifyPrintfileDecorationMethod {
-  id: string;
-  name: string;
+  color_palette?: Record<string, string> | null;
   description: string;
   handle: number;
-  restrictions: Record<string, boolean> | null;
-  color_palette?: Record<string, string> | null;
+  id: string;
   metadata?: Record<string, unknown> | null;
+  name: string;
+  restrictions: Record<string, boolean> | null;
 }
 
 export interface MerchifyPrintfileLineItem {
@@ -130,10 +130,10 @@ export interface MerchifyPrintfileLineItem {
     preview_url: string;
   };
   rendition?: {
-    objects?: Record<string, unknown> | null;
     all_objects?: Record<string, unknown> | null;
     configurations?: Record<string, unknown> | null;
     default_objects?: Record<string, unknown> | null;
+    objects?: Record<string, unknown> | null;
     preview_url: string;
   };
   title: string;
@@ -152,7 +152,7 @@ export type GeolocationAddress = {
   address_1: string;
   address_2: string;
   city: string;
-  province?: string;
-  postal_code?: string;
   country_code: string;
+  postal_code?: string;
+  province?: string;
 };

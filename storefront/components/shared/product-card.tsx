@@ -26,16 +26,11 @@ export default function ProductCard({
 
   const colors = product.options
     ?.find((o) => o.metadata?.type == "color")
-    ?.values?.map((v) => ({name: v.value, hex: v.metadata?.hex as string}));
+    ?.values?.map((v) => ({hex: v.metadata?.hex as string, name: v.value}));
 
   return (
     <LocalizedLink
-      className={cx(
-        "flex flex-1 flex-col items-center justify-center rounded-md",
-        {
-          "w-[88vw] max-w-[450px]": size === "default",
-        },
-      )}
+      className={cx("inline-flex w-64 flex-col text-center lg:w-auto")}
       href={`/products/${product?.handle}`}
       prefetch
     >
@@ -44,10 +39,10 @@ export default function ProductCard({
           <Image
             alt={product.title}
             className="aspect-square w-full rounded-md"
-            height={450}
+            height={300}
             priority={index !== undefined && index <= 2}
             src={thumbnail}
-            width={450}
+            width={300}
           />
         )}
         {product.type?.value && (
@@ -59,7 +54,7 @@ export default function ProductCard({
       </div>
 
       <div className="pointer-events-none flex flex-1 flex-col items-center justify-center gap-1 px-6 pt-6">
-        <Heading tag="h3" className="text-center" font="sans">
+        <Heading className="text-center" font="sans" tag="h3">
           {product.title}
         </Heading>
         <Body
@@ -74,14 +69,14 @@ export default function ProductCard({
 
       <h4 className="sr-only">Available colors</h4>
       <ul
-        role="list"
         className="mt-auto flex items-center justify-center space-x-3 pt-4"
+        role="list"
       >
         {colors?.map((color) => (
           <li
+            className="size-4 rounded-full border border-black/10"
             key={color.name}
             style={{backgroundColor: color.hex}}
-            className="size-4 rounded-full border border-black/10"
           >
             <span className="sr-only">{color.name}</span>
           </li>

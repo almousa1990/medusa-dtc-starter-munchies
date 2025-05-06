@@ -60,7 +60,7 @@ export default function Navigation({data}: {data: Header}) {
               >
                 <NavigationMenu.Item>
                   <NavigationMenu.Link asChild>
-                    <Body font="sans" mobileSize="lg">
+                    <Body font="sans" className="font-medium" mobileSize="lg">
                       {item.cta?.label}
                     </Body>
                   </NavigationMenu.Link>
@@ -92,7 +92,6 @@ export default function Navigation({data}: {data: Header}) {
       </NavigationMenu.List>
 
       <div className="absolute top-full left-0 flex w-full flex-1 flex-col justify-center overflow-hidden bg-transparent perspective-[2000px]">
-        <BottomBorder DropdownOpen={!!openDropdown} />
         <NavigationMenu.Viewport className="bg-background data-[state=closed]:animate-exitToTop data-[state=open]:animate-enterFromTop relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden transition-[width,_height] duration-300" />
         <div
           className={cx(

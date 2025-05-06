@@ -1,21 +1,22 @@
 import type {PageProps} from "@/types";
+import type {ResolvingMetadata} from "next";
 
+import {generateOgEndpoint} from "@/app/api/og/[...info]/utils";
 import PaginatedProducts, {
   ProductsSkeleton,
 } from "@/components/products/paginated-product";
-import Heading from "@/components/shared/typography/heading";
-import {Suspense} from "react";
-import {getCategories, getCategoryByHandle} from "@/data/medusa/categories";
-import {ResolvingMetadata} from "next";
-import notFound from "../../not-found";
-import {loadCategoryContent} from "@/data/sanity";
-import {generateOgEndpoint} from "@/app/api/og/[...info]/utils";
-import {resolveSanityRouteMetadata} from "@/data/sanity/resolve-sanity-route-metadata";
 import ProductFilters from "@/components/products/product-filters";
+import Heading from "@/components/shared/typography/heading";
+import {getCategories, getCategoryByHandle} from "@/data/medusa/categories";
+import {loadCategoryContent} from "@/data/sanity";
+import {resolveSanityRouteMetadata} from "@/data/sanity/resolve-sanity-route-metadata";
+import {Suspense} from "react";
+
+import notFound from "../../not-found";
 
 type CategoryPageProps = PageProps<
   "countryCode" | "handle",
-  "category" | "tags" | "page" | "sort"
+  "category" | "page" | "sort" | "tags"
 >;
 
 export async function generateStaticParams() {
@@ -101,9 +102,9 @@ export default async function CategoryPage(props: CategoryPageProps) {
       </div>
       <div className="flex flex-col gap-6">
         <ProductFilters
-          initialTags={searchParams.tags}
           categories={categories}
           filters={category.filters}
+          initialTags={searchParams.tags}
         />
         <Suspense fallback={<ProductsSkeleton />}>
           <PaginatedProducts

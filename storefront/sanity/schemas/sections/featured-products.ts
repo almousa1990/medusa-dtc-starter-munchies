@@ -9,6 +9,11 @@ export default defineField({
       validation: (Rule) => Rule.required(),
     },
     {
+      name: "subtitle",
+      title: "Subtitle",
+      type: "string",
+    },
+    {
       name: "products",
       of: [{to: [{type: "product"}], type: "reference"}],
       title: "Products",

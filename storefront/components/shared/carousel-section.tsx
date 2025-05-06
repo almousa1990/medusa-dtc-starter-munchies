@@ -1,132 +1,51 @@
 "use client";
 
-import type {EmblaOptionsType} from "embla-carousel";
-import type {ReactNode} from "react";
-
 import {cx} from "cva";
 
+import Heading from "./typography/heading";
 import {Link} from "./button";
-import {
-  NextButton,
-  PrevButton,
-  Root,
-  SlidesWrapper,
-  useCarousel,
-} from "./carousel";
-import IconButton from "./icons-button";
+import {ReactNode} from "react";
 
 type Props = {
   cta?: {
     href: string | undefined;
     text: string | undefined;
   };
-  disableDesktopDrag?: boolean;
-  options?: EmblaOptionsType;
-  showButtons?: boolean;
-  showProgress?: boolean;
-  slides: React.JSX.Element[] | undefined;
-  title?: ReactNode;
-  variant?: "cart" | "default";
+  children: ReactNode;
+  subtitle?: string;
+  title: string;
 };
 
 export default function CarouselSection(props: Props) {
-  const {
-    cta,
-    disableDesktopDrag,
-    options,
-    showButtons = true,
-    showProgress = false,
-    slides,
-    title,
-    variant = "default",
-  } = props;
+  const {cta, children, title, subtitle} = props;
 
-  if (!slides) return null;
+  if (!children) return null;
 
   return (
-    <Root
-      options={{
-        ...options,
-        direction: "rtl",
-        breakpoints: {"(min-width: 1024px)": {watchDrag: !disableDesktopDrag}},
-        containScroll: "trimSnaps",
-        dragFree: true,
-      }}
-      slidesCount={slides.length}
-    >
-      <section className="max-w-max-screen mx-auto py-10">
-        <div
-          className={cx("mb-2 flex items-center justify-between", {
-            "": variant === "default",
-            "px-4": variant === "cart",
-          })}
-        >
-          {title}
-          {showButtons && <Buttons variant={variant} />}
-        </div>
-        <SlidesWrapper
-          className={cx({
-            "": variant === "default",
-            "px-4": variant === "cart",
-          })}
-        >
-          <div className="-ml-2 flex touch-pan-y touch-pinch-zoom items-stretch">
-            {slides.map((slide, index) => (
-              <div className="flex-1 py-1 pl-2" key={index}>
-                {slide}
-              </div>
-            ))}
-          </div>
-        </SlidesWrapper>
-
-        {showProgress && <ProgressBar />}
-        {cta?.text && (
-          <div className="mt-2xl px-5 lg:px-8">
+    <div className="mx-auto py-10">
+      <div className={cx("my-6 grid gap-1")}>
+        <div className="flex flex-1 justify-between">
+          <Heading desktopSize="2xl" mobileSize="xl" tag="h3">
+            {title}
+          </Heading>
+          {cta?.text && (
             <Link
-              className="w-full"
+              className="h-fit p-0 underline"
               href={cta.href}
-              size="xl"
-              variant="outline"
+              variant="ghost"
             >
               {cta.text}
             </Link>
-          </div>
-        )}
-      </section>
-    </Root>
-  );
-}
+          )}
+        </div>
 
-function Buttons({variant}: {variant: "cart" | "default"}) {
-  return (
-    <div className="hidden gap-2 lg:flex">
-      <PrevButton asChild>
-        <IconButton
-          icon="ArrowRight"
-          size={variant === "default" ? "sm" : "xs"}
-          type="button"
-        />
-      </PrevButton>
-      <NextButton asChild>
-        <IconButton
-          icon="ArrowLeft"
-          size={variant === "default" ? "sm" : "xs"}
-          type="button"
-        />
-      </NextButton>
-    </div>
-  );
-}
-
-function ProgressBar() {
-  const {scrollProgress} = useCarousel();
-
-  return (
-    <div className="mt-2xl relative mx-auto h-[2px] w-[215px] self-center justify-self-end overflow-hidden bg-[#FFD2C7] lg:hidden">
-      <div
-        className="bg-accent absolute top-0 bottom-0 left-[-100%] w-full transition-transform duration-300 ease-out"
-        style={{transform: `translateX(${scrollProgress}%)`}}
-      />
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+      <div className="relative -mb-6 w-full overflow-x-auto pb-6">
+        <div className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

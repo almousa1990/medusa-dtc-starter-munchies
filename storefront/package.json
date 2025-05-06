@@ -62,6 +62,7 @@
   "devDependencies": {
     "@medusajs/client-types": "preview",
     "@portabletext/types": "^2.0.13",
+    "@sanity/codegen": "^3.87.1",
     "@tailwindcss/postcss": "^4.0.14",
     "@types/lodash": "^4.17.6",
     "@types/node": "^20.14.9",

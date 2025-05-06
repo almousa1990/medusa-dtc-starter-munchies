@@ -5,6 +5,7 @@ import type {ModularPageSection} from "./types";
 
 import CarouselSection from "../shared/carousel-section";
 import ProductCard from "../shared/product-card";
+import Heading from "../shared/typography/heading";
 
 export default async function FeaturedProducts(
   props: ModularPageSection<"section.featuredProducts">,
@@ -29,15 +30,21 @@ export default async function FeaturedProducts(
     <ProductCard index={index} key={product.id} product={product} />
   ));
   return (
-    <section>
+    <section {...props.rootHtmlAttributes}>
       <CarouselSection
         cta={{href: props.cta?.link, text: props.cta?.label}}
         slides={slides}
-        title={props.title}
-        subtitle={props.subtitle}
-      >
-        {slides}
-      </CarouselSection>
+        title={
+          <Heading
+            className="text-center"
+            desktopSize="3xl"
+            mobileSize="2xl"
+            tag="h3"
+          >
+            {props.title}
+          </Heading>
+        }
+      />
     </section>
   );
 }

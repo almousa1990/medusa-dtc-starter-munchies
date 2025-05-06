@@ -19,11 +19,11 @@ export const getCategoryByHandle = unstable_cache(
           product_categories[0] as {
             filters: {
               id: string;
-              title: string;
               tags: {
                 id: string;
                 value: string;
               }[];
+              title: string;
             }[];
           } & StoreProductCategory,
       );
@@ -40,6 +40,21 @@ export const getCategories = unstable_cache(
   async function () {
     return await medusa.store.category.list(
       {fields: "id,name"},
+      {next: {tags: ["categories"]}},
+    );
+  },
+  ["categories"],
+  {
+    revalidate: 120,
+  },
+);
+
+export const getCategoriesByIds = unstable_cache(
+  async function (ids: string[]) {
+    return medusa.store.category.list(
+      {
+        id: ids,
+      },
       {next: {tags: ["categories"]}},
     );
   },

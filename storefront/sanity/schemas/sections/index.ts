@@ -1,6 +1,7 @@
 import assurance from "./assurance";
 import centeredText from "./centered-text";
 import collectionList from "./collection-list";
+import featuredCategories from "./featured-categories";
 import featuredProducts from "./featured-products";
 import hero from "./hero";
 import marquee from "./marquee";
@@ -15,6 +16,7 @@ const sections = [
   mediaText,
   testimonials,
   featuredProducts,
+  featuredCategories,
   assurance,
   shopTheLook,
   collectionList,

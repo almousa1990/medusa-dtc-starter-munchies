@@ -1,4 +1,5 @@
 import type {
+  CATEGORY_QUERYResult,
   COOKIE_BANNER_QUERYResult,
   DICTIONARY_QUERYResult,
   FAQS_PAGE_QUERYResult,
@@ -30,7 +31,6 @@ import {sanityFetch} from "./sanity-fetch";
 
 // Loader for routes
 export function loadRoute(pathname: string) {
-  console.log(pathname);
   return sanityFetch<ROUTE_QUERYResult>({
     params: {pathname},
     query: ROUTE_QUERY,
@@ -70,6 +70,7 @@ export async function loadPageByPathname({
     pathname = "/";
   }
   const data = await loadRoute(pathname);
+  console.log("data", data);
   const documentType = data?.routeData._type;
 
   switch (documentType) {
@@ -133,7 +134,7 @@ export function loadProductContent(handle: string) {
 
 export function loadCategoryContent(handle: string) {
   console.log(handle);
-  return sanityFetch<PRODUCT_QUERYResult>({
+  return sanityFetch<CATEGORY_QUERYResult>({
     params: {handle},
     query: CATEGORY_QUERY,
   });
