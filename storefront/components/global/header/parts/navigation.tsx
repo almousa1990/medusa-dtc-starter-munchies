@@ -14,8 +14,6 @@ import {usePathname, useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {RemoveScroll} from "react-remove-scroll";
 
-import BottomBorder from "./bottom-border";
-
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
   {_type: "dropdown"}
@@ -60,7 +58,7 @@ export default function Navigation({data}: {data: Header}) {
               >
                 <NavigationMenu.Item>
                   <NavigationMenu.Link asChild>
-                    <Body font="sans" className="font-medium" mobileSize="lg">
+                    <Body font="sans" className="font-medium" mobileSize="base">
                       {item.cta?.label}
                     </Body>
                   </NavigationMenu.Link>
@@ -78,11 +76,14 @@ export default function Navigation({data}: {data: Header}) {
                     },
                   )}
                 >
-                  <Body font="sans" mobileSize="lg">
+                  <Body font="sans" className="font-medium" mobileSize="base">
                     {item.title}
                   </Body>
                 </NavigationMenu.Trigger>
-                <NavigationMenu.Content className="bg-background data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft absolute top-0 left-0 z-30 w-full">
+                <NavigationMenu.Content
+                  dir="rtl"
+                  className="bg-background data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 absolute top-0 left-0 z-30 w-full"
+                >
                   <Content {...item} />
                 </NavigationMenu.Content>
               </NavigationMenu.Item>
@@ -92,16 +93,7 @@ export default function Navigation({data}: {data: Header}) {
       </NavigationMenu.List>
 
       <div className="absolute top-full left-0 flex w-full flex-1 flex-col justify-center overflow-hidden bg-transparent perspective-[2000px]">
-        <NavigationMenu.Viewport className="bg-background data-[state=closed]:animate-exitToTop data-[state=open]:animate-enterFromTop relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden transition-[width,_height] duration-300" />
-        <div
-          className={cx(
-            "bg-accent relative w-full transition-all duration-300",
-            {
-              "animate-enterFromTop h-[1.5px]": openDropdown,
-              "animate-exitToTop h-0": !openDropdown,
-            },
-          )}
-        />
+        <NavigationMenu.Viewport className="bg-background data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top data-[state=open]:animate-in data-[state=closed]:animate-out relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden border-b transition-[width,_height] data-[state=closed]:duration-100 data-[state=open]:duration-200" />
       </div>
     </NavigationMenu.Root>
   );
@@ -112,7 +104,7 @@ function Content({cards, columns}: DropdownType) {
 
   return (
     <RemoveScroll>
-      <div className="max-w-max-screen relative mx-auto flex items-start justify-between gap-8 px-8 py-10">
+      <div className="relative mx-auto flex max-w-xl items-start justify-between gap-8 px-4 py-10 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="group flex flex-wrap items-start justify-start gap-6">
           {columns?.map((link) => {
             return (
@@ -166,7 +158,7 @@ function Product({
 }: NonNullable<DropdownType["cards"]>[number]) {
   if (!cta?.link) return null;
   return (
-    <div className="group relative flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center gap-2 rounded-lg">
+    <div className="group relative flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center gap-2 rounded-md">
       <LocalizedLink
         className="absolute inset-0 z-10"
         href={cta?.link}
@@ -174,18 +166,18 @@ function Product({
       />
       {image ? (
         <SanityImage
-          className="aspect-square max-h-[220px] w-[220px] min-w-[160px] cursor-pointer rounded-lg"
+          className="aspect-square max-h-[220px] w-[220px] min-w-[160px] cursor-pointer rounded-md"
           data={image}
         />
       ) : (
-        <div className="bg-accent aspect-square w-full rounded-lg" />
+        <div className="bg-accent aspect-square w-full rounded-md" />
       )}
 
       <Heading className="text-center" font="serif" mobileSize="xs" tag="h5">
         {title}
       </Heading>
       {cta && (
-        <Link className="mt-xs" href={cta?.link} size="sm" variant="outline">
+        <Link className="mt-2" href={cta?.link} size="sm" variant="outline">
           {cta?.label}
         </Link>
       )}

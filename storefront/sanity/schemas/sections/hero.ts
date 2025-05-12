@@ -18,6 +18,12 @@ export default defineField({
       validation: (Rule) => Rule.required(),
     },
     {
+      name: "backgroundColor",
+      title: "Background color",
+      type: "simplerColor",
+    },
+
+    {
       name: "title",
       title: "Title",
       type: "string",

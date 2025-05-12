@@ -6,7 +6,6 @@ import Heading from "@/components/shared/typography/heading";
 
 import {ProductVariantsProvider} from "../../../../../../components/context/product-context";
 import Addons from "./addons";
-import BreadCrumbs from "./breadcrumbs";
 import InitiateEditor from "./initiate-editor-button";
 import OptionsSelect from "./options";
 import Price from "./price";
@@ -20,7 +19,6 @@ export default function ProductInformation(props: Props) {
   return (
     <ProductVariantsProvider product={props}>
       <div className="lg:y-4 pb-2xl flex w-full flex-col gap-4 pt-4 lg:max-w-[580px]">
-        <BreadCrumbs collection={props.collection} title={props.title} />
         <Heading
           className="leading-[100%]"
           desktopSize="4xl"

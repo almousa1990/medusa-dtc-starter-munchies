@@ -7,6 +7,7 @@ import {Analytics} from "@vercel/analytics/react";
 import cache from "next/cache";
 import {draftMode} from "next/headers";
 import VisualEditing from "next-sanity/visual-editing/client-component";
+import Loader from "@/components/global/loader";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">
@@ -22,6 +23,7 @@ export default async function Layout(props: LayoutProps) {
   return (
     <CountryCodeProvider countryCode={params.countryCode}>
       <body className="scrollbar-hide min-w-min-screen relative flex min-h-screen flex-col overflow-x-clip">
+        <Loader />
         {children}
         {(await draftMode()).isEnabled && (
           <VisualEditing

@@ -3,15 +3,17 @@ import type {HttpTypes} from "@medusajs/types";
 import {convertToLocale} from "@/utils/medusa/money";
 
 import Body from "./typography/body";
-import Heading from "./typography/heading";
 import {cn} from "@merchify/ui";
+import {MerchifyOrder} from "@/types";
 
 export function TotalsBreakdown({
   data,
   className,
+  variant,
 }: {
-  data: HttpTypes.StoreCart | HttpTypes.StoreOrder;
+  data: HttpTypes.StoreCart | MerchifyOrder;
   className?: string;
+  variant?: "default" | "small";
 }) {
   const summaryItems = [
     {amount: data.original_item_subtotal, label: "مجموع المنتجات"},
@@ -28,13 +30,18 @@ export function TotalsBreakdown({
     <div className={cn("flex flex-col gap-2", className)}>
       {summaryItems.map((item) => (
         <TotalsItem
+          size={variant == "small" ? "sm" : "base"}
           amount={item.amount}
           currency_code={data.currency_code}
           key={item.label}
           label={item.label}
         />
       ))}
-      <GrandTotal {...total} currency_code={data.currency_code} />
+      <GrandTotal
+        size={variant == "small" ? "base" : "lg"}
+        {...total}
+        currency_code={data.currency_code}
+      />
     </div>
   );
 }
@@ -42,25 +49,24 @@ function GrandTotal({
   amount,
   currency_code,
   label,
+  size,
 }: {
   amount: number;
   currency_code: string;
   label: string;
+  size: "base" | "lg";
 }) {
   const display = convertToLocale({amount, currency_code});
 
   return (
-    <>
-      <div className="bg-border mt-4 h-px w-full" />
-      <div className="flex items-center justify-between">
-        <Heading desktopSize="lg" font="sans" mobileSize="xl" tag="h3">
-          {label}
-        </Heading>
-        <Heading desktopSize="lg" font="sans" mobileSize="xl" tag="h3">
-          {display}
-        </Heading>
-      </div>
-    </>
+    <div className="flex items-center justify-between">
+      <Body desktopSize={size} className="font-medium" font="sans">
+        {label}
+      </Body>
+      <Body mobileSize={size} className="font-medium" font="sans">
+        {display}
+      </Body>
+    </div>
   );
 }
 
@@ -68,19 +74,21 @@ function TotalsItem({
   amount,
   currency_code,
   label,
+  size,
 }: {
   amount: number;
   currency_code: string;
   label: string;
+  size: "base" | "sm";
 }) {
   const display = convertToLocale({amount, currency_code});
 
   return (
     <div className="flex items-center justify-between">
-      <Body font="sans" mobileSize="base" className="text-muted-foreground">
+      <Body font="sans" mobileSize={size} className="text-muted-foreground">
         {label}
       </Body>
-      <Body font="sans" mobileSize="base">
+      <Body font="sans" mobileSize={size}>
         {display}
       </Body>
     </div>

@@ -1,3 +1,4 @@
+import {PaymentSourceType} from "@/types";
 import {z} from "zod";
 
 const cardSchema = z.object({
@@ -25,9 +26,13 @@ const cardSchema = z.object({
     .regex(/^\d+$/, "رمز التحقق يجب أن يحتوي على أرقام فقط"),
 });
 
+export const PaymentSourceTypeSchema = z.nativeEnum(PaymentSourceType);
+
+// Optional inferred type (already defined by the enum, but sometimes helpful)
+
 export const formSchema = z
   .object({
-    type: z.enum(["creditcard", "applepay", "stcpay"]),
+    type: PaymentSourceTypeSchema,
     card: z.any().optional(),
     agreement: z
       .boolean()

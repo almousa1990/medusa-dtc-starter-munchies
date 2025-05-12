@@ -13,7 +13,10 @@ export default async function FeaturedCategories(
   ));
 
   return (
-    <section {...props.rootHtmlAttributes}>
+    <section
+      {...props.rootHtmlAttributes}
+      className="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8"
+    >
       <CarouselSection
         showButtons={false}
         slides={slides}

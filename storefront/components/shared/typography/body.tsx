@@ -1,6 +1,7 @@
 import type {VariantProps} from "cva";
 
 import {cva} from "cva";
+import {ElementType} from "react";
 
 export const bodyStyles = cva("", {
   defaultVariants: {
@@ -35,25 +36,29 @@ export const bodyStyles = cva("", {
     },
   },
 });
-type BodyProps = {
+type BodyProps<T extends ElementType = "div"> = {
+  as?: T;
   children: React.ReactNode;
-} & React.HTMLAttributes<HTMLParagraphElement> &
+} & React.HTMLAttributes<HTMLElement> &
   VariantProps<typeof bodyStyles>;
 
-export default function Body({
+export default function Body<T extends ElementType = "div">({
+  as,
   children,
   className,
   desktopSize,
   font,
   mobileSize,
   ...rest
-}: BodyProps) {
+}: BodyProps<T>) {
+  const Component = as || "div";
+
   return (
-    <div
+    <Component
       className={bodyStyles({className, desktopSize, font, mobileSize})}
       {...rest}
     >
       {children}
-    </div>
+    </Component>
   );
 }

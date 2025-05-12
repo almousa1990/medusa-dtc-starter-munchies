@@ -17,15 +17,21 @@ import CartDetails from "./_parts/cart-details";
 import CheckoutForm from "./_parts/checkout-form";
 
 export default async function CheckoutPage(
-  props: PageProps<"countryCode", "step" | "error">,
+  props: PageProps<"countryCode", "step" | "status" | "message">,
 ) {
   const params = await props.params;
-  const step = (await props.searchParams).step as CheckoutStep;
-  const error = (await props.searchParams).error as string;
+  const searchParams = await props.searchParams;
+  const step = searchParams.step as CheckoutStep;
+
+  const status = searchParams.status as string;
+  const message = searchParams.message as string;
+
   const {countryCode} = params;
 
   const cart = await getCart();
   const customer = await getCustomer();
+
+  console.log("customer", customer);
 
   if (!customer || !cart || (cart.items?.length || 0) === 0) {
     return redirect(`/${countryCode}/`);
@@ -41,10 +47,11 @@ export default async function CheckoutPage(
   const shippingMethods = (await listCartShippingMethods(cart.id)) || [];
   const paymentMethods = (await listCartPaymentMethods(cart.region_id!)) || [];
 
+  const callbackPayload = status ? {status, message} : undefined;
   return (
     <CheckoutProvider
       value={{
-        error,
+        callbackPayload,
         initialStep: step,
         cart,
         customer,

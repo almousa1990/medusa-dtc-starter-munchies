@@ -13,7 +13,7 @@ export default function CartHeading() {
   return (
     <div className="flex min-h-[calc(var(--header-height))] items-center justify-start px-4">
       <Title asChild>
-        <Heading desktopSize="2xl" font="serif" mobileSize="lg" tag="h2">
+        <Heading desktopSize="xl" font="serif" mobileSize="lg" tag="h2">
           سلة التسوق ({count})
         </Heading>
       </Title>

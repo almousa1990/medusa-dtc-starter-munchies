@@ -6,15 +6,19 @@ import medusaError from "@/utils/medusa/error";
 
 import medusa from "./client";
 import {getAuthHeaders, getCacheHeaders} from "./cookies";
+import {MerchifyOrder} from "@/types";
 
 export const getOrder = async function (id: string) {
   return medusa.store.order
     .retrieve(
       id,
-      {fields: "*payment_collections.payments"},
+      {
+        fields:
+          "*payment_collections.payments, +items.printfile_line_items.*,+items.printfile_line_items.rendition.preview_url,+items.printfile_line_items.printfile.preview_url",
+      },
       {...(await getCacheHeaders("orders")), ...(await getAuthHeaders())},
     )
-    .then(({order}) => order)
+    .then(({order}) => order as MerchifyOrder)
     .catch((err) => medusaError(err));
 };
 

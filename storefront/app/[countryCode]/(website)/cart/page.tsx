@@ -23,48 +23,47 @@ type CartPageProps = PageProps<"countryCode">;
 export default async function CartPage(props: CartPageProps) {
   const cart = await getCart();
   const params = await props.params;
-  console.log(cart);
 
   return cart?.items?.length ? (
     <CartProvider cart={cart} countryCode={params.countryCode}>
-      <Heading desktopSize="3xl" mobileSize="3xl" tag="h3">
-        سلة المشتريات
-      </Heading>
-      <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
-        <section aria-labelledby="cart-content" className="lg:col-span-7">
-          {/* Left column: Cart items */}
-          <div className="divide-border border-border divide-y border-t border-b">
-            {cart.items?.map((item) => <LineItem key={item.id} {...item} />)}
-          </div>
-        </section>
-        {/* Right column: Order Summary */}
-        <section
-          aria-labelledby="cart-summary"
-          className="mt-16 lg:col-span-5 lg:mt-0"
-        >
-          <div className="grid gap-4">
-            <div className="bg-background grid gap-4 rounded-md border px-4 py-6 sm:p-6 lg:py-8">
-              <Heading desktopSize="lg" mobileSize="xl" tag="h5">
-                ملخص الطلب
-              </Heading>
-              <TotalsBreakdown data={cart} />
-              <div className="bg-secondary -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
-                <Label>
-                  <TicketPercent className="me-1 inline-block size-5" /> هل لديك
-                  كود خصم؟
-                </Label>
-                <PromotionForm cart={cart} />
-              </div>
-              <Link className="w-full" href="/checkout" variant="default">
-                إتمام الطلب
-              </Link>
-              <Link className="w-full" href="/products" variant="secondary">
-                العودة للتسوق
-              </Link>
+      <main className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
+          سلة المشتريات
+        </Heading>
+        <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <section aria-labelledby="cart-content" className="lg:col-span-7">
+            <div className="divide-border border-border divide-y border-t border-b">
+              {cart.items?.map((item) => <LineItem key={item.id} {...item} />)}
             </div>
-          </div>
-        </section>
-      </div>
+          </section>
+          <section
+            aria-labelledby="cart-summary"
+            className="mt-16 lg:col-span-5 lg:mt-0"
+          >
+            <div className="grid gap-4">
+              <div className="bg-background grid gap-4 rounded-md border px-4 py-6 sm:p-6 lg:py-8">
+                <Heading desktopSize="lg" mobileSize="xl" tag="h3">
+                  ملخص الطلب
+                </Heading>
+                <TotalsBreakdown variant="small" data={cart} />
+                <div className="bg-secondary -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
+                  <Label>
+                    <TicketPercent className="me-1 inline-block size-5" /> هل
+                    لديك كود خصم؟
+                  </Label>
+                  <PromotionForm cart={cart} />
+                </div>
+                <Link className="w-full" href="/checkout" variant="default">
+                  إتمام الطلب
+                </Link>
+                <Link className="w-full" href="/products" variant="secondary">
+                  العودة للتسوق
+                </Link>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
     </CartProvider>
   ) : (
     <EmptyCartMessage />

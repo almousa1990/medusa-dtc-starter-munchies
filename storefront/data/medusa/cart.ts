@@ -5,10 +5,10 @@ import {cache} from "react";
 import client from "./client";
 import {getAuthHeaders, getCartId} from "./cookies";
 import {enrichLineItems} from "./line-items";
-import {MerchifyCart} from "@/types";
+import {MerchifyCart, MerchifyCartLineItem} from "@/types";
 
-export const getCart = cache(async function () {
-  const cartId = await getCartId();
+export const getCart = cache(async function (id?: string) {
+  const cartId = id ?? (await getCartId());
 
   if (!cartId) {
     return null;
@@ -43,7 +43,7 @@ export const getEnrichedCart = cache(async function () {
 
   if (cart?.items?.length) {
     const enrichedItems = await enrichLineItems(cart?.items, cart?.region_id);
-    cart.items = enrichedItems as HttpTypes.StoreCartLineItem[];
+    cart.items = enrichedItems as MerchifyCartLineItem[];
   }
 
   return cart;

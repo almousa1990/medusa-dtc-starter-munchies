@@ -8,6 +8,15 @@ export const headingStyles = cva("", {
     font: "serif",
   },
   variants: {
+    tag: {
+      h1: "font-bold",
+      h2: "font-bold",
+      h3: "font-semibold",
+      h4: "font-semibold",
+      h5: "font-medium",
+      h6: "font-medium",
+    },
+
     desktopSize: {
       "2xl": "lg:text-2xl",
       "3xl": "lg:text-3xl",
@@ -19,8 +28,8 @@ export const headingStyles = cva("", {
       xs: "lg:text-xs",
     },
     font: {
-      sans: "font-sans font-medium ",
-      serif: "font-serif font-medium ",
+      sans: "font-sans ",
+      serif: "font-serif ",
     },
     mobileSize: {
       "2xl": "text-2xl text-pretty tracking-[-1.12px]",
@@ -54,7 +63,10 @@ export default function Heading({
   const Tag = tag;
   return (
     <Tag
-      className={cn(headingStyles({desktopSize, font, mobileSize}), className)}
+      className={cn(
+        headingStyles({desktopSize, font, mobileSize, tag}),
+        className,
+      )}
       id={id}
       {...props}
     >

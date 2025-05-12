@@ -1,4 +1,4 @@
-import type {PageProps} from "@/types";
+import type {MerchifyProduct, PageProps} from "@/types";
 import type {ResolvingMetadata} from "next";
 
 import {generateOgEndpoint} from "@/app/api/og/[...info]/utils";
@@ -13,6 +13,9 @@ import {ProductImagesCarousel} from "./_parts/image-carousel";
 import ProductInformation from "./_parts/product-information";
 import ProductSpecs from "./_parts/specs";
 import StickyAtc from "./_parts/sticky-atc";
+import ContextBar from "@/components/global/context-bar";
+import {getPathComponents} from "@/utils/path-components";
+import {headers} from "next/headers";
 
 type ProductPageProps = PageProps<"countryCode" | "handle">;
 
@@ -54,8 +57,39 @@ export async function generateMetadata(
   };
 }
 
+const getBreadcrumbItem = (
+  product: MerchifyProduct,
+  referer: string | null,
+) => {
+  const pathComponents = getPathComponents(referer);
+
+  const parentSegment = pathComponents[pathComponents.length - 2];
+  const lastSegment = pathComponents[pathComponents.length - 1];
+
+  switch (parentSegment) {
+    case "categories":
+      const category = product.categories?.find(
+        (category) => category.handle === lastSegment,
+      );
+      return category
+        ? {label: category.name, href: `/categories/${category.handle}`}
+        : undefined;
+
+    default:
+      console.log(product);
+      const firstCategory = product.categories?.[0];
+      return firstCategory
+        ? {
+            label: firstCategory.name,
+            href: `/categories/${firstCategory.handle}`,
+          }
+        : undefined;
+  }
+};
+
 export default async function ProductPage(props: ProductPageProps) {
   const params = await props.params;
+  const headersList = await headers();
 
   const region = await getRegion(params.countryCode);
   if (!region) {
@@ -71,10 +105,20 @@ export default async function ProductPage(props: ProductPageProps) {
     console.log("No product found");
     return notFound();
   }
+  const breadcrumbItem = getBreadcrumbItem(product, headersList.get("referer"));
 
   return (
-    <>
-      <section className="mx-auto flex flex-col items-start justify-start gap-4 lg:flex-row lg:gap-6 lg:py-5">
+    <main>
+      <ContextBar
+        className="my-6"
+        breadcrumbItems={[
+          ...(breadcrumbItem ? [breadcrumbItem] : []),
+          {label: product.title},
+        ]}
+        countryCode={params.countryCode}
+      />
+
+      <section className="mx-auto flex max-w-xl flex-col items-start justify-start gap-4 px-4 py-4 sm:px-6 lg:max-w-7xl lg:flex-row lg:gap-6 lg:px-8">
         <ProductImagesCarousel product={product} />
         <ProductInformation
           content={content}
@@ -93,6 +137,6 @@ export default async function ProductPage(props: ProductPageProps) {
         />
       )}
       <StickyAtc {...product} region_id={region.id} />
-    </>
+    </main>
   );
 }

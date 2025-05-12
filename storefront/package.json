@@ -55,6 +55,7 @@
     "react-remove-scroll": "^2.6.0",
     "sanity": "^3.80.1",
     "sanity-plugin-hotspot-array": "^2.0.0",
+    "sanity-plugin-simpler-color-input": "^3.0.1",
     "styled-components": "6",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.2"

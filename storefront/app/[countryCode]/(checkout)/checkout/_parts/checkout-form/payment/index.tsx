@@ -17,27 +17,20 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {formSchema} from "./schema";
 import PaymentButton from "../../payment-button";
-
-export const PAYMENT_METHODS = {
-  CARD: "creditcard",
-  APPLEPAY: "applepay",
-  STCPAY: "stcpay",
-} as const;
+import {placeOrder} from "@/actions/medusa/order";
+import {getRawPaymentData} from "@/utils/moyasar/payment";
+import {PaymentSourceType} from "@/types";
 
 export default function Payment({active}: {active: boolean}) {
   const {cart, customer, paymentMethods, setStep} = useCheckout();
 
   const activeSession = cart.payment_collection?.payment_sessions?.find(
-    (session: any) => session.status === "pending",
+    (session) => session.status === "pending",
   );
 
-  const activeSessionSource = activeSession
-    ? (activeSession.data.source as {
-        type: "creditcard" | "applepay";
-      })
-    : undefined;
+  const sessionData = getRawPaymentData(activeSession?.data);
 
-  const activeType = activeSessionSource?.type ?? "creditcard";
+  const activeType = sessionData?.source.type ?? PaymentSourceType.CreditCard;
 
   const form = useForm({
     defaultValues: {
@@ -60,6 +53,15 @@ export default function Payment({active}: {active: boolean}) {
   } = form;
 
   const type = form.watch("type");
+  console.log("type", type);
+
+  const handlePaymentInitiated = async (transactionUrl?: string) => {
+    if (transactionUrl) {
+      window.location.href = transactionUrl;
+    } else {
+      await placeOrder();
+    }
+  };
 
   return (
     <div
@@ -118,6 +120,7 @@ export default function Payment({active}: {active: boolean}) {
                 )}
               />
               <PaymentButton
+                onInitiated={handlePaymentInitiated}
                 type={type}
                 loading={isSubmitting}
                 disabled={!type}

@@ -115,12 +115,6 @@ const config: Config = {
         marquee: "marquee var(--duration) linear infinite",
         "select-open": "selectOpen 0.2s ease-out forwards",
         "select-close": "selectClose 0.2s ease-in forwards",
-        enterFromTop: "enterFromTop 300ms ease",
-        enterFromLeft: "enterFromLeft 450ms ease",
-        enterFromRight: "enterFromRight 450ms ease",
-        exitToTop: "exitToTop 300ms ease",
-        exitToRight: "exitToRight 450ms ease",
-        exitToLeft: "exitToLeft 450ms ease",
         fadeInUp: "fadeInUp 450ms ease",
         fadeOutLeft: "fadeOutLeft var(--duration) ease-in-out",
       },
@@ -129,57 +123,7 @@ const config: Config = {
           from: {transform: "translateX(0)"},
           to: {transform: "translateX(calc(-100% - var(--gap)))"},
         },
-        selectOpen: {
-          from: {
-            opacity: "0",
-            transform: "scale(0.95)",
-          },
-          to: {
-            opacity: "1",
-            transform: "scale(1)",
-          },
-        },
-        selectClose: {
-          from: {
-            opacity: "1",
-            transform: "scale(1)",
-            filter: "blur(0px)",
-            "-webkit-filter": "blur(0px)",
-          },
-          to: {
-            opacity: "0",
-            transform: "scale(0.95)",
-            filter: "blur(4px)",
-            "-webkit-filter": "blur(4px)",
-          },
-        },
-        enterFromTop: {
-          from: {
-            opacity: "0.5",
-            transform: "translateY(-50px)",
-          },
-          to: {opacity: "1", transform: "translateY(0)"},
-        },
-        enterFromRight: {
-          from: {transform: "translateX(100%)"},
-          to: {transform: "translateX(0)"},
-        },
-        enterFromLeft: {
-          from: {transform: "translateX(-100%)"},
-          to: {transform: "translateX(0)"},
-        },
-        exitToTop: {
-          from: {opacity: "1", transform: "translateY(0)"},
-          to: {opacity: "0", transform: "translateY(-50px)"},
-        },
-        exitToRight: {
-          from: {transform: "translateX(0)"},
-          to: {transform: "translateX(100%)"},
-        },
-        exitToLeft: {
-          from: {transform: "translateX(0)"},
-          to: {transform: "translateX(-100%)"},
-        },
+
         fadeInUp: {
           from: {opacity: "0", transform: "translateY(40px)"},
           to: {opacity: "1", transform: "translateY(0)"},

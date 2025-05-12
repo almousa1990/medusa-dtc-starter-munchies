@@ -5,7 +5,7 @@ import {getAuthHeaders, getCacheTag} from "@/data/medusa/cookies";
 import {StoreCart} from "@medusajs/types";
 import {revalidateTag} from "next/cache";
 
-export async function initiatePaymentSession(payaload: {
+export async function initiatePaymentSession<T>(payaload: {
   cart: StoreCart;
   input: {
     context?: Record<string, unknown>;
@@ -15,9 +15,14 @@ export async function initiatePaymentSession(payaload: {
         token: string;
         type: "token" | "applepay";
       };
+      callback_url?: string;
     };
   };
-}): Promise<any> {
+}): Promise<{
+  error: string | null;
+  success: boolean;
+  data: T | null;
+}> {
   return medusa.store.payment
     .initiatePaymentSession(
       payaload.cart,
@@ -27,95 +32,13 @@ export async function initiatePaymentSession(payaload: {
     )
     .then(async (response) => {
       revalidateTag(await getCacheTag("carts"));
-
-      const session = response.payment_collection?.payment_sessions?.[0];
-
-      if (session) {
-        const url = (
-          session.data as {
-            source: {
-              transaction_url: string;
-            };
-          }
-        )?.source?.transaction_url;
-
-        return {error: null, status: "success", redirect_url: url} as const;
-      } else {
-        throw new Error("Session not found");
-      }
+      return {
+        error: null,
+        success: true,
+        data: response.payment_collection.payment_sessions?.[0].data as T,
+      } as const;
     })
     .catch((e) => {
-      return {error: e.message, status: "error"};
+      return {error: e.message, success: false, data: null};
     });
-}
-
-export interface CreateCardTokenInput {
-  number: string;
-  month: string;
-  year: string;
-  cvc: string;
-  first_name: string;
-  last_name: string;
-}
-
-export type CreateCardTokenResponse =
-  | {success: true; token: string}
-  | {success: false; error: string};
-
-export async function createCardToken(
-  card: CreateCardTokenInput,
-): Promise<CreateCardTokenResponse> {
-  try {
-    const data = {
-      publishable_api_key: process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY,
-      save_only: "true",
-      name: `${card.first_name} ${card.last_name}`,
-      number: card.number,
-      month: card.month,
-      year: card.year,
-      cvc: card.cvc,
-    };
-
-    const res = await fetch("https://api.moyasar.com/v1/tokens", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const json = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      if (json?.type === "validation_error" && json.errors) {
-        return {
-          success: false,
-          error: "Validation error: تحقق من البيانات المدخلة.",
-        };
-      }
-
-      return {
-        success: false,
-        error: json?.message || "فشل في إنشاء رمز البطاقة.",
-      };
-    }
-
-    if (!json.id) {
-      return {
-        success: false,
-        error: "الاستجابة من مويسار غير صحيحة.",
-      };
-    }
-
-    return {
-      success: true,
-      token: json.id,
-    };
-  } catch (error) {
-    console.error("Unexpected error:", error);
-    return {
-      success: false,
-      error: "حدث خطأ أثناء المعالجة.",
-    };
-  }
 }

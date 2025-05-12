@@ -14,7 +14,7 @@ export default function Footer({variant = "default", ...props}: FooterProps) {
   if (variant === "simple") {
     return (
       <footer className="bg-primary w-full" id="footer">
-        <div className="max-w-max-screen text-background mx-auto flex w-full flex-col gap-8 px-5 py-8 lg:px-8">
+        <div className="text-background mx-auto flex w-full max-w-xl flex-col gap-8 px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
           {props.image && (
             <SanityImage className="lg:mt-10" data={props.image} />
           )}
@@ -39,7 +39,7 @@ export default function Footer({variant = "default", ...props}: FooterProps) {
   return (
     <>
       <footer className="bg-primary w-full" id="footer">
-        <div className="max-w-max-screen text-background mx-auto flex w-full flex-col gap-10 px-5 pt-16 pb-5 lg:px-8 lg:pb-8">
+        <div className="text-background mx-auto flex w-full max-w-xl flex-col gap-10 px-4 pt-16 pb-5 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-8">
           <TopLinks {...props} />
           {props.image && (
             <SanityImage className="lg:mt-10" data={props.image} />

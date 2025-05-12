@@ -11,13 +11,13 @@ import {
 } from "@merchify/ui";
 import {ReactNode, useEffect, useState} from "react";
 import {StoreCustomer} from "@medusajs/types";
-import {ApplePayForm} from "@/components/shared/apple-pay-form";
 import {CreditCardForm} from "@/components/shared/credit-card-form";
 import Icon from "@/components/shared/icon";
+import {PaymentSourceType} from "@/types";
 
 interface PaymentSelectProps {
   customer: StoreCustomer;
-  value?: "stcpay" | "applepay" | "creditcard";
+  value?: PaymentSourceType;
   onValueChange: (value: string) => void;
 }
 
@@ -30,6 +30,8 @@ export default function PaymentSelect(props: PaymentSelectProps) {
       setCanUseApplePay(true);
     }
   }, []);
+  console.log("value", value);
+
   return (
     <Accordion type="single" value={value} collapsible className="grid gap-6">
       <RadioGroup
@@ -40,26 +42,18 @@ export default function PaymentSelect(props: PaymentSelectProps) {
         onValueChange={onValueChange}
       >
         <PaymentOption
-          selected={value == "creditcard"}
-          value="creditcard"
+          selected={value == PaymentSourceType.CreditCard}
+          value={PaymentSourceType.CreditCard}
           label="الدفع بالبطاقة الإئتمانية أو مدى"
           icons={["Mada", "Visa", "Mastercard", "Amex"]}
         >
           <CreditCardForm className="py-2" />
         </PaymentOption>
-        <PaymentOption
-          selected={value == "stcpay"}
-          value="stcpay"
-          label="البطاقة الائتمانية"
-          icons={["Amex"]}
-        >
-          nothing
-        </PaymentOption>
 
         {canUseApplePay && (
           <PaymentOption
-            selected={value == "applepay"}
-            value="applepay"
+            selected={value == PaymentSourceType.ApplePay}
+            value={PaymentSourceType.ApplePay}
             label="الدفع باستخدام Apple Pay"
             icons={["ApplePay"]}
           />
@@ -100,8 +94,8 @@ function PaymentOption({
           {label}
         </Label>
         <div className="flex gap-2">
-          {icons.map((icon) => (
-            <Icon name={icon} className="h-4" />
+          {icons.map((icon, index) => (
+            <Icon name={icon} key={index} className="h-4" />
           ))}
         </div>
       </div>

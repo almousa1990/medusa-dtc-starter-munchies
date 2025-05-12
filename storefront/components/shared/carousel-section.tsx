@@ -22,8 +22,8 @@ export default function CarouselSection(props: Props) {
   if (!children) return null;
 
   return (
-    <div className="mx-auto py-10">
-      <div className={cx("my-6 grid gap-1")}>
+    <div className="mx-auto">
+      <div className={cx("mb-6 grid gap-1")}>
         <div className="flex flex-1 justify-between">
           <Heading desktopSize="2xl" mobileSize="xl" tag="h3">
             {title}

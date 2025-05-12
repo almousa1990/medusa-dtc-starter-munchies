@@ -49,9 +49,15 @@ export const setAuthToken = async (token: string) => {
   (await cookies()).set("_medusa_jwt", token, {
     httpOnly: true,
     maxAge: 60 * 60 * 24 * 7,
+    sameSite: "none",
+    secure: true,
+  });
+  /*
+  
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
-  });
+    
+    */
 };
 
 export const removeAuthToken = async () => {
@@ -66,9 +72,15 @@ export const setCartId = async (cartId: string) => {
   (await cookies()).set("_medusa_cart_id", cartId, {
     httpOnly: true,
     maxAge: 60 * 60 * 24 * 7,
+    sameSite: "none",
+    secure: true,
+  });
+  /*
+  
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",
-  });
+    
+    */
 };
 
 export const removeCartId = async () => {

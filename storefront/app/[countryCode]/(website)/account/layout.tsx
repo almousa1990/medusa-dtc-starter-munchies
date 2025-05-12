@@ -56,22 +56,24 @@ export default async function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className="space-y-6 p-5 pb-16 md:block lg:p-10">
-      <div className="space-y-0.5">
-        <h2 className="text-2xl font-bold tracking-tight">
-          هلا {customer.first_name}!
-        </h2>
-        <p className="text-muted-foreground"></p>
-      </div>
-      <Separator />
+    <main className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="space-y-6 p-5 pb-16 md:block lg:p-10">
+        <div className="space-y-0.5">
+          <h2 className="text-2xl font-bold tracking-tight">
+            هلا {customer.first_name}!
+          </h2>
+          <p className="text-muted-foreground"></p>
+        </div>
+        <Separator />
 
-      <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
-        <aside className="lg:w-1/5">
-          <SideNavigation items={sidebarNavItems} />
-        </aside>
-        <div className="flex-1 lg:max-w-2xl">{children}</div>
+        <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
+          <aside className="lg:w-1/5">
+            <SideNavigation items={sidebarNavItems} />
+          </aside>
+          <div className="flex-1 lg:max-w-2xl">{children}</div>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -12,13 +12,15 @@ export const getProductByHandle = unstable_cache(
       .list(
         {
           fields:
-            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+care_instructions.*,+feature_entries.content,+feature_entries.template.*",
+            "*variants.calculated_price,+variants.inventory_quantity,+metadata,+care_instructions.*,+feature_entries.content,+feature_entries.template.*, +categories.*",
           handle,
           region_id,
         },
         {next: {tags: ["products"]}},
       )
-      .then(({products}) => products[0] as MerchifyProduct);
+      .then(({products, count}) =>
+        count ? (products[0] as MerchifyProduct) : undefined,
+      );
   },
   ["product"],
   {

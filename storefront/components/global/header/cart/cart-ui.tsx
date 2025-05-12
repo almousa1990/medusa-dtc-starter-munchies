@@ -11,6 +11,7 @@ import CartFooter from "./cart-footer";
 import CartHeading from "./cart-heading";
 import LineItem from "./line-item";
 import OpenCart from "./open-cart-button";
+import {X} from "lucide-react";
 
 type Props = Pick<Header, "cartAddons">;
 
@@ -28,7 +29,7 @@ export default function CartUI({
           <div className="relative flex items-center justify-between">
             <CartHeading />
             <CloseDialog aria-label="Close" className="mr-auto ml-4">
-              <Icon className="h-9 w-9" name="Close" />
+              <X className="size-6" />
             </CloseDialog>
           </div>
           <div className="bg-border h-px w-full" />

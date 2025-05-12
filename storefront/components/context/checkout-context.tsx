@@ -11,9 +11,14 @@ import {createContext, useContext, useEffect, useState} from "react";
 
 export type CheckoutStep = "address" | "delivery" | "payment" | "review";
 
+type CheckoutCallbackPayload = {
+  status: string;
+  message: string;
+};
+
 interface CheckoutContextType {
   cart: StoreCart;
-  error: string;
+  callbackPayload?: CheckoutCallbackPayload | null;
   customer: StoreCustomer;
   paymentMethods: StorePaymentProvider[];
   setStep: (step: CheckoutContextType["step"]) => void;
@@ -38,24 +43,30 @@ export const CheckoutProvider = ({
 }: {
   children: React.ReactNode;
   value: {
-    error?: string;
+    callbackPayload?: CheckoutCallbackPayload;
     initialStep?: CheckoutContextType["step"];
   } & Omit<CheckoutContextType, "setStep" | "step">;
 }) => {
   const {toast} = useToast();
 
   useEffect(() => {
-    if (!value.error) return;
+    if (!value.callbackPayload) return;
 
     const timeout = setTimeout(() => {
       toast({
-        description: value.error,
+        description: "فشلت عملية الدفع",
         variant: "destructive",
       });
     }, 0);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("message");
+    url.searchParams.delete("status");
+
+    // Replace the current URL without triggering a navigation
+    window.history.replaceState({}, "", url.toString());
 
     return () => clearTimeout(timeout);
-  }, [value.error, toast]);
+  }, [value.callbackPayload?.status, toast]);
 
   const initialStep: CheckoutContextType["step"] = (() => {
     if (value.initialStep) {

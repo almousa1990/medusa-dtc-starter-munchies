@@ -1,22 +1,22 @@
 import type {StoreProduct} from "@medusajs/types";
 
 import {getProductPrice} from "@/utils/medusa/get-product-price";
-import {cx} from "cva";
 import Image from "next/image";
 
 import LocalizedLink from "./localized-link";
 import Tag from "./tag";
 import Body from "./typography/body";
 import Heading from "./typography/heading";
+import {cn} from "@merchify/ui";
 
 export default function ProductCard({
   index,
   product,
-  size = "default",
+  className,
 }: {
   index?: number;
   product: StoreProduct | undefined;
-  size?: "PLP" | "default";
+  className?: string;
 }) {
   if (!product) return null;
 
@@ -30,7 +30,7 @@ export default function ProductCard({
 
   return (
     <LocalizedLink
-      className={cx("inline-flex w-64 flex-col text-center lg:w-auto")}
+      className={cn(className)}
       href={`/products/${product?.handle}`}
       prefetch
     >

@@ -21,17 +21,19 @@ type ActionState =
   | {error: null; status: "idle" | "success"}
   | {error: string; status: "error"};
 
-export async function placeOrder() {
-  const cartId = await getCartId();
-  if (!cartId) {
+export async function placeOrder(cartId?: string) {
+  const _cartId = cartId ?? (await getCartId());
+  if (!_cartId) {
     throw new Error("No existing cart found when placing an order");
   }
 
   const cartRes = await medusa.store.cart.complete(
-    cartId,
+    _cartId,
     {},
     await getAuthHeaders(),
   );
+
+  console.log("cart res", cartRes);
 
   const cacheTag = await getCacheTag("carts");
 
@@ -44,7 +46,7 @@ export async function placeOrder() {
     redirect(`/${countryCode}/order/confirmed/${cartRes.order.id}`);
   }
 
-  return cartRes.cart;
+  return cartRes;
 }
 
 export async function setCheckoutAddresses(

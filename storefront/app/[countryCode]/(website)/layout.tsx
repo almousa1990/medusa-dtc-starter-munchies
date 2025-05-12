@@ -46,9 +46,7 @@ export default async function Layout(props: LayoutProps) {
           customer={customer}
         />
       )}
-      <main className="mt-8 w-full flex-1 px-4 pb-16 sm:px-6 sm:pb-24 lg:mx-auto lg:max-w-7xl lg:px-8">
-        {children}
-      </main>
+      <div className="flex-1">{children}</div>
       {data.footer && <Footer {...data.footer} />}
     </>
   );

@@ -2,10 +2,10 @@
 
 import type {Header} from "@/types/sanity.generated";
 
-import Icon from "@/components/shared/icon";
 import {RichText} from "@/components/shared/rich-text";
 import Body from "@/components/shared/typography/body";
 import React, {Fragment, useState} from "react";
+import {X} from "lucide-react";
 
 export default function AnnouncementBar({
   announcementText,
@@ -16,14 +16,14 @@ export default function AnnouncementBar({
     <Fragment>
       {isActive && showAnnouncement && (
         <div className="bg-secondary w-full">
-          <div className="max-w-max-screen bg-secondary mx-auto flex w-full items-center justify-between px-5 py-[7.5px] lg:px-8">
+          <div className="bg-secondary mx-auto flex w-full max-w-xl items-center justify-between px-4 py-[7.5px] sm:px-6 lg:max-w-7xl lg:px-8">
             {announcementText && (
               <Body desktopSize="sm" font="sans" mobileSize="xs">
                 <RichText value={announcementText} />
               </Body>
             )}
             <button onClick={() => setIsActive(false)}>
-              <Icon className="h-[14px] w-[14px]" name="Close" />
+              <X className="size-4" />
             </button>
           </div>
         </div>

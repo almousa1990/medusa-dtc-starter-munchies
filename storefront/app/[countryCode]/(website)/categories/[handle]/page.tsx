@@ -13,6 +13,8 @@ import {resolveSanityRouteMetadata} from "@/data/sanity/resolve-sanity-route-met
 import {Suspense} from "react";
 
 import notFound from "../../not-found";
+import ContextBar from "@/components/global/context-bar";
+import Body from "@/components/shared/typography/body";
 
 type CategoryPageProps = PageProps<
   "countryCode" | "handle",
@@ -91,28 +93,41 @@ export default async function CategoryPage(props: CategoryPageProps) {
     ? category.parent_category?.category_children
     : (await getCategories()).product_categories;
 
-  console.log(searchParams);
-
   return (
-    <section className="max-w-max-screen mx-auto flex flex-col gap-10 pt-[6.5rem] pb-10">
-      <div>
-        <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
-          {category.name}
-        </Heading>
-      </div>
-      <div className="flex flex-col gap-6">
+    <main>
+      <ContextBar
+        className="my-6"
+        breadcrumbItems={[{label: "نتائج البحث"}]}
+        countryCode={params.countryCode}
+      />
+
+      <section className="mx-auto flex max-w-xl flex-col gap-10 px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="grid gap-4">
+          <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
+            {category.name}
+          </Heading>
+          {category.description && (
+            <Body className="text-muted-foreground">
+              {category.description}
+            </Body>
+          )}
+        </div>
+      </section>
+      <section className="mx-auto flex max-w-xl flex-col gap-10 px-4 py-2 sm:px-6 lg:max-w-7xl lg:px-8">
         <ProductFilters
           categories={categories}
           filters={category.filters}
           initialTags={searchParams.tags}
         />
+      </section>
+      <section className="mx-auto flex max-w-xl flex-col gap-10 px-4 pt-6 pb-16 sm:px-6 sm:pt-8 sm:pb-24 lg:max-w-7xl lg:px-8">
         <Suspense fallback={<ProductsSkeleton />}>
           <PaginatedProducts
             countryCode={params.countryCode}
             searchParams={{...searchParams, category: content?._id}}
           />
         </Suspense>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }

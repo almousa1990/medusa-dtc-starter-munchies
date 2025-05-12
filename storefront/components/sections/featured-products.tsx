@@ -26,10 +26,18 @@ export default async function FeaturedProducts(
   const {products} = await getProductsByIds(ids, region.id);
 
   const slides = products.map((product, index) => (
-    <ProductCard index={index} key={product.id} product={product} />
+    <ProductCard
+      index={index}
+      key={product.id}
+      product={product}
+      className="inline-flex w-64 flex-col text-center lg:w-auto"
+    />
   ));
   return (
-    <section>
+    <section
+      {...props.rootHtmlAttributes}
+      className="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8"
+    >
       <CarouselSection
         cta={{href: props.cta?.link, text: props.cta?.label}}
         slides={slides}

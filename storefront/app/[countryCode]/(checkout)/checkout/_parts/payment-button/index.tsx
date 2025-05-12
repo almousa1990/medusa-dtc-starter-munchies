@@ -1,30 +1,50 @@
 import {
   createCardToken,
-  initiatePaymentSession,
-} from "@/actions/medusa/payment";
+  initiateApplePaySession,
+} from "@/actions/medusa/moyasar";
+import {initiatePaymentSession} from "@/actions/medusa/payment";
 import {useCheckout} from "@/components/context/checkout-context";
 import {useCountryCode} from "@/components/context/country-code-context";
 import {Cta} from "@/components/shared/button";
 import config from "@/config";
-import {convertToLocale} from "@/utils/medusa/money";
+import {
+  ApplePaySource,
+  PaymentData,
+  CreditCardSource,
+  PaymentSourceType,
+} from "@/types";
 import {useFormContext, useToast} from "@merchify/ui";
 
 interface PaymentButtonProps {
-  type: "creditcard" | "applepay" | "stcpay";
+  type: PaymentSourceType;
   loading: boolean;
   disabled: boolean;
+  onInitiated: (transactionUrl?: string) => Promise<void>;
 }
 
 export default function PaymentButton({
   type,
   loading,
   disabled,
+  onInitiated,
 }: PaymentButtonProps) {
   switch (type) {
-    case "creditcard":
-      return <CreditCardPaymentButton loading={loading} disabled={disabled} />;
-    case "applepay":
-      return <ApplePayPaymentButton loading={loading} disabled={disabled} />;
+    case PaymentSourceType.CreditCard:
+      return (
+        <CreditCardPaymentButton
+          onInitiated={onInitiated}
+          loading={loading}
+          disabled={disabled}
+        />
+      );
+    case PaymentSourceType.ApplePay:
+      return (
+        <ApplePayPaymentButton
+          onInitiated={onInitiated}
+          loading={loading}
+          disabled={disabled}
+        />
+      );
     // You can add more cases like stcpay
     default:
       return null;
@@ -33,9 +53,10 @@ export default function PaymentButton({
 interface Props {
   loading: boolean;
   disabled: boolean;
+  onInitiated: (transactionUrl?: string) => Promise<void>;
 }
 
-function ApplePayPaymentButton({loading, disabled}: Props) {
+function ApplePayPaymentButton({loading, disabled, onInitiated}: Props) {
   const form = useFormContext();
   const {cart, customer} = useCheckout();
   const countryCode = useCountryCode();
@@ -63,24 +84,15 @@ function ApplePayPaymentButton({loading, disabled}: Props) {
     const applePaySession = new ApplePaySession(5, applePayPaymentRequest);
 
     applePaySession.onvalidatemerchant = async (event) => {
-      const body = {
-        validation_url: event.validationURL,
-        display_name: config.siteName,
-        domain_name: window.location.hostname,
-        publishable_api_key: process.env.NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY,
-      };
-
       try {
-        const response = await fetch(
-          "https://api.moyasar.com/v1/applepay/initiate",
-          {
-            method: "post",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body),
-          },
-        );
+        const result = await initiateApplePaySession(event);
 
-        applePaySession.completeMerchantValidation(await response.json());
+        if (!result.success) {
+          toast({description: result.error.message, variant: "destructive"});
+          return;
+        }
+
+        applePaySession.completeMerchantValidation(result.data);
       } catch (error) {
         applePaySession.completeMerchantValidation(error);
       }
@@ -89,24 +101,52 @@ function ApplePayPaymentButton({loading, disabled}: Props) {
     // Payment Authorization
     applePaySession.onpaymentauthorized = async (event) => {
       const token = event.payment.token;
-      const session = await initiatePaymentSession({
-        cart,
-        input: {
-          provider_id: "pp_moyasar_moyasar",
-          data: {
-            source: {
-              type: "applepay",
-              token: JSON.stringify(token),
+      const session = await initiatePaymentSession<PaymentData<ApplePaySource>>(
+        {
+          cart,
+          input: {
+            provider_id: "pp_moyasar_moyasar",
+            data: {
+              source: {
+                type: PaymentSourceType.ApplePay,
+                token: JSON.stringify(token),
+              },
             },
           },
         },
-      });
+      );
 
-      if (session.status === "success" && session.redirect_url) {
-        window.location.href = session.redirect_url;
-      } else {
+      if (!session.success) {
+        applePaySession.completePayment({
+          status: ApplePaySession.STATUS_FAILURE,
+          errors: [
+            new ApplePayError("unknown", undefined, session.error as string),
+          ],
+        });
         throw new Error(session.error || "فشل في بدء عملية الدفع");
       }
+
+      if (session.data?.status != "paid") {
+        applePaySession.completePayment({
+          status: ApplePaySession.STATUS_FAILURE,
+          errors: [
+            new ApplePayError(
+              "unknown",
+              undefined,
+              session.data?.source.message,
+            ),
+          ],
+        });
+
+        return;
+      }
+
+      // TODO: Report payment result to merchant backend
+      // TODO: Add any merchant related bussiness logic here
+
+      applePaySession.completePayment({
+        status: ApplePaySession.STATUS_SUCCESS,
+      });
     };
 
     applePaySession.oncancel = (event) => {
@@ -128,7 +168,7 @@ function ApplePayPaymentButton({loading, disabled}: Props) {
   );
 }
 
-function CreditCardPaymentButton({loading, disabled}: Props) {
+function CreditCardPaymentButton({loading, disabled, onInitiated}: Props) {
   const form = useFormContext();
   const {toast} = useToast();
   const {cart, customer} = useCheckout();
@@ -150,25 +190,30 @@ function CreditCardPaymentButton({loading, disabled}: Props) {
       });
 
       if (!result.success) {
-        toast({description: result.error, variant: "destructive"});
+        toast({description: result.error.message, variant: "destructive"});
         return;
       }
 
-      const session = await initiatePaymentSession({
+      const session = await initiatePaymentSession<
+        PaymentData<CreditCardSource>
+      >({
         cart,
         input: {
           provider_id: "pp_moyasar_moyasar",
           data: {
             source: {
-              type: "token",
-              token: result.token,
+              type: PaymentSourceType.Token,
+              token: result.data.id,
             },
+            callback_url: `${window.location.origin}/api/payment-redirect/${cart.id}`,
           },
         },
       });
 
-      if (session.status === "success" && session.redirect_url) {
-        window.location.href = session.redirect_url;
+      if (session.success) {
+        const transactionUrl = session.data?.source?.transaction_url;
+
+        await onInitiated(transactionUrl);
       } else {
         throw new Error(session.error || "فشل في بدء عملية الدفع");
       }

@@ -87,10 +87,10 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               <RadioGroup.Item
                 className={cn(
                   "flex cursor-pointer",
-                  !isValid && "opacity-50",
+                  !isValid && "border-dashed opacity-50",
                   isColorOption
                     ? "relative -m-0.5 rounded-full p-0.5 focus:outline-none data-[state=checked]:ring-2 data-[focus]:data-[state=checked]:ring data-[focus]:data-[state=checked]:ring-offset-1"
-                    : "border-input bg-background hover:bg-accent data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[focus]:bg-primary/90 data-[state=checked]:hover:bg-primary items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase disabled:opacity-50 data-[focus]:ring-2 data-[focus]:ring-offset-2 data-[state=checked]:border-transparent sm:flex-1",
+                    : "border-input bg-background hover:bg-accent data-[state=checked]:bg-background data-[state=checked]:text-primary data-[focus]:bg-primary/90 data-[state=checked]:border-primary items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase disabled:opacity-50 data-[focus]:ring-2 data-[focus]:ring-offset-2 sm:flex-1",
                 )}
                 disabled={shouldDisable}
                 key={index}

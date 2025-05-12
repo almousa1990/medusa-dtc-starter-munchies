@@ -3,34 +3,48 @@ import type {PageProps} from "@/types";
 import PaginatedProducts, {
   ProductsSkeleton,
 } from "@/components/products/paginated-product";
-import Refinement from "@/components/products/product-refinement";
 import Heading from "@/components/shared/typography/heading";
 import {Suspense} from "react";
 
+import ContextBar from "@/components/global/context-bar";
+import {getRegion} from "@/data/medusa/regions";
+
 type ProductsPageProps = PageProps<
   "countryCode",
-  "category" | "collection" | "page" | "sort"
+  "category" | "collection" | "page" | "sort" | "q"
 >;
 
 export default async function ProductsPage(props: ProductsPageProps) {
   const searchParams = await props.searchParams;
   const params = await props.params;
-  console.log(searchParams);
+
   return (
-    <section className="max-w-max-screen mx-auto flex flex-col gap-10 pt-[6.5rem] pb-10">
-      <div>
-        <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
-          عرض جميع المنتجات
-        </Heading>
-      </div>
-      <div className="flex flex-col gap-6">
+    <main>
+      <ContextBar
+        className="my-6"
+        breadcrumbItems={[{label: "نتائج البحث"}]}
+        countryCode={params.countryCode}
+      />
+
+      <section className="mx-auto flex max-w-xl flex-col gap-10 px-4 py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div>
+          <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
+            {searchParams.q ? (
+              <>عرض نتائج البحث عن '{searchParams.q}'</>
+            ) : (
+              <>ما الذي ترغب في العثور عليه؟</>
+            )}
+          </Heading>
+        </div>
+      </section>
+      <section className="mx-auto flex max-w-xl flex-col gap-10 px-4 pt-6 pb-16 sm:px-6 sm:pt-8 sm:pb-24 lg:max-w-7xl lg:px-8">
         <Suspense fallback={<ProductsSkeleton />}>
           <PaginatedProducts
             countryCode={params.countryCode}
             searchParams={searchParams}
           />
         </Suspense>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }

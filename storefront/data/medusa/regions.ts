@@ -18,12 +18,22 @@ export const listRegions = unstable_cache(
   },
 );
 
+export type CountryListItem = {
+  code: string;
+  currency: {
+    code: string;
+    symbol: string;
+  };
+  name: string;
+};
 export const listCountries = unstable_cache(
-  async function () {
+  async function (): Promise<CountryListItem[]> {
     const regions = await listRegions();
-    const countries = regions.flatMap((region) =>
-      region.countries?.map((country) => ({
-        code: country.iso_2,
+    const countries = regions.flatMap((region) => {
+      if (!region.countries) return [];
+
+      return region.countries.map((country) => ({
+        code: country.iso_2 as string,
         currency: {
           code: region.currency_code,
           symbol: new Intl.NumberFormat("en-US", {
@@ -33,9 +43,9 @@ export const listCountries = unstable_cache(
             .format(9)
             .split("9")[0],
         },
-        name: country.display_name,
-      })),
-    );
+        name: country.metadata?.ar_name ?? country.display_name,
+      }));
+    });
 
     return countries.filter(
       (country, index, self) =>
@@ -83,3 +93,31 @@ export const getRegion = unstable_cache(
     revalidate: 120,
   },
 );
+
+const _getRegion = async function (countryCode: string) {
+  try {
+    if (regionMap.has(countryCode)) {
+      return regionMap.get(countryCode);
+    }
+
+    const regions = await listRegions();
+
+    if (!regions) {
+      return null;
+    }
+
+    regions.forEach((region) => {
+      region.countries?.forEach((c) => {
+        regionMap.set(c?.iso_2 ?? "", region);
+      });
+    });
+
+    const region = countryCode
+      ? regionMap.get(countryCode)
+      : regionMap.get("sa");
+
+    return region;
+  } catch (e: any) {
+    return null;
+  }
+};

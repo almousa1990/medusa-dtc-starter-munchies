@@ -17,7 +17,7 @@ export default async function PaginatedProducts({
 }: {
   countryCode: string;
   searchParams: SearchParams<
-    "category" | "collection" | "tags" | "page" | "sort"
+    "category" | "collection" | "tags" | "page" | "sort" | "q"
   >;
 }) {
   const category = parseSearchParam(searchParams.category)?.split(",");
@@ -38,6 +38,7 @@ export default async function PaginatedProducts({
     category_id: category,
     collection_id: collection,
     tag_id: tags,
+    q: searchParams.q as string,
   });
 
   const hasFilters = category || collection;
@@ -54,7 +55,7 @@ export default async function PaginatedProducts({
           </Body>
         </div>
       )}
-      <div className="flex flex-col space-y-4 sm:mx-6 sm:flex-row sm:space-y-0 sm:space-x-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
+      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         <ProductGrid products={products} />
       </div>
       {totalPages > 1 && (

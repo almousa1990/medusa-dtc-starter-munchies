@@ -70,7 +70,6 @@ export async function loadPageByPathname({
     pathname = "/";
   }
   const data = await loadRoute(pathname);
-  console.log("data", data);
   const documentType = data?.routeData._type;
 
   switch (documentType) {

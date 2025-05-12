@@ -17,6 +17,7 @@ import {RemoveScroll} from "react-remove-scroll";
 
 import type {Country} from "../../country-selector/country-selector-dialog";
 import {StoreCustomer} from "@medusajs/types";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
@@ -66,13 +67,13 @@ export default function Hamburger({
         <RemoveScroll>
           <Dialog.Content className="bg-background w-screen items-end justify-end overflow-x-hidden">
             <VisuallyHidden.Root>
-              <Dialog.Title className="">Menu</Dialog.Title>
+              <Dialog.Title className="">القائمة</Dialog.Title>
             </VisuallyHidden.Root>
             <div
               className={cx(
                 "scrollbar-hide bg-background fixed top-[calc(var(--header-height))] left-0 flex h-[calc(100dvh-var(--header-height))] w-screen flex-1 flex-col items-start justify-between overflow-x-hidden overflow-y-scroll transition-all duration-300",
                 {
-                  "-translate-x-full": isMenuActive,
+                  "translate-x-full": isMenuActive,
                   "translate-x-0": !isMenuActive,
                 },
               )}
@@ -95,7 +96,7 @@ export default function Hamburger({
             </div>
             <div
               className={`scrollbar-hide bg-background fixed top-[calc(var(--header-height))] left-0 h-[calc(100dvh-var(--header-height))] w-screen transform overflow-x-hidden overflow-y-scroll transition-all duration-300 ${
-                isMenuActive ? "translate-x-0" : "translate-x-full"
+                isMenuActive ? "translate-x-0" : "-translate-x-full"
               }`}
             >
               <div className="h-auto w-full">
@@ -103,7 +104,7 @@ export default function Hamburger({
                   className="flex items-center justify-start gap-4 p-5"
                   onClick={() => setActiveMenu(undefined)}
                 >
-                  <Icon className="size-8" name="AccordionLeft" />
+                  <ChevronRight className="size-8" />
                   <Body font="sans" mobileSize="2xl">
                     {activeMenu?.title}
                   </Body>
@@ -155,7 +156,7 @@ function NavMenuItem({
         <Body font="sans" mobileSize="2xl">
           {item.title}
         </Body>
-        <Icon className="size-8" name="AccordionRight" />
+        <ChevronLeft className="size-8" />
       </div>
     );
   }
@@ -202,16 +203,16 @@ function DropdownList({
         {activeMenu?.cards?.map((card) => {
           return (
             <div
-              className="first:ml-md last:mr-md flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center gap-2 rounded-lg"
+              className="flex w-[220px] max-w-[220px] min-w-[160px] shrink-0 flex-col items-center gap-2 rounded-md first:mr-5 last:ml-5"
               key={card._key}
             >
               {card.image ? (
                 <SanityImage
-                  className="aspect-square max-h-[220px] w-[220px] min-w-[160px] rounded-lg"
+                  className="aspect-square max-h-[220px] w-[220px] min-w-[160px] rounded-md"
                   data={card.image}
                 />
               ) : (
-                <div className="bg-accent aspect-square w-full rounded-lg" />
+                <div className="bg-accent aspect-square w-full rounded-md" />
               )}
 
               <Heading
@@ -224,7 +225,7 @@ function DropdownList({
               </Heading>
               {card.cta?.link && (
                 <Link
-                  className="mt-xs"
+                  className="mt-2"
                   href={card.cta?.link}
                   size="sm"
                   variant="outline"

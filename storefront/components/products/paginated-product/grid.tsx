@@ -14,6 +14,6 @@ export default function ProductGrid({products}: {products: StoreProduct[]}) {
   }, [products]);
 
   return paginatedProducts?.map((product) => {
-    return <ProductCard key={product.id} product={product} size="PLP" />;
+    return <ProductCard key={product.id} product={product} />;
   });
 }

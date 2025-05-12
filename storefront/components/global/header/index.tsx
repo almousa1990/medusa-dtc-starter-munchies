@@ -7,8 +7,9 @@ import Cart from "./cart";
 import AnnouncementBar from "./parts/announcement-bar";
 import HamburgerContainer from "./parts/hamburger/container";
 import Navigation from "./parts/navigation";
-import {CircleUserRound, Search, ShoppingBag} from "lucide-react";
+import {ShoppingBag} from "lucide-react";
 import {StoreCustomer} from "@medusajs/types";
+import {Link} from "@/components/shared/button";
 
 export default function Header(
   props: {countryCode: string; customer: StoreCustomer | null} & Header,
@@ -16,10 +17,7 @@ export default function Header(
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full flex-col items-center border-b">
       <AnnouncementBar {...props} />
-      <div className="max-w-max-screen mx-auto flex w-full items-center justify-between gap-10 px-5 py-2 lg:px-8">
-        <Suspense>
-          <Navigation data={props} />
-        </Suspense>
+      <div className="mx-auto flex w-full max-w-xl items-center justify-between gap-10 px-4 py-2 sm:px-6 lg:max-w-7xl lg:px-8">
         <HamburgerContainer customer={props.customer} sanityData={props} />
 
         <div className="flex items-center gap-4">
@@ -31,18 +29,20 @@ export default function Header(
             />
           </LocalizedLink>
         </div>
-
+        <Suspense>
+          <Navigation data={props} />
+        </Suspense>
         <div className="flex flex-1 items-center justify-end gap-6">
           <div className="hidden lg:flex lg:gap-2">
-            <LocalizedLink href="/" className="relative h-10 w-10 p-2">
-              <Search />
-            </LocalizedLink>
-            <LocalizedLink
-              href={props.customer ? "/account" : "/auth"}
-              className="relative h-10 w-10 p-2"
-            >
-              <CircleUserRound />
-            </LocalizedLink>
+            {props.customer ? (
+              <Link variant={"secondary"} href={"/account"}>
+                الحساب الشخصي
+              </Link>
+            ) : (
+              <Link variant={"secondary"} href={"/auth"}>
+                تسجيل الدخول أو إنشاء حساب
+              </Link>
+            )}
           </div>
           <Suspense
             fallback={
