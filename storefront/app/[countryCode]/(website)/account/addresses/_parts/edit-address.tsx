@@ -61,11 +61,11 @@ const EditAddress: React.FC<EditAddressProps> = ({region, address}) => {
         )}
       >
         <div className="flex flex-col">
-          <Heading tag="h4" mobileSize="lg" className="text-right">
+          <Heading tag="h4" mobileSize="base" className="text-right">
             {address.first_name} {address.last_name}
           </Heading>
 
-          <Body className="mt-2 flex flex-col text-right">
+          <Body className="mt-2 flex flex-col text-right" mobileSize="sm">
             <span data-testid="address-address">
               {address.address_1}
               {address.address_2 && <span>, {address.address_2}</span>}

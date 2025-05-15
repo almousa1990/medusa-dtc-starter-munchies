@@ -57,6 +57,11 @@ export default defineType({
         {
           fields: [
             {
+              name: "heading",
+              type: "string",
+              title: "Heading",
+            },
+            {
               name: "links",
               of: [
                 {
@@ -67,14 +72,16 @@ export default defineType({
             },
           ],
           preview: {
-            prepare: ({links}) => ({
-              title: links
-                .map((link: {label: string}) => link.label)
-                .join(", "),
-            }),
             select: {
+              heading: "heading",
               links: "links",
             },
+            prepare: ({heading, links}) => ({
+              title: heading || "No heading",
+              subtitle: links
+                ?.map((link: {label: string}) => link.label)
+                .join(", "),
+            }),
           },
           type: "object",
         },
@@ -139,7 +146,7 @@ export default defineType({
       name: "socialLinks",
       of: [
         {
-          type: "cta",
+          type: "socialLink",
         },
       ],
       title: "Social links",

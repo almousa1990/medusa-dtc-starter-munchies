@@ -14,7 +14,7 @@ export const getOrder = async function (id: string) {
       id,
       {
         fields:
-          "*payment_collections.payments, +items.printfile_line_items.*,+items.printfile_line_items.rendition.preview_url,+items.printfile_line_items.printfile.preview_url",
+          "*payment_collections.payments, *fulfillments.labels, *fulfillments.items, *fulfillments.shipping_option, +items.*, +items.printfile_line_items.*,+items.printfile_line_items.rendition.preview_url,+items.printfile_line_items.printfile.preview_url",
       },
       {...(await getCacheHeaders("orders")), ...(await getAuthHeaders())},
     )

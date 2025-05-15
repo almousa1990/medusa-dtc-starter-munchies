@@ -1,42 +1,48 @@
-import type {StoreOrderLineItem} from "@medusajs/types";
-
 import Body from "@/components/shared/typography/body";
 import {convertToLocale} from "@/utils/medusa/money";
 import Image from "next/image";
 import Heading from "@/components/shared/typography/heading";
-import {Badge} from "@merchify/ui";
+import {Badge, cn} from "@merchify/ui";
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
+import {MerchifyOrderLineItem} from "@/types";
 
 export default function OrderItem({
-  currency_code,
-  product,
-  product_title,
-  quantity,
-  thumbnail,
-  unit_price,
-  variant,
-  variant_title,
-  printfile_line_items,
-}: {currency_code: string} & StoreOrderLineItem) {
+  item,
+  currencyCode,
+  className,
+}: {
+  item: MerchifyOrderLineItem;
+  currencyCode: string;
+  className?: string;
+}) {
+  const {
+    unit_price,
+    quantity,
+    thumbnail,
+    title,
+    subtitle,
+    product_subtitle,
+    printfile_line_items,
+  } = item;
   const price = convertToLocale({
     amount: unit_price * quantity,
-    currency_code: currency_code,
+    currency_code: currencyCode,
   });
 
   const unit_price_to_locale = convertToLocale({
     amount: unit_price,
-    currency_code: currency_code,
+    currency_code: currencyCode,
   });
 
-  const image = thumbnail ?? product?.images?.[0]?.url;
-  const alt = product_title ?? "" + variant_title ?? "";
+  const image = thumbnail;
+  const alt = title ?? subtitle;
 
   return (
-    <div className="flex-cols-2 flex gap-x-6 border-b py-10">
+    <div className={cn("flex-cols-2 flex gap-x-6", className)}>
       {image && (
         <Image
           alt={alt}
-          className="bg-secondary size-20 flex-none rounded-md object-cover sm:size-40"
+          className="bg-accent size-20 flex-none rounded-md object-cover sm:size-40"
           height={160}
           src={image}
           width={160}
@@ -46,17 +52,17 @@ export default function OrderItem({
         <div>
           <div className="flex gap-2">
             <Heading tag="h4" className="font-medium">
-              {product?.title}
+              {subtitle}
             </Heading>
-            <Badge variant="secondary">{variant?.title}</Badge>
+            <Badge variant="secondary">{title}</Badge>
           </div>
           <Body className="text-muted-foreground mt-2 text-sm" as="p">
-            {product?.subtitle}
+            {product_subtitle}
           </Body>
         </div>
         <div className="mt-2">
           <PrintfileLineItemPreviewer
-            currencyCode={currency_code}
+            currencyCode={currencyCode}
             items={printfile_line_items}
           />
         </div>

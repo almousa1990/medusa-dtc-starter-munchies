@@ -35,7 +35,7 @@ export function SearchInput() {
           hasTyped.current = true;
           setInput(e.target.value);
         }}
-        className="bg-secondary h-12 w-full pr-10"
+        className="bg-accent h-12 w-full pr-10"
         placeholder="ابحث عن المنتجات والعلامات التجارية والفئات"
       />
     </div>

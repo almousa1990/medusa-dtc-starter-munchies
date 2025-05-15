@@ -1,5 +1,6 @@
 "use client";
 
+import Heading from "@/components/shared/typography/heading";
 import type {MerchifyProductOption} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
@@ -64,7 +65,9 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h3 className="text-primary text-sm font-medium">{option.title}</h3>
+        <Heading font="sans" mobileSize="sm" tag="h3">
+          {option.title}
+        </Heading>
       </div>
 
       <fieldset aria-label={`تحديد ${option.title}`} className="mt-2">
@@ -90,23 +93,16 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
                   !isValid && "border-dashed opacity-50",
                   isColorOption
                     ? "relative -m-0.5 rounded-full p-0.5 focus:outline-none data-[state=checked]:ring-2 data-[focus]:data-[state=checked]:ring data-[focus]:data-[state=checked]:ring-offset-1"
-                    : "border-input bg-background hover:bg-accent data-[state=checked]:bg-background data-[state=checked]:text-primary data-[focus]:bg-primary/90 data-[state=checked]:border-primary items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase disabled:opacity-50 data-[focus]:ring-2 data-[focus]:ring-offset-2 sm:flex-1",
+                    : "border-input bg-background hover:bg-accent data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[focus]:bg-primary/90 data-[state=checked]:border-primary items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase disabled:opacity-50 data-[focus]:ring-2 data-[focus]:ring-offset-2 sm:flex-1",
                 )}
                 disabled={shouldDisable}
                 key={index}
-                style={
-                  isColorOption
-                    ? ({
-                        "--tw-ring-color": v.metadata?.color.hex,
-                      } as React.CSSProperties)
-                    : {}
-                }
                 value={v.value}
               >
                 {isColorOption ? (
                   <span
                     aria-hidden="true"
-                    className="size-8 rounded-full border border-black/10"
+                    className="size-8 rounded-full border border-black/90"
                     style={{backgroundColor: v.metadata?.color?.hex}}
                   />
                 ) : (

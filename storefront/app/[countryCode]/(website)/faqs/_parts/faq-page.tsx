@@ -134,12 +134,12 @@ export default function Faq({
   };
   return (
     <div className="scroll-mt-header-height flex-col items-center justify-center">
-      <section className="bg-accent text-background flex w-full flex-col items-center justify-center gap-1 px-8 py-20 text-center">
+      <section className="bg-accent text-accent-foreground flex w-full flex-col items-center justify-center gap-1 px-8 py-20 text-center">
         <Heading
           className="heading-l mx-auto w-fit"
-          desktopSize="5xl"
+          desktopSize="4xl"
           font="serif"
-          mobileSize="xl"
+          mobileSize="2xl"
           tag="h1"
         >
           {data?.title}
@@ -162,7 +162,7 @@ export default function Faq({
           {queryRef.current.trim() && (
             <>
               {searchResults.length > 0 ? (
-                <div className="border-accent bg-background text-accent absolute top-full left-0 z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] p-2">
+                <div className="bg-background absolute top-full left-0 z-10 mt-1 w-full max-w-[420px] rounded-md border p-2">
                   <div
                     className="max-h-[16rem] overflow-y-auto outline-hidden"
                     ref={searchResultsRef}
@@ -189,8 +189,8 @@ export default function Faq({
                   </div>
                 </div>
               ) : (
-                <div className="border-accent bg-background absolute top-full left-0 z-10 mt-[5px] w-full max-w-[420px] rounded-lg border-[1.5px] p-2">
-                  <div className="text-accent w-full px-4 py-2 text-start opacity-60">
+                <div className="bg-background absolute top-full left-0 z-10 mt-1 w-full max-w-[420px] rounded-md border p-2">
+                  <div className="text-accent-foreground w-full px-4 py-2 text-start opacity-60">
                     {data.textTranslations?.searchNoResults}
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function Faq({
 const HighlitedText = ({query, question}: {query: string; question: string}) =>
   question?.split(new RegExp(`(${query})`, "gi"))?.map((part, index) =>
     part.toLowerCase() === query.toLowerCase() ? (
-      <span className="bg-accent text-background" key={index}>
+      <span className="bg-accent text-accent-foreground" key={index}>
         {part}
       </span>
     ) : (

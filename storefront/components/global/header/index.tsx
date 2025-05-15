@@ -7,15 +7,16 @@ import Cart from "./cart";
 import AnnouncementBar from "./parts/announcement-bar";
 import HamburgerContainer from "./parts/hamburger/container";
 import Navigation from "./parts/navigation";
-import {ShoppingBag} from "lucide-react";
 import {StoreCustomer} from "@medusajs/types";
 import {Link} from "@/components/shared/button";
+import BottomBorder from "./parts/bottom-border";
+import Icon from "@/components/shared/icon";
 
 export default function Header(
   props: {countryCode: string; customer: StoreCustomer | null} & Header,
 ) {
   return (
-    <header className="bg-background sticky top-0 z-50 flex w-full flex-col items-center border-b">
+    <header className="bg-background sticky top-0 z-50 flex w-full flex-col items-center">
       <AnnouncementBar {...props} />
       <div className="mx-auto flex w-full max-w-xl items-center justify-between gap-10 px-4 py-2 sm:px-6 lg:max-w-7xl lg:px-8">
         <HamburgerContainer customer={props.customer} sanityData={props} />
@@ -24,7 +25,7 @@ export default function Header(
           <LocalizedLink href="/" prefetch>
             <img
               alt="Mubchies logo"
-              className="my-[9px] h-4 w-fit lg:my-[10px] lg:h-6"
+              className="my-[9px] h-4 w-fit lg:my-[10px] lg:h-5"
               src="/images/logo.svg"
             />
           </LocalizedLink>
@@ -32,25 +33,19 @@ export default function Header(
         <Suspense>
           <Navigation data={props} />
         </Suspense>
-        <div className="flex flex-1 items-center justify-end gap-6">
+        <div className="flex flex-1 items-center justify-end gap-4">
           <div className="hidden lg:flex lg:gap-2">
             {props.customer ? (
-              <Link variant={"secondary"} href={"/account"}>
-                الحساب الشخصي
+              <Link variant={"ghost"} href={"/account"}>
+                حسابي
               </Link>
             ) : (
-              <Link variant={"secondary"} href={"/auth"}>
+              <Link variant={"ghost"} href={"/auth"}>
                 تسجيل الدخول أو إنشاء حساب
               </Link>
             )}
           </div>
-          <Suspense
-            fallback={
-              <div className="relative h-10 w-10 p-2">
-                <ShoppingBag />
-              </div>
-            }
-          >
+          <Suspense fallback={<Icon name="Cart" className="size-6" />}>
             <Cart
               cartAddons={props.cartAddons}
               countryCode={props.countryCode}
@@ -59,6 +54,7 @@ export default function Header(
         </div>
       </div>
       <div className="relative z-30 w-screen" id="navigation-portal" />
+      <BottomBorder className="lg:hidden" />
     </header>
   );
 }

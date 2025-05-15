@@ -68,18 +68,18 @@ export default function ProductFilters({
       className="border-border grid items-center border-b"
     >
       <h2 id="filter-heading" className="sr-only">
-        Filters
+        الترشيح
       </h2>
       <div className="relative col-start-1 row-start-1 py-2">
         <div className="divide-border mx-auto grid max-w-7xl auto-cols-max grid-flow-col gap-x-6 divide-x text-sm">
           <CollapsibleTrigger
-            className="group text-primary flex h-9 cursor-default items-center pl-6 font-medium"
+            className="group flex h-9 cursor-default items-center pl-6 font-medium"
             asChild
           >
-            <div>
+            <div className="cursor-pointer">
               <FunnelIcon
                 aria-hidden="true"
-                className="text-muted-foreground group-hover:text-primary ml-2 size-5 flex-none"
+                className="ml-2 size-5 flex-none"
               />
               {!!tags?.length ? <>{tags.length} مرشحات</> : <>الترشيح</>}
             </div>

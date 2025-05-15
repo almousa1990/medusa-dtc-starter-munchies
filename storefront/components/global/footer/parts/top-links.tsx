@@ -3,26 +3,23 @@ import type {Footer} from "@/types/sanity.generated";
 import LocalizedLink from "@/components/shared/localized-link";
 import {RichText} from "@/components/shared/rich-text";
 import Body from "@/components/shared/typography/body";
+import Heading from "@/components/shared/typography/heading";
 
 export default function TopLinks({information, linkList}: NonNullable<Footer>) {
   return (
-    <div className="flex flex-col items-start justify-between gap-10 lg:flex-row">
-      <div className="flex w-full justify-between lg:justify-start lg:gap-16">
+    <div className="flex flex-col items-start justify-between gap-10">
+      <div className="grid w-full gap-10 sm:grid-cols-2 lg:grid-cols-5">
         {information?.map((column) => {
           if (!column.text) return null;
           return (
-            <div className="flex w-[170px] flex-col gap-8" key={column._key}>
+            <div className="flex flex-col gap-8" key={column._key}>
               <RichText value={column.text} />
             </div>
           );
         })}
-      </div>
-      <div className="flex w-full justify-between lg:justify-end lg:gap-16">
         {linkList?.map((list) => (
-          <div
-            className="flex min-w-[170px] flex-col gap-2 lg:min-w-[196px]"
-            key={list._key}
-          >
+          <div className="flex flex-col gap-2" key={list._key}>
+            <Heading tag="h3">{list.heading}</Heading>
             {list.links?.map((link) => {
               if (!link.link) return null;
               return (

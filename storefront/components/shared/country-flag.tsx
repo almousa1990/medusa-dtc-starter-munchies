@@ -1,5 +1,6 @@
 "use client";
 import {cn} from "@merchify/ui";
+import Image from "next/image";
 
 export function CountryFlag({
   code,
@@ -12,7 +13,7 @@ export function CountryFlag({
   const fallbackSrc = "/flags/placeholder.svg"; // Provide a default placeholder flag
 
   return (
-    <img
+    <Image
       src={`/flags/${upperCode}.svg`}
       onError={(e) => {
         (e.currentTarget as HTMLImageElement).src = fallbackSrc;

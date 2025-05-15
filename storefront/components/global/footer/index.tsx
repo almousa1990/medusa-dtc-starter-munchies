@@ -5,6 +5,7 @@ import {SanityImage} from "@/components/shared/sanity-image";
 
 import BottomLinks from "./parts/bottom-links";
 import TopLinks from "./parts/top-links";
+import {Separator} from "@merchify/ui";
 
 interface FooterProps extends NonNullable<Footer> {
   variant?: "default" | "simple";
@@ -13,8 +14,8 @@ interface FooterProps extends NonNullable<Footer> {
 export default function Footer({variant = "default", ...props}: FooterProps) {
   if (variant === "simple") {
     return (
-      <footer className="bg-primary w-full" id="footer">
-        <div className="text-background mx-auto flex w-full max-w-xl flex-col gap-8 px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
+      <footer className="bg-primary text-primary-foreground w-full" id="footer">
+        <div className="mx-auto flex w-full max-w-xl flex-col gap-8 px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
           {props.image && (
             <SanityImage className="lg:mt-10" data={props.image} />
           )}
@@ -38,12 +39,16 @@ export default function Footer({variant = "default", ...props}: FooterProps) {
 
   return (
     <>
-      <footer className="bg-primary w-full" id="footer">
-        <div className="text-background mx-auto flex w-full max-w-xl flex-col gap-10 px-4 pt-16 pb-5 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-8">
+      <footer
+        className="bg-secondary text-secondary-foreground w-full"
+        id="footer"
+      >
+        <div className="mx-auto flex w-full max-w-xl flex-col gap-8 px-4 pt-16 pb-5 sm:px-6 lg:max-w-7xl lg:px-8 lg:pb-8">
           <TopLinks {...props} />
           {props.image && (
             <SanityImage className="lg:mt-10" data={props.image} />
           )}
+          <Separator />
           <BottomLinks {...props} />
         </div>
       </footer>

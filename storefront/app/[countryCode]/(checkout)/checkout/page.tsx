@@ -61,7 +61,7 @@ export default async function CheckoutPage(
     >
       <section
         aria-labelledby="checkout-summary"
-        className="bg-secondary border-b px-4 py-4 lg:col-start-2 lg:row-start-1 lg:border-b-0 lg:bg-transparent lg:px-0 lg:py-6 lg:pt-16 lg:pb-16"
+        className="bg-accent border-b px-4 py-4 lg:col-start-2 lg:row-start-1 lg:border-b-0 lg:bg-transparent lg:px-0 lg:py-6 lg:pt-16 lg:pb-16"
       >
         <CartDetails cart={cart} />
       </section>

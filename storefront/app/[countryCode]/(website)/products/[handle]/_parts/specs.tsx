@@ -5,7 +5,7 @@ import {
   ProductSpecItemContent,
   ProductSpecItemTitle,
 } from "./product-spec-item";
-import {SizeChart} from "./size-chart";
+import {SizeChartTable} from "./size-chart-table";
 import {MerchifyProduct} from "@/types";
 import Image from "next/image";
 
@@ -72,7 +72,7 @@ export default function ProductSpecs(props: Props) {
         <ProductSpecItem>
           <ProductSpecItemTitle>جدول المقاسات</ProductSpecItemTitle>
           <ProductSpecItemContent>
-            <SizeChart data={sizeChart} />
+            <SizeChartTable {...sizeChart} />
           </ProductSpecItemContent>
         </ProductSpecItem>
       )}

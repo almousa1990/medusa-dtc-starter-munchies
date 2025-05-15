@@ -12,6 +12,7 @@ import {ogImage} from "./objects/og-image";
 import {lightPtBody, ptBody} from "./objects/pt-body";
 import {sectionsBody} from "./objects/sections-body";
 import {seo} from "./objects/seo";
+import {socialLink} from "./objects/socialLink";
 import spot from "./objects/spot";
 import video from "./objects/video";
 import sections from "./sections";
@@ -29,6 +30,7 @@ const schemas = [
   seo,
   ogImage,
   cta,
+  socialLink,
   link,
   spot,
   video,

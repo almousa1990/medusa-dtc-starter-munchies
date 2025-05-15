@@ -20,13 +20,24 @@ export default function Price({
 
   return (
     (variantPrice?.calculated_price || cheapestPrice?.calculated_price) && (
-      <Body desktopSize="xl" font="sans" mobileSize="lg">
-        {variantPrice?.calculated_price ? (
-          variantPrice.calculated_price
-        ) : (
-          <>from {cheapestPrice?.calculated_price}</>
-        )}
-      </Body>
+      <div>
+        <Body
+          desktopSize="xl"
+          font="sans"
+          className="font-medium"
+          mobileSize="lg"
+          as="span"
+        >
+          {variantPrice?.calculated_price ? (
+            variantPrice.calculated_price
+          ) : (
+            <>يبدأ من {cheapestPrice?.calculated_price}</>
+          )}
+        </Body>
+        <Body mobileSize="sm" className="text-muted-foreground">
+          شامل الضريبة. يتم احتساب الشحن عند إتمام الشراء.
+        </Body>
+      </div>
     )
   );
 }

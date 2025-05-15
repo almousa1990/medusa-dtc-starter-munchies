@@ -11,7 +11,7 @@ export default function Tag({
 }) {
   return (
     <Label
-      className={cx("bg-secondary px-1 py-px text-end text-accent", className)}
+      className={cx("bg-primary text-accent px-1 py-px text-end", className)}
       desktopSize="sm"
       font="display"
       mobileSize="2xs"

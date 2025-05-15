@@ -1,15 +1,14 @@
 import type {SearchParams} from "@/types";
 
-import Icon from "@/components/shared/icon";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {getProducts} from "@/data/medusa/products";
 import {getRegion} from "@/data/medusa/regions";
 import {loadDictionary} from "@/data/sanity";
 
-import ClearAllButton from "../product-refinement/filters/clear-button";
 import ProductGrid from "./grid";
 import Pagination from "@/components/shared/pagination";
+import {Skeleton} from "@merchify/ui";
 
 export default async function PaginatedProducts({
   countryCode,
@@ -71,22 +70,9 @@ export default async function PaginatedProducts({
 
 export function ProductsSkeleton() {
   return (
-    <div className="inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
+    <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
       {[...Array(9)].map((_, index) => (
-        <div key={index}>
-          <div className="border-accent relative aspect-square w-full rounded-lg border">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Icon
-                className="animate-spin-loading size-10"
-                name="LoadingAccent"
-              />
-            </div>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-1 px-6 py-4">
-            <div className="bg-accent h-[30px] w-3/4 rounded-sm opacity-10" />
-            <div className="bg-accent h-6 w-1/2 rounded-sm opacity-10" />
-          </div>
-        </div>
+        <Skeleton key={index} className="aspect-square w-full rounded-md" />
       ))}
     </div>
   );

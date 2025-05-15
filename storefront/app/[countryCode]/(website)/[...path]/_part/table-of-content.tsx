@@ -31,7 +31,7 @@ export default function TableOfContents({
                 scroll
               >
                 <Body
-                  className="border-l-[1.5px] border-accent-40 py-[10px] pl-[9px] transition-all duration-300 first:pt-2 last:pb-2 hover:border-accent"
+                  className="border-accent-40 hover:border-accent border-r-1 py-[10px] pr-[9px] transition-all duration-300 first:pt-2 last:pb-2"
                   font="sans"
                   mobileSize="sm"
                 >

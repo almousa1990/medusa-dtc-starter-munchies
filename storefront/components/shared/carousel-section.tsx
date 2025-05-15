@@ -29,11 +29,7 @@ export default function CarouselSection(props: Props) {
             {title}
           </Heading>
           {cta?.text && (
-            <Link
-              className="h-fit p-0 underline"
-              href={cta.href}
-              variant="ghost"
-            >
+            <Link className="h-fit p-0" href={cta.href}>
               {cta.text}
             </Link>
           )}

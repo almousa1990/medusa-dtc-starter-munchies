@@ -17,7 +17,7 @@ import {RemoveScroll} from "react-remove-scroll";
 
 import type {Country} from "../../country-selector/country-selector-dialog";
 import {StoreCustomer} from "@medusajs/types";
-import {ChevronLeft, ChevronRight} from "lucide-react";
+import {ChevronLeft, ChevronRight, Menu, X} from "lucide-react";
 
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
@@ -57,11 +57,7 @@ export default function Hamburger({
         className="flex flex-1 shrink-0 lg:hidden"
         onClick={() => setActiveMenu(undefined)}
       >
-        {open ? (
-          <Icon className="size-lg" name="Close" />
-        ) : (
-          <Icon className="size-lg" name="Hamburger" />
-        )}
+        {open ? <X /> : <Menu />}
       </Dialog.Trigger>
       <Dialog.Portal container={portalContainer}>
         <RemoveScroll>

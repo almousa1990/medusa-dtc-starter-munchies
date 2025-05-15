@@ -8,6 +8,7 @@ import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
 
 import SideNavigation from "./_parts/side-navigation";
+import {Separator} from "@merchify/ui";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">
@@ -75,8 +76,4 @@ export default async function Layout(props: LayoutProps) {
       </div>
     </main>
   );
-}
-
-function Separator() {
-  return <div className="bg-accent my-6 h-px w-full" />;
 }

@@ -46,7 +46,7 @@ export default async function CartPage(props: CartPageProps) {
                   ملخص الطلب
                 </Heading>
                 <TotalsBreakdown variant="small" data={cart} />
-                <div className="bg-secondary -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
+                <div className="bg-accent -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
                   <Label>
                     <TicketPercent className="me-1 inline-block size-5" /> هل
                     لديك كود خصم؟

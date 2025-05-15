@@ -18,7 +18,7 @@ type Props = {
 export default function ProductInformation(props: Props) {
   return (
     <ProductVariantsProvider product={props}>
-      <div className="lg:y-4 pb-2xl flex w-full flex-col gap-4 pt-4 lg:max-w-[580px]">
+      <div className="flex w-full flex-col gap-4 pt-4 pb-10 lg:max-w-[580px] lg:py-4">
         <Heading
           className="leading-[100%]"
           desktopSize="4xl"

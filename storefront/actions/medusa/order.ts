@@ -98,21 +98,3 @@ export async function setShippingMethod(id: string): Promise<ActionState> {
     })
     .catch((e) => ({error: e.message, status: "error"}));
 }
-
-export const retrieveOrder = async (id: string) => {
-  const headers = {
-    ...(await getAuthHeaders()),
-  };
-
-  return medusa.client
-    .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
-      headers,
-      method: "GET",
-      query: {
-        fields:
-          "*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product",
-      },
-    })
-    .then(({order}) => order)
-    .catch((err) => medusaError(err));
-};

@@ -28,6 +28,7 @@ export const styles = cva("", {
       ghost: "",
       outline: "",
       secondary: "",
+      link: "",
     },
   },
 });
@@ -73,7 +74,7 @@ export function Link({
   ref,
   renderAsChild,
   size,
-  variant = "default",
+  variant = "link",
   ...rest
 }: {
   prefetch?: LinkProps["prefetch"];

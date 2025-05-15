@@ -1,13 +1,24 @@
-import type {HttpTypes} from "@medusajs/types";
 import type {Metadata} from "next";
 
-import {retrieveOrder} from "@/actions/medusa/order";
-import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
-import {repeat} from "@/utils/repeat";
-import {Separator} from "@merchify/ui";
+import {Badge, cn, Separator} from "@merchify/ui";
 import {notFound} from "next/navigation";
 
-import LineItem, {LineItemSkeleton} from "../_parts/line-item";
+import {getOrder} from "@/data/medusa/order";
+import {enrichLineItems} from "@/data/medusa/line-items";
+import Body from "@/components/shared/typography/body";
+import {
+  enrichFulfillmentsWithOrderItems,
+  getFulfillmentState,
+  getOrderStatusLabel,
+} from "@/utils/medusa/order";
+import OrderItem from "@/components/orders/order-item";
+import OrderAddressBlock from "@/components/orders/blocks/order-address";
+import OrderContactInfoBlock from "@/components/orders/blocks/order-contact-info";
+import OrderPaymentBlock from "@/components/orders/blocks/order-payment";
+import OrderShippingOptionBlock from "@/components/orders/blocks/order-shipping-option";
+import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
+import Heading from "@/components/shared/typography/heading";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{id: string}>;
@@ -15,7 +26,7 @@ type Props = {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
-  const order = await retrieveOrder(params.id).catch(() => null);
+  const order = await getOrder(params.id).catch(() => null);
 
   if (!order) {
     notFound();
@@ -29,113 +40,165 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function OrderDetailPage(props: Props) {
   const params = await props.params;
-  const order = await retrieveOrder(params.id).catch(() => null);
+  const order = await getOrder(params.id).catch(() => null);
 
   if (!order) {
     notFound();
   }
 
-  return (
-    <>
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-medium">الطلبات</h3>
-          <p className="text-muted-foreground text-sm">عرض سجل الطلبات</p>
-        </div>
-        <Separator />
-        <OrderDetails order={order} />
-      </div>
-    </>
+  const fulfillments = enrichFulfillmentsWithOrderItems(
+    order.fulfillments,
+    order.items,
   );
-}
 
-export function OrderDetails({order}: {order: HttpTypes.StoreOrder}) {
+  const unfulfilledItems = order.items?.filter(
+    (item) => item.detail.fulfilled_quantity < item.detail.quantity,
+  );
+
   return (
-    <>
-      <dl className="my-16 grid grid-cols-1 gap-x-4 gap-y-6 text-gray-600 lg:grid-cols-4">
-        <div>
-          <dt className="font-medium text-gray-900">تاريخ الطلب</dt>
-          <dd className="mt-2">
-            <time dateTime={new Date(order.created_at).toDateString()}>
-              {new Date(order.created_at).toDateString()}
-            </time>
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium text-gray-900">رقم الطلب</dt>
-          <dd className="mt-2">
-            <dd className="font-medium text-gray-900">{order.display_id}</dd>
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium text-gray-900">حالة الطلب</dt>
-          <dd className="mt-2">
-            <dd className="font-medium text-gray-900">
-              {order.fulfillment_status}
-            </dd>
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium text-gray-900">رقم التتبع</dt>
-          <dd className="mt-2">
-            <dd className="font-medium text-gray-900">todo</dd>
-          </dd>
-        </div>
-      </dl>
-      <div className="mt-2 flex flex-col gap-4">
-        {order.items?.length
-          ? order.items
-              .sort((a, b) => {
-                return (a.created_at ?? "") > (b.created_at ?? "") ? -1 : 1;
-              })
-              .map((item) => {
-                return <LineItem key={item.id} {...item} />;
-              })
-          : repeat(5).map((i) => {
-              return <LineItemSkeleton key={i} />;
-            })}
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-medium">الطلبات</h3>
+        <p className="text-muted-foreground text-sm">عرض سجل الطلبات</p>
       </div>
-      <dl className="space-y-6 pt-6">
-        <TotalsBreakdown data={order} />
+      <Separator />
+
+      <dl className="my-8 grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-3">
+        <div className="bg-accent rounded-md px-4 py-2">
+          <Body className="font-medium" mobileSize="sm" as="dt">
+            تاريخ الطلب
+          </Body>
+          <Body className="mt-2" mobileSize="sm" as="dd">
+            <time dateTime={new Date(order.created_at).toDateString()}>
+              {new Date(order.created_at ?? "").toLocaleDateString(
+                "ar-SA-u-ca-gregory",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                },
+              )}
+            </time>
+          </Body>
+        </div>
+        <div className="bg-accent rounded-md px-4 py-2">
+          <Body className="font-medium" mobileSize="sm" as="dt">
+            رقم الطلب
+          </Body>
+          <Body className="mt-2" mobileSize="sm" as="dd">
+            {order.display_id}
+          </Body>
+        </div>
+        <div className="bg-accent rounded-md px-4 py-2">
+          <Body className="font-medium" mobileSize="sm" as="dt">
+            حالة الطلب
+          </Body>
+          <Body className="mt-2" mobileSize="sm" as="dd">
+            {getOrderStatusLabel(order.status)}
+          </Body>
+        </div>
       </dl>
-      <dl className="mt-16 grid grid-cols-1 gap-x-4 gap-y-6 text-gray-600 sm:grid-cols-2 lg:grid-cols-3">
-        <div>
-          <dt className="font-medium text-gray-900">التوصيل</dt>
-          <dd className="mt-2">
-            <p>{order.shipping_methods?.[0].name}</p>
-            <p>{order.shipping_methods?.[0].description}</p>
-          </dd>
-        </div>
-        <div>
-          <dt className="font-medium text-gray-900">العنوان</dt>
-          <dd className="mt-2">
-            <address className="not-italic">
-              <span className="block">
-                {order.shipping_address?.first_name}{" "}
-                {order.shipping_address?.last_name}
-              </span>
-              <span className="block">
-                {order.shipping_address?.address_1}{" "}
-                {order.shipping_address?.address_2}
-              </span>
-              <span className="block">
-                {order.shipping_address?.postal_code},{" "}
-                {order.shipping_address?.city}
-              </span>
-            </address>
-          </dd>
-        </div>
-        {
-          /** todo**/ true && (
-            <div>
-              <dt className="font-medium text-gray-900">الدفع</dt>
-              <dd className="mt-2 space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
-                todo
-              </dd>
+      <div>
+        <h2 className="sr-only">ملخص الطلب</h2>
+
+        {fulfillments && (
+          <>
+            {fulfillments?.map((fulfillment, index) => {
+              const labels = fulfillment.labels;
+              const shippingOption = fulfillment.shipping_option;
+              const state = getFulfillmentState(fulfillment);
+              return (
+                <div key={fulfillment.id} className="pb-4">
+                  <div className="flex justify-between rounded-t-md border px-4 py-4">
+                    <Heading tag="h4">شحنة #{index + 1}</Heading>
+                    <div>
+                      <Badge className="bg-green-600">{state.step}</Badge>
+                    </div>
+                  </div>
+                  <div className="border border-y-0 px-4 py-4">
+                    {fulfillment.items?.map((fi) => (
+                      <OrderItem
+                        currencyCode={order.currency_code}
+                        key={fi.id}
+                        item={fi.line_item}
+                      />
+                    ))}
+                  </div>
+                  <div className="bg-accent rounded-b-md border px-4 py-4">
+                    <dl className="grid grid-cols-1 gap-x-4 gap-y-6 lg:grid-cols-2">
+                      <div>
+                        <Body className="font-medium" mobileSize="sm" as="dt">
+                          شركة الشحن
+                        </Body>
+                        <Body className="mt-2" mobileSize="sm" as="dd">
+                          {shippingOption.name}
+                        </Body>
+                      </div>
+                      <div>
+                        <Body className="font-medium" mobileSize="sm" as="dt">
+                          رقم التتبع
+                        </Body>
+                        <Body className="mt-2" mobileSize="sm" as="dd">
+                          {labels?.map((label) => (
+                            <Link href={label.tracking_url} key={label.id}>
+                              {label.tracking_number}
+                            </Link>
+                          ))}
+                        </Body>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
+
+        <h3 className="sr-only">المنتجات</h3>
+
+        {unfulfilledItems && !!unfulfilledItems.length && (
+          <div className="pb-4">
+            <div className="flex justify-between rounded-t-md border px-4 py-4">
+              <Heading tag="h4">المنتجات</Heading>
+              <div>
+                <Badge variant="secondary">
+                  {getOrderStatusLabel(order.status)}
+                </Badge>
+              </div>
             </div>
-          )
-        }
-      </dl>
-    </>
+            <div className="rounded-b-md border border-t-0 px-4 py-4">
+              {unfulfilledItems?.map((item) => (
+                <OrderItem
+                  currencyCode={order.currency_code}
+                  key={item.id}
+                  item={item}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div>
+          <h3 className="sr-only">معلوماتك</h3>
+
+          <dl className="grid grid-cols-2 gap-x-6 py-10">
+            <OrderAddressBlock order={order} />
+
+            <OrderContactInfoBlock order={order} />
+          </dl>
+
+          <h4 className="sr-only">الدفع</h4>
+          <dl className="grid grid-cols-2 gap-x-6 border-t py-10 text-sm">
+            <OrderPaymentBlock order={order} />
+
+            <OrderShippingOptionBlock order={order} />
+          </dl>
+
+          <h3 className="sr-only">Summary</h3>
+
+          <TotalsBreakdown data={order} variant="small" />
+        </div>
+      </div>
+    </div>
   );
 }

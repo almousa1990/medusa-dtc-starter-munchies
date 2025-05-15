@@ -41,7 +41,7 @@ export default async function Layout(props: LayoutProps) {
       />
       <div
         aria-hidden="true"
-        className="bg-secondary fixed top-0 left-0 hidden h-full w-1/2 lg:block"
+        className="bg-accent fixed top-0 left-0 hidden h-full w-1/2 lg:block"
       />
 
       <header className="bg-background relative border-b text-sm font-medium">

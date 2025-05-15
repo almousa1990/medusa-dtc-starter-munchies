@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation";
 
 import {useProductVariants} from "../../../../../../components/context/product-context";
 import {cn} from "@merchify/ui";
+import {useState} from "react";
 
 export default function InitiateEditorButton({
   regionId,
@@ -17,11 +18,13 @@ export default function InitiateEditorButton({
 }) {
   const {activeVariant, product} = useProductVariants();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
     if (!product) {
       return;
     }
+    setLoading(true);
     if (activeVariant) {
       // Redirect to editor page with active variant
       router.push(`/editor/${product.handle}?variant=${activeVariant.id}`);
@@ -33,6 +36,7 @@ export default function InitiateEditorButton({
 
   return (
     <Cta
+      loading={loading}
       className={cn("w-full", className)}
       onClick={(e) => {
         e.preventDefault();

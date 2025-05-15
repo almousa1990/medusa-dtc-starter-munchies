@@ -8,11 +8,15 @@ import {SanityImage} from "@/components/shared/sanity-image";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import Label from "@/components/shared/typography/label";
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import {cx} from "cva";
 import {usePathname, useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {RemoveScroll} from "react-remove-scroll";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+
+import BottomBorder from "./bottom-border";
+import {cn, navigationMenuTriggerStyle} from "@merchify/ui";
+import {ChevronDown} from "lucide-react";
 
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
@@ -33,56 +37,46 @@ export default function Navigation({data}: {data: Header}) {
 
   return (
     <NavigationMenu.Root
-      className="z-20 hidden lg:block lg:flex-1"
+      className="z-20 hidden lg:block"
       onValueChange={handleValueChange}
+      dir="rtl"
       value={openDropdown}
     >
-      <NavigationMenu.List
-        className="group flex items-center justify-start"
-        dir="rtl"
-      >
+      <NavigationMenu.List className="group flex flex-1 list-none items-center justify-center space-x-1">
         {data.navigation?.map((item) => {
           if (item._type === "link") {
             if (!item.cta?.link) return null;
             return (
-              <LocalizedLink
-                className={cx(
-                  "h-full px-5 py-[14.5px] whitespace-nowrap transition-opacity duration-300 group-hover:opacity-50 hover:opacity-100!",
-                  {
-                    "opacity-50": !!openDropdown,
-                  },
-                )}
-                href={item.cta?.link}
-                key={item._key}
-                prefetch
-              >
-                <NavigationMenu.Item>
-                  <NavigationMenu.Link asChild>
+              <NavigationMenu.Item key={item._key}>
+                <NavigationMenu.Link
+                  asChild
+                  className={cn(navigationMenuTriggerStyle(), "group")}
+                >
+                  <LocalizedLink href={item.cta?.link} key={item._key} passHref>
                     <Body font="sans" className="font-medium" mobileSize="base">
                       {item.cta?.label}
                     </Body>
-                  </NavigationMenu.Link>
-                </NavigationMenu.Item>
-              </LocalizedLink>
+                  </LocalizedLink>
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
             );
           } else if (item._type === "dropdown") {
             return (
               <NavigationMenu.Item key={item._key}>
                 <NavigationMenu.Trigger
-                  className={cx(
-                    "px-5 py-[14.5px] whitespace-nowrap transition-all duration-300 group-hover:opacity-50 hover:opacity-100! data-[state=open]:opacity-100",
-                    {
-                      "opacity-50": !!openDropdown,
-                    },
-                  )}
+                  className={cn(navigationMenuTriggerStyle(), "group")}
                 >
                   <Body font="sans" className="font-medium" mobileSize="base">
                     {item.title}
                   </Body>
+                  <ChevronDown
+                    className="relative top-[1px] mr-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
+                    aria-hidden="true"
+                  />
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content
                   dir="rtl"
-                  className="bg-background data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 absolute top-0 left-0 z-30 w-full"
+                  className="bg-background absolute top-0 left-0 z-[30] w-full"
                 >
                   <Content {...item} />
                 </NavigationMenu.Content>
@@ -91,9 +85,16 @@ export default function Navigation({data}: {data: Header}) {
           }
         })}
       </NavigationMenu.List>
-
       <div className="absolute top-full left-0 flex w-full flex-1 flex-col justify-center overflow-hidden bg-transparent perspective-[2000px]">
-        <NavigationMenu.Viewport className="bg-background data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top data-[state=open]:animate-in data-[state=closed]:animate-out relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden border-b transition-[width,_height] data-[state=closed]:duration-100 data-[state=open]:duration-200" />
+        <BottomBorder DropdownOpen={!!openDropdown} />
+
+        <NavigationMenu.Viewport className="bg-background relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden" />
+        <div
+          className={cx("bg-border relative w-full", {
+            "animate-in fade-in h-px": openDropdown,
+            "animate-our fade-out h-0": !openDropdown,
+          })}
+        />
       </div>
     </NavigationMenu.Root>
   );
@@ -119,12 +120,7 @@ function Content({cards, columns}: DropdownType) {
                   if (!link?.link) return null;
                   return (
                     <LocalizedLink
-                      className={cx(
-                        "py-2 opacity-100 transition-opacity duration-300 group-hover:opacity-50 last:pb-0",
-                        {
-                          "opacity-100!": hoveredKey === link._key,
-                        },
-                      )}
+                      className={cx("py-2 last:pb-0")}
                       href={link.link}
                       key={link._key}
                       onMouseEnter={() => setHoveredKey(link._key)}

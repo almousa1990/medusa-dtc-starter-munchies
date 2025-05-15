@@ -5,26 +5,7 @@ import {Metadata} from "next";
 import {z} from "zod";
 import ProfileForm from "./_parts/profile-form";
 import {notFound} from "next/navigation";
-
-const profileFormSchema = z.object({
-  first_name: z
-    .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
-    }),
-  last_name: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  email: z.string().max(160).min(4),
-  phone: z.string().max(160).min(4),
-});
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
+import Heading from "@/components/shared/typography/heading";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -40,8 +21,10 @@ export default async function ProfilePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">الملف الشخصي</h3>
-        <p className="text-sm text-muted-foreground">
+        <Heading tag="h3" mobileSize="lg">
+          الملف الشخصي
+        </Heading>
+        <p className="text-muted-foreground text-sm">
           تحديث معلومات حسابك الأساسية
         </p>
       </div>

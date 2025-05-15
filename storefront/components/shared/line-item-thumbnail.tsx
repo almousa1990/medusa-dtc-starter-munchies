@@ -61,7 +61,7 @@ export default function LineItemThumbnail({
         width={144}
       />
       {isLoading && (
-        <div className="bg-secondary absolute inset-0 flex items-center justify-center rounded-md backdrop-blur-sm">
+        <div className="bg-accent absolute inset-0 flex items-center justify-center rounded-md backdrop-blur-sm">
           <Loader2 className="animate-spin" />
         </div>
       )}

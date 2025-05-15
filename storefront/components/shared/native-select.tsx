@@ -13,12 +13,15 @@ export const NativeSelect = React.forwardRef<
   NativeSelectProps
 >(({className, options, placeholder, ...props}, ref) => {
   return (
-    <div className="relative">
+    <div
+      className={cn(
+        "relative inline-flex w-full items-center rounded-md border px-4 py-2",
+        className,
+      )}
+    >
       <select
         className={cn(
-          buttonVariants({variant: "outline"}),
-          "w-full appearance-none font-normal",
-          className,
+          "w-full appearance-none bg-transparent pl-6 text-sm focus:outline-none",
         )}
         ref={ref}
         {...props}
@@ -34,7 +37,7 @@ export const NativeSelect = React.forwardRef<
           </option>
         ))}
       </select>
-      <ChevronsUpDown className="absolute inset-y-0 left-3 my-auto h-4 w-4 opacity-50" />
+      <ChevronsUpDown className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
     </div>
   );
 });

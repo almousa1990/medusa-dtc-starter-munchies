@@ -44,7 +44,7 @@ async function CategoryCard({
       <div>
         <div className="grid w-fit gap-1 overflow-hidden rounded-md border">
           <SanityImage
-            className="bg-secondary aspect-square object-cover object-center"
+            className="bg-accent aspect-square object-cover object-center"
             data={image}
           />
           <div className="flex items-center justify-center p-4 font-medium">

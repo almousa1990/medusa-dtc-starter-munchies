@@ -99,7 +99,7 @@ export default function Address({active}: {active: boolean}) {
               عنوان التوصيل
             </Heading>
             {isFilled && (
-              <div className="bg-secondary flex size-8 items-center justify-center rounded-full">
+              <div className="bg-accent flex size-8 items-center justify-center rounded-full">
                 <Check className="size-4" />
               </div>
             )}

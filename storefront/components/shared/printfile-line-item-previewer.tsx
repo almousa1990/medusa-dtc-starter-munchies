@@ -11,13 +11,10 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
 } from "@merchify/ui";
 import {AlertCircle, ExternalLink, Fullscreen} from "lucide-react";
 import Image from "next/image";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "./tabs";
 
 export default function PrintfileLineItemPreviewer({
   currencyCode,
@@ -49,14 +46,10 @@ export default function PrintfileLineItemPreviewer({
           استعراض ملفات الطباعة
         </DialogDescription>
 
-        <Tabs dir="rtl" className="grid gap-2">
-          <TabsList className="bg-background scrollbar-hide flex w-full justify-start gap-2 overflow-x-auto">
+        <Tabs>
+          <TabsList>
             {items.map((i) => (
-              <TabsTrigger
-                className="bg-secondary text-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground gap-2 data-[state=active]:shadow-none"
-                key={i.id}
-                value={i.filename}
-              >
+              <TabsTrigger key={i.id} value={i.filename}>
                 {i.title}
                 <span className="text-sm font-normal">({getPrice(i)})</span>
               </TabsTrigger>

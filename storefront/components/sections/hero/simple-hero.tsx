@@ -10,7 +10,19 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
   const image = stegaClean(props.image);
   return (
     <div className="flex flex-col items-stretch justify-center gap-2 lg:flex-row-reverse">
-      <div className="bg-secondary flex min-h-[470px] w-full flex-col items-center justify-center gap-4 rounded-lg px-5 py-12 text-center lg:w-1/2 lg:py-5">
+      {image ? (
+        <div className="aspect-square rounded-lg lg:w-1/2">
+          <SanityImage
+            alt="arrow-right"
+            className="aspect-square object-cover object-center"
+            data={image}
+            fetchPriority="high"
+          />
+        </div>
+      ) : (
+        <div className="bg-accent aspect-square rounded-lg lg:w-1/2" />
+      )}
+      <div className="flex min-h-[470px] w-full flex-col items-center justify-center gap-4 rounded-lg px-5 py-12 text-center lg:w-1/2 lg:py-5">
         <Heading
           className="leading-[100%]!"
           desktopSize="4xl"
@@ -40,18 +52,6 @@ export default function SimpleHero(props: ModularPageSection<"section.hero">) {
           </Link>
         )}
       </div>
-      {image ? (
-        <div className="aspect-square rounded-lg lg:w-1/2">
-          <SanityImage
-            alt="arrow-right"
-            className="aspect-square object-cover object-center"
-            data={image}
-            fetchPriority="high"
-          />
-        </div>
-      ) : (
-        <div className="bg-accent aspect-square rounded-lg lg:w-1/2" />
-      )}
     </div>
   );
 }

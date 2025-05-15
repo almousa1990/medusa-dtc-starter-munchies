@@ -14,6 +14,7 @@ import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal} from "lucide-react";
 import Link from "next/link";
 import {convertToLocale} from "@/utils/medusa/money";
+import {getOrderStatusLabel} from "@/utils/medusa/order";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -21,7 +22,7 @@ import {convertToLocale} from "@/utils/medusa/money";
 export const columns: ColumnDef<StoreOrder>[] = [
   {
     accessorKey: "display_id",
-    header: "الطلب",
+    header: "#",
   },
   {
     accessorKey: "customer",
@@ -49,14 +50,25 @@ export const columns: ColumnDef<StoreOrder>[] = [
   },
   {
     accessorKey: "status",
-    header: "حالة الطلب",
+    header: "الحالة",
+    cell: ({row}) => {
+      const order = row.original;
+      return getOrderStatusLabel(order.status);
+    },
   },
   {
     accessorKey: "created_at",
-    header: "تاريخ الطلب",
+    header: "التاريخ",
     cell: ({row}) => {
       const order = row.original;
-      return new Date(order.created_at ?? "").toLocaleString();
+      return new Date(order.created_at ?? "").toLocaleDateString(
+        "ar-SA-u-ca-gregory",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        },
+      );
     },
   },
   {

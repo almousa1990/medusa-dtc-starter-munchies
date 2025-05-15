@@ -12,6 +12,10 @@ import CartHeading from "./cart-heading";
 import LineItem from "./line-item";
 import OpenCart from "./open-cart-button";
 import {X} from "lucide-react";
+import {cn} from "@merchify/ui";
+import Image from "next/image";
+import Heading from "@/components/shared/typography/heading";
+import Illustration from "@/components/shared/illustration";
 
 type Props = Pick<Header, "cartAddons">;
 
@@ -37,9 +41,13 @@ export default function CartUI({
           <div className="flex flex-1 flex-col justify-between overflow-y-scroll">
             <div className="flex flex-col gap-4 p-4">
               {isEmptyCart ? (
-                <Body font="sans" mobileSize="base">
-                  السلة فارغة.
-                </Body>
+                <div className="flex h-full w-full flex-col items-center justify-center gap-4 p-8">
+                  <Illustration name="EmptyCart" />
+
+                  <Heading tag="h3" mobileSize="base">
+                    السلة فارغة.
+                  </Heading>
+                </div>
               ) : (
                 cart.items?.map((item) => <LineItem key={item.id} {...item} />)
               )}

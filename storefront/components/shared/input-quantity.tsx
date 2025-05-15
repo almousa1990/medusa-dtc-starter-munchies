@@ -17,7 +17,7 @@ export const InputQuantity: React.FC<InputQuantityProps> = ({
   return (
     <div className="border-input flex h-10 w-24 items-center justify-center gap-1 overflow-hidden rounded-md border">
       <button
-        className="group hover:bg-secondary active:bg-accent flex h-full w-full flex-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-50"
+        className="group hover:bg-accent active:bg-accent flex h-full w-full flex-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-50"
         disabled={disabled}
         onClick={() => onChange(quantity - 1)}
       >
@@ -33,7 +33,7 @@ export const InputQuantity: React.FC<InputQuantityProps> = ({
         {quantity}
       </Body>
       <button
-        className="group hover:bg-secondary active:bg-accent relative flex h-full w-full flex-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-50"
+        className="group hover:bg-accent active:bg-accent relative flex h-full w-full flex-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-50"
         disabled={disabled}
         onClick={() => onChange(quantity + 1)}
       >

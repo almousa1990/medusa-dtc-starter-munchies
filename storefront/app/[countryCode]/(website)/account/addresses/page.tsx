@@ -6,6 +6,7 @@ import EditAddress from "./_parts/edit-address";
 import {getCustomer} from "@/data/medusa/customer";
 import {getRegion} from "@/data/medusa/regions";
 import {Separator} from "@merchify/ui";
+import Heading from "@/components/shared/typography/heading";
 
 export const metadata: Metadata = {
   title: "Addresses",
@@ -27,7 +28,9 @@ export default async function AddressPage(props: {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium">العناوين</h3>
+        <Heading tag="h3" mobileSize="lg">
+          العناوين
+        </Heading>
         <p className="text-muted-foreground text-sm">تحديث عناوينك المسجلة</p>
       </div>
       <Separator />

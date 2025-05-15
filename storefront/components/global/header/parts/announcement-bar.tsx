@@ -15,8 +15,8 @@ export default function AnnouncementBar({
   return (
     <Fragment>
       {isActive && showAnnouncement && (
-        <div className="bg-secondary w-full">
-          <div className="bg-secondary mx-auto flex w-full max-w-xl items-center justify-between px-4 py-[7.5px] sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="bg-primary text-primary-foreground w-full">
+          <div className="mx-auto flex w-full max-w-xl items-center justify-between px-4 py-[7.5px] sm:px-6 lg:max-w-7xl lg:px-8">
             {announcementText && (
               <Body desktopSize="sm" font="sans" mobileSize="xs">
                 <RichText value={announcementText} />

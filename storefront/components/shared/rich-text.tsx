@@ -40,7 +40,7 @@ export const TextPageRichText = ({
           desktopSize="xl"
           font="serif"
           id={getPtComponentId(props.value)}
-          mobileSize="base"
+          mobileSize="lg"
           tag="h2"
         >
           {props.children}
@@ -52,19 +52,14 @@ export const TextPageRichText = ({
           desktopSize="lg"
           font="serif"
           id={getPtComponentId(props.value)}
-          mobileSize="xs"
+          mobileSize="base"
           tag="h3"
         >
           {props.children}
         </Heading>
       ),
       normal: (props) => (
-        <Body
-          className="font-medium"
-          desktopSize="base"
-          font="sans"
-          mobileSize="sm"
-        >
+        <Body desktopSize="base" font="sans" mobileSize="sm">
           {props.children}
         </Body>
       ),

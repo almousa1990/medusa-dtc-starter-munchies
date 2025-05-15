@@ -7,7 +7,7 @@
     "next:dev": "next dev --experimental-https",
     "build": "run-s sanity:typegen next:build",
     "next:build": "next build",
-    "start": "next start",
+    "start": "next start --experimental-https",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write --ignore-unknown .",

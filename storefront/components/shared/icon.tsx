@@ -27,6 +27,11 @@ export const icons = {
   LoadingPrimary: "/icons/loading-primary.svg",
   Search: "/icons/search.svg",
   Trash: "/icons/trash.svg",
+  Instagram: "/social/instagram.svg",
+  X: "/social/x.svg",
+  TikTok: "/social/tiktok.svg",
+  Snapchat: "/social/snapchat.svg",
+  Whatsapp: "/social/whatsapp.svg",
 };
 
 type Icon = keyof typeof icons;
@@ -56,6 +61,11 @@ export const iconAlts: Record<Icon, string> = {
   LoadingPrimary: "Loading",
   Search: "Search icon",
   Trash: "Trash icon",
+  Instagram: "Instagram",
+  X: "X",
+  TikTok: "TikTok",
+  Snapchat: "Snapchat",
+  Whatsapp: "Whatsapp",
 };
 
 export type IconProps = {fetchPriority?: "default" | "high"; name: Icon} & Omit<

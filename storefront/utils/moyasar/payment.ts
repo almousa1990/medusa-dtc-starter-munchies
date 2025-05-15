@@ -14,7 +14,7 @@ export function getRawPaymentData<T = PaymentSource>(
 export function getFormattedPaymentData(
   data?: Record<string, unknown>,
 ): {company: string; type: string; number: string} | null {
-  if (!data) return null;
+  if (!data || !data?.source) return null;
 
   const typedData = data as PaymentData;
   return {

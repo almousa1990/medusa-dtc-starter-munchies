@@ -33,7 +33,7 @@ const AddAddress = ({region}: {region: HttpTypes.StoreRegion}) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="flex h-full min-h-[220px] w-full flex-col justify-between rounded-md border p-5">
-          <Heading tag="h4" mobileSize="lg" className="text-right">
+          <Heading tag="h4" mobileSize="base" className="text-right">
             عنوان جديد
           </Heading>
           <div className="flex justify-end">

@@ -95,14 +95,14 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  لا يوجد طلبات
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      {/**<DataTablePagination table={table} />**/}
+      <DataTablePagination table={table} />
     </div>
   );
 }
