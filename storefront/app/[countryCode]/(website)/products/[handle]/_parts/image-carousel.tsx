@@ -9,7 +9,7 @@ import {
   useCarousel,
 } from "@/components/shared/carousel";
 import Tag from "@/components/shared/tag";
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import Image from "next/image";
 import {Fragment, useEffect, useState} from "react";
 
@@ -58,7 +58,7 @@ export function ProductImagesCarousel({
     >
       <div className="mx-auto flex w-full gap-2 lg:sticky lg:top-[calc(var(--header-height)+24px)] lg:mx-0 lg:max-w-[684px]">
         {(images?.length || 0) > 0 && (
-          <div className={cx("hidden w-[85px] flex-col gap-2 lg:flex")}>
+          <div className={cn("hidden w-[85px] flex-col gap-2 lg:flex")}>
             {images?.map((mediaItem, index) => (
               <ItemCarousel
                 index={index}
@@ -72,7 +72,7 @@ export function ProductImagesCarousel({
             ))}
           </div>
         )}
-        <SlidesWrapper className={cx("scrollbar-hide h-fit w-full gap-2")}>
+        <SlidesWrapper className={cn("scrollbar-hide h-fit w-full gap-2")}>
           <Slides
             content={slides}
             itemProps={{

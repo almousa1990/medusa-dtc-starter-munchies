@@ -1,10 +1,9 @@
 import type {Footer} from "@/types/sanity.generated";
 
-import LocalizedLink from "@/components/shared/localized-link";
-import Label from "@/components/shared/typography/label";
-import React from "react";
-import Body from "@/components/shared/typography/body";
 import Icon from "@/components/shared/icon";
+import LocalizedLink from "@/components/shared/localized-link";
+import Body from "@/components/shared/typography/body";
+import React from "react";
 
 export default function BottomLinks({
   bottomLinks,
@@ -38,7 +37,7 @@ export default function BottomLinks({
             <LocalizedLink href={link.link} key={link._key}>
               <Icon
                 className="size-5"
-                name={link.icon as "X" | "Instagram" | "Snapchat" | "TikTok"}
+                name={link.icon as "Instagram" | "Snapchat" | "TikTok" | "X"}
               />
             </LocalizedLink>
           );

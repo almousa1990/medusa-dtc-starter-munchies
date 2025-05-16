@@ -27,10 +27,10 @@ export default async function FeaturedProducts(
 
   const slides = products.map((product, index) => (
     <ProductCard
+      className="inline-flex w-64 flex-col text-center lg:w-auto"
       index={index}
       key={product.id}
       product={product}
-      className="inline-flex w-64 flex-col text-center lg:w-auto"
     />
   ));
   return (
@@ -40,9 +40,8 @@ export default async function FeaturedProducts(
     >
       <CarouselSection
         cta={{href: props.cta?.link, text: props.cta?.label}}
-        slides={slides}
-        title={props.title}
         subtitle={props.subtitle}
+        title={props.title as string}
       >
         {slides}
       </CarouselSection>

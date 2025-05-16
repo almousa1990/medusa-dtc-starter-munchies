@@ -1,23 +1,20 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
-import {usePathname} from "next/navigation";
 import {Progress} from "@merchify/ui";
+import {usePathname} from "next/navigation";
+import React, {useEffect, useState} from "react";
 
 export default function Loader() {
   const pathname = usePathname();
   const [progress, setProgress] = useState(0);
-  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
     setProgress(60);
-    setHidden(false);
 
     const timer = setTimeout(() => {
       setProgress(100);
 
       setTimeout(() => {
-        setHidden(true);
         setProgress(0);
       }, 200);
     }, 500);
@@ -27,8 +24,8 @@ export default function Loader() {
 
   return (
     <Progress
-      value={progress}
       className="fixed top-0 left-0 z-[100] h-px rounded-none bg-transparent"
+      value={progress}
     />
   );
 }

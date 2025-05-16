@@ -1,23 +1,20 @@
 "use client";
 import type {Header} from "@/types/sanity.generated";
+import type {StoreCustomer} from "@medusajs/types";
 import type {Dispatch, SetStateAction} from "react";
 
-import {Cta, Link} from "@/components/shared/button";
-import Icon from "@/components/shared/icon";
+import {Link} from "@/components/shared/button";
 import {SanityImage} from "@/components/shared/sanity-image";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import Label from "@/components/shared/typography/label";
+import {cn} from "@merchify/ui";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import {cx} from "cva";
+import {ChevronLeft, ChevronRight, Menu, X} from "lucide-react";
 import NextLink from "next/link";
 import {useState} from "react";
 import {RemoveScroll} from "react-remove-scroll";
-
-import type {Country} from "../../country-selector/country-selector-dialog";
-import {StoreCustomer} from "@medusajs/types";
-import {ChevronLeft, ChevronRight, Menu, X} from "lucide-react";
 
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
@@ -25,11 +22,9 @@ type DropdownType = Extract<
 >;
 
 export default function Hamburger({
-  countries,
   customer,
   data,
 }: {
-  countries: Country[];
   customer: StoreCustomer | null;
   data: Header;
 }) {
@@ -66,11 +61,11 @@ export default function Hamburger({
               <Dialog.Title className="">القائمة</Dialog.Title>
             </VisuallyHidden.Root>
             <div
-              className={cx(
+              className={cn(
                 "scrollbar-hide bg-background fixed top-[calc(var(--header-height))] left-0 flex h-[calc(100dvh-var(--header-height))] w-screen flex-1 flex-col items-start justify-between overflow-x-hidden overflow-y-scroll transition-all duration-300",
                 {
-                  "translate-x-full": isMenuActive,
                   "translate-x-0": !isMenuActive,
+                  "translate-x-full": isMenuActive,
                 },
               )}
             >
@@ -85,7 +80,7 @@ export default function Hamburger({
                 ))}
               </div>
               <div className="p-5">
-                <Link variant="outline" href={customer ? "/account" : "/auth"}>
+                <Link href={customer ? "/account" : "/auth"} variant="outline">
                   الحساب
                 </Link>
               </div>

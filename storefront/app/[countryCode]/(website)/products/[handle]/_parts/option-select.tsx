@@ -1,9 +1,9 @@
 "use client";
 
-import Heading from "@/components/shared/typography/heading";
 import type {MerchifyProductOption} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
+import Heading from "@/components/shared/typography/heading";
 import {cn} from "@merchify/ui";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import React, {useEffect, useMemo} from "react";
@@ -20,8 +20,6 @@ type OptionSelectProps = {
 
 const OptionSelect: React.FC<OptionSelectProps> = ({
   current,
-  "data-testid": dataTestId,
-  disabled,
   option,
   product,
   selectedOptions,

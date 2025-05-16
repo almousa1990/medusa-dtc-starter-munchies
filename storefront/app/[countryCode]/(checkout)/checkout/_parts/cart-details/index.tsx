@@ -1,17 +1,16 @@
 "use client";
-import type {HttpTypes} from "@medusajs/types";
+import type {MerchifyCart} from "@/types";
 
 import {Cta} from "@/components/shared/button";
 import PromotionForm from "@/components/shared/promotion-form";
 import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import Heading from "@/components/shared/typography/heading";
+import {convertToLocale} from "@/utils/medusa/money";
 import {Label, cn} from "@merchify/ui";
 import {ChevronDown, ChevronUp, TicketPercent} from "lucide-react";
 import {useState} from "react";
 
 import LineItem from "./line-item";
-import {MerchifyCart} from "@/types";
-import {convertToLocale} from "@/utils/medusa/money";
 
 export default function CartDetails({cart}: {cart: MerchifyCart}) {
   const [expanded, setExpanded] = useState(false);

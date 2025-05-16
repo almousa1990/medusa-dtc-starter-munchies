@@ -1,28 +1,28 @@
 "use client";
+import {placeOrder} from "@/actions/medusa/order";
 import {useCheckout} from "@/components/context/checkout-context";
 import Heading from "@/components/shared/typography/heading";
-
+import {PaymentSourceType} from "@/types";
+import {getRawPaymentData} from "@/utils/moyasar/payment";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Checkbox,
-  cn,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  cn,
 } from "@merchify/ui";
-import PaymentSelect from "../../payment-select";
 import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {formSchema} from "./schema";
+
 import PaymentButton from "../../payment-button";
-import {placeOrder} from "@/actions/medusa/order";
-import {getRawPaymentData} from "@/utils/moyasar/payment";
-import {PaymentSourceType} from "@/types";
+import PaymentSelect from "../../payment-select";
+import {formSchema} from "./schema";
 
 export default function Payment({active}: {active: boolean}) {
-  const {cart, customer, paymentMethods, setStep} = useCheckout();
+  const {cart, paymentMethods, setStep} = useCheckout();
 
   const activeSession = cart.payment_collection?.payment_sessions?.find(
     (session) => session.status === "pending",
@@ -34,22 +34,20 @@ export default function Payment({active}: {active: boolean}) {
 
   const form = useForm({
     defaultValues: {
-      type: activeType,
-      card: {
-        number: "",
-        month: "",
-        year: "",
-        cvc: "",
-      },
       agreement: false,
+      card: {
+        cvc: "",
+        month: "",
+        number: "",
+        year: "",
+      },
+      type: activeType,
     },
     resolver: zodResolver(formSchema),
   });
 
   const {
-    formState: {isSubmitSuccessful, isSubmitting},
-    handleSubmit,
-    reset,
+    formState: {isSubmitting},
   } = form;
 
   const type = form.watch("type");
@@ -65,19 +63,19 @@ export default function Payment({active}: {active: boolean}) {
 
   return (
     <div
-      onClick={() => (paymentMethods.length ? setStep("payment") : {})}
       className={cn({"cursor-pointer": !active})}
+      onClick={() => (paymentMethods.length ? setStep("payment") : {})}
     >
       <Form {...form}>
         <form className="border-accent flex flex-col gap-2 pb-4">
           <div className="flex w-full flex-col gap-2 border-t py-4">
             <div className="flex h-10 items-center justify-between">
               <Heading
+                className={cn({"text-muted-foreground": !active})}
                 desktopSize="xl"
                 font="serif"
                 mobileSize="xl"
                 tag="h3"
-                className={cn({"text-muted-foreground": !active})}
               >
                 الدفع
               </Heading>
@@ -91,9 +89,8 @@ export default function Payment({active}: {active: boolean}) {
                 render={({field}) => (
                   <FormItem>
                     <PaymentSelect
-                      value={type}
                       onValueChange={field.onChange}
-                      customer={customer}
+                      value={type}
                     />
                   </FormItem>
                 )}
@@ -120,10 +117,10 @@ export default function Payment({active}: {active: boolean}) {
                 )}
               />
               <PaymentButton
+                disabled={!type}
+                loading={isSubmitting}
                 onInitiated={handlePaymentInitiated}
                 type={type}
-                loading={isSubmitting}
-                disabled={!type}
               />
             </div>
           )}

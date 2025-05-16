@@ -1,9 +1,10 @@
 "use client";
 
-import {notFound} from "next/navigation";
+import type {HttpTypes} from "@medusajs/types";
+
+import {updateCustomer} from "@/actions/medusa/customer";
+import {Cta} from "@/components/shared/button";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {z} from "zod";
 import {
   Form,
   FormControl,
@@ -13,18 +14,18 @@ import {
   FormMessage,
   Input,
 } from "@merchify/ui";
-import {HttpTypes} from "@medusajs/types";
-import {Cta} from "@/components/shared/button";
-import {updateCustomer} from "@/actions/medusa/customer";
+import {notFound} from "next/navigation";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 
 const profileFormSchema = z.object({
+  email: z.string().email(),
   first_name: z.string().min(2, {
     message: "مطلوب",
   }),
   last_name: z.string().min(2, {
     message: "مطلوب",
   }),
-  email: z.string().email(),
   phone: z.string().min(10),
 });
 
@@ -35,25 +36,21 @@ type ProfileFormProps = {
   regions: HttpTypes.StoreRegion[];
 };
 
-export default function ProfileForm({
-  customer,
-  regions,
-  ...props
-}: ProfileFormProps) {
+export default function ProfileForm({customer, regions}: ProfileFormProps) {
   if (!customer || !regions) {
     console.log("not found");
     notFound();
   }
 
   const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
     defaultValues: {
+      email: customer.email || "",
       first_name: customer.first_name || "",
       last_name: customer.last_name || "",
       phone: customer.phone || "",
-      email: customer.email || "",
     },
     mode: "onChange",
+    resolver: zodResolver(profileFormSchema),
   });
 
   async function onSubmit(data: ProfileFormValues) {
@@ -62,7 +59,7 @@ export default function ProfileForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="first_name"

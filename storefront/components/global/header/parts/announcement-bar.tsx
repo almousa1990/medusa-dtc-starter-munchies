@@ -4,8 +4,8 @@ import type {Header} from "@/types/sanity.generated";
 
 import {RichText} from "@/components/shared/rich-text";
 import Body from "@/components/shared/typography/body";
-import React, {Fragment, useState} from "react";
 import {X} from "lucide-react";
+import React, {Fragment, useState} from "react";
 
 export default function AnnouncementBar({
   announcementText,

@@ -1,4 +1,4 @@
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import {stegaClean} from "next-sanity";
 import React from "react";
 
@@ -15,7 +15,7 @@ export default function MediaText(
   return (
     <section
       {...props.rootHtmlAttributes}
-      className={cx(
+      className={cn(
         "max-w-max-screen mx-auto flex w-full flex-col items-stretch justify-center gap-2 px-5 py-8 lg:px-8 lg:py-10",
         {
           "lg:flex-row": position === "right",

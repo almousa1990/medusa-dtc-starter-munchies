@@ -1,6 +1,6 @@
 "use client";
 
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import {useEffect, useState} from "react";
 
 export default function BottomBorder({
@@ -27,10 +27,10 @@ export default function BottomBorder({
 
   return (
     <div
-      className={cx(className, "h-px w-screen transition-all duration-300", {
-        "bg-border": isVisible && !DropdownOpen,
+      className={cn(className, "h-px w-screen transition-all duration-300", {
         "bg-background": !isVisible,
         "bg-background transition-none": DropdownOpen,
+        "bg-border": isVisible && !DropdownOpen,
       })}
     />
   );

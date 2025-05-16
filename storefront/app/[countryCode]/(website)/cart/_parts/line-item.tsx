@@ -13,22 +13,10 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 
 export default function LineItem(props: MerchifyCartLineItem) {
-  const {
-    cart,
-    handleDeleteItem,
-    handleRefreshItem,
-    handleUpdateItem,
-    isUpdating,
-  } = useCart();
+  const {cart, handleDeleteItem, handleUpdateItem, isUpdating} = useCart();
   const item = props;
-  const router = useRouter();
 
   if (!((item?.quantity || 0) > 0)) return null;
-
-  const unit_price = convertToLocale({
-    amount: item?.unit_price || 0,
-    currency_code: (item?.variant?.calculated_price?.currency_code || null)!,
-  });
 
   const item_price = convertToLocale({
     amount: (item?.unit_price || 0) * (item?.quantity || 1),
@@ -98,7 +86,7 @@ export default function LineItem(props: MerchifyCartLineItem) {
   );
 }
 
-function EditButton(props: MerchifyCartLineItem & {disabled: boolean}) {
+function EditButton(props: {disabled: boolean} & MerchifyCartLineItem) {
   const {handleRefreshItem} = useCart();
   const router = useRouter();
   const [pending, setPending] = useState(false);

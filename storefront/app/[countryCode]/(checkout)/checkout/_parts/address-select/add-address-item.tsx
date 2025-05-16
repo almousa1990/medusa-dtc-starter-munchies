@@ -5,6 +5,7 @@ import type {
 } from "@medusajs/types";
 
 import AddressForm from "@/components/shared/address-form";
+import {CHECKOUT_ADD_ADDRESS_ID} from "@/utils/constants";
 import {
   AccordionContent,
   AccordionItem,
@@ -12,20 +13,19 @@ import {
   RadioGroupItem,
   cn,
 } from "@merchify/ui";
-import {CHECKOUT_ADD_ADDRESS_ID} from "@/utils/constants";
 
 export default function AddAddressItem({
-  defaultAddress,
   countries,
+  defaultAddress,
   onSelect,
-  selected,
   onSubmit,
+  selected,
 }: {
-  defaultAddress?: Partial<StoreCustomerAddress>;
   countries?: StoreRegionCountry[];
-  selected: boolean;
+  defaultAddress?: Partial<StoreCustomerAddress>;
   onSelect: (id: string) => void;
   onSubmit: (address: StoreCreateCustomerAddress) => Promise<any>;
+  selected: boolean;
 }) {
   return (
     <AccordionItem
@@ -35,7 +35,6 @@ export default function AddAddressItem({
           "bg-muted border-primary relative z-10": selected,
         },
       )}
-      value={CHECKOUT_ADD_ADDRESS_ID}
       onClick={(e) => {
         const target = e.target as HTMLElement;
 
@@ -49,11 +48,12 @@ export default function AddAddressItem({
 
         onSelect(CHECKOUT_ADD_ADDRESS_ID);
       }}
+      value={CHECKOUT_ADD_ADDRESS_ID}
     >
       <div className="flex w-full items-center gap-3 p-4">
         <RadioGroupItem
-          value={CHECKOUT_ADD_ADDRESS_ID}
           id={CHECKOUT_ADD_ADDRESS_ID}
+          value={CHECKOUT_ADD_ADDRESS_ID}
         />
         <Label htmlFor={CHECKOUT_ADD_ADDRESS_ID}>إضافة عنوان جديد</Label>
       </div>

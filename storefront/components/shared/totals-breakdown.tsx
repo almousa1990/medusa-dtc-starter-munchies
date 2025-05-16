@@ -1,18 +1,18 @@
+import type {MerchifyOrder} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
 import {convertToLocale} from "@/utils/medusa/money";
+import {cn} from "@merchify/ui";
 
 import Body from "./typography/body";
-import {cn} from "@merchify/ui";
-import {MerchifyOrder} from "@/types";
 
 export function TotalsBreakdown({
-  data,
   className,
+  data,
   variant,
 }: {
-  data: HttpTypes.StoreCart | MerchifyOrder;
   className?: string;
+  data: HttpTypes.StoreCart | MerchifyOrder;
   variant?: "default" | "small";
 }) {
   const summaryItems = [
@@ -30,11 +30,11 @@ export function TotalsBreakdown({
     <div className={cn("flex flex-col gap-2", className)}>
       {summaryItems.map((item) => (
         <TotalsItem
-          size={variant == "small" ? "sm" : "base"}
           amount={item.amount}
           currency_code={data.currency_code}
           key={item.label}
           label={item.label}
+          size={variant == "small" ? "sm" : "base"}
         />
       ))}
       <GrandTotal
@@ -60,10 +60,10 @@ function GrandTotal({
 
   return (
     <div className="flex items-center justify-between">
-      <Body desktopSize={size} className="font-medium" font="sans">
+      <Body className="font-medium" desktopSize={size} font="sans">
         {label}
       </Body>
-      <Body mobileSize={size} className="font-medium" font="sans">
+      <Body className="font-medium" font="sans" mobileSize={size}>
         {display}
       </Body>
     </div>
@@ -85,7 +85,7 @@ function TotalsItem({
 
   return (
     <div className="flex items-center justify-between">
-      <Body font="sans" mobileSize={size} className="text-muted-foreground">
+      <Body className="text-muted-foreground" font="sans" mobileSize={size}>
         {label}
       </Body>
       <Body font="sans" mobileSize={size}>

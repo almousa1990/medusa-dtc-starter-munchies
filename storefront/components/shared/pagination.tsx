@@ -1,9 +1,10 @@
 "use client";
 
+import {cn} from "@merchify/ui";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+
 import {Cta} from "./button";
-import {cn} from "@merchify/ui";
 
 export default function Pagination({
   page,
@@ -30,15 +31,15 @@ export default function Pagination({
   // Function to render a page button
   const renderPageButton = (
     p: number,
-    label: string | number,
+    label: number | string,
     isCurrent: boolean,
   ) => (
     <Cta
-      key={p}
-      variant={isCurrent ? "default" : "ghost"}
-      size={"sm"}
       className={cn("px-4", {"pointer-events-none": isCurrent})}
+      key={p}
       onClick={() => handlePageChange(p)}
+      size={"sm"}
+      variant={isCurrent ? "default" : "ghost"}
     >
       {label}
     </Cta>
@@ -46,7 +47,7 @@ export default function Pagination({
 
   // Function to render ellipsis
   const renderEllipsis = (key: string) => (
-    <Cta key={key} disabled variant="ghost">
+    <Cta disabled key={key} variant="ghost">
       ...
     </Cta>
   );
@@ -108,21 +109,21 @@ export default function Pagination({
       className="mx-auto mt-6 flex justify-between space-x-2 space-x-reverse lg:justify-end"
     >
       <Cta
+        className="px-2"
         disabled={page == 1}
         onClick={() => handlePageChange(page - 1)}
-        className="px-2"
-        variant="ghost"
         size={"sm"}
+        variant="ghost"
       >
         <ChevronRight className="h-5 w-5" />
       </Cta>
       {renderPageButtons()}
       <Cta
+        className="px-2"
         disabled={page == totalPages}
         onClick={() => handlePageChange(page + 1)}
-        className="px-2"
-        variant="ghost"
         size="sm"
+        variant="ghost"
       >
         <ChevronLeft className="h-5 w-5" />
       </Cta>

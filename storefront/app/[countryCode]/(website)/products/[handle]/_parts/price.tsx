@@ -22,11 +22,11 @@ export default function Price({
     (variantPrice?.calculated_price || cheapestPrice?.calculated_price) && (
       <div>
         <Body
+          as="span"
+          className="font-medium"
           desktopSize="xl"
           font="sans"
-          className="font-medium"
           mobileSize="lg"
-          as="span"
         >
           {variantPrice?.calculated_price ? (
             variantPrice.calculated_price
@@ -34,7 +34,7 @@ export default function Price({
             <>يبدأ من {cheapestPrice?.calculated_price}</>
           )}
         </Body>
-        <Body mobileSize="sm" className="text-muted-foreground">
+        <Body className="text-muted-foreground" mobileSize="sm">
           شامل الضريبة. يتم احتساب الشحن عند إتمام الشراء.
         </Body>
       </div>

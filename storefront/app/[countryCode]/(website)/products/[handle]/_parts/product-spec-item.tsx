@@ -1,13 +1,15 @@
 "use client";
 
-import {createContext, useContext, useState, ReactNode} from "react";
-import {ChevronDown} from "lucide-react";
+import type { ReactNode} from "react";
+
 import Heading from "@/components/shared/typography/heading";
 import {cn} from "@merchify/ui";
+import {ChevronDown} from "lucide-react";
+import {createContext, useContext, useState} from "react";
 
 interface ProductSpecItemProps {
-  defaultOpen?: boolean;
   children: ReactNode;
+  defaultOpen?: boolean;
 }
 
 interface ProductSpecItemContextType {
@@ -30,8 +32,8 @@ export const useProductSpecItem = () => {
 };
 
 export const ProductSpecItem = ({
-  defaultOpen = false,
   children,
+  defaultOpen = false,
 }: ProductSpecItemProps) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const toggle = () => setIsOpen((prev) => !prev);
@@ -55,26 +57,26 @@ export const ProductSpecItemTitle = ({
   return (
     <div className="lg:w-1/4">
       <button
-        onClick={toggle}
         className={cn(
           "flex w-full items-center justify-between text-left",
           "lg:pointer-events-none lg:cursor-default lg:select-text",
         )}
+        onClick={toggle}
       >
         <Heading
-          tag="h2"
+          className="flex flex-col gap-4 lg:flex-row"
           desktopSize="2xl"
           mobileSize="lg"
-          className="flex flex-col gap-4 lg:flex-row"
+          tag="h2"
         >
           {children}
         </Heading>
         <ChevronDown
-          size={18}
           className={cn(
             "transition-transform lg:hidden",
             isOpen && "rotate-180",
           )}
+          size={18}
         />
       </button>
     </div>

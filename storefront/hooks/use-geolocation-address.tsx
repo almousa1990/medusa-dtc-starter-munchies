@@ -1,4 +1,5 @@
-import {GeolocationAddress} from "@/types";
+import type {GeolocationAddress} from "@/types";
+
 import {useState} from "react";
 
 export function useGeolocationAddress() {
@@ -22,9 +23,9 @@ export function useGeolocationAddress() {
 
             try {
               const response = await fetch("/api/geocode", {
-                method: "POST",
                 body: JSON.stringify({latitude, longitude}),
                 headers: {"Content-Type": "application/json"},
+                method: "POST",
               });
               const values: GeolocationAddress = await response.json();
 

@@ -8,15 +8,6 @@ export const headingStyles = cva("", {
     font: "serif",
   },
   variants: {
-    tag: {
-      h1: "font-bold",
-      h2: "font-bold",
-      h3: "font-semibold",
-      h4: "font-semibold",
-      h5: "font-medium",
-      h6: "font-medium",
-    },
-
     desktopSize: {
       "2xl": "lg:text-2xl",
       "3xl": "lg:text-3xl",
@@ -27,6 +18,7 @@ export const headingStyles = cva("", {
       xl: "lg:text-xl",
       xs: "lg:text-xs",
     },
+
     font: {
       sans: "font-sans ",
       serif: "font-serif ",
@@ -40,6 +32,14 @@ export const headingStyles = cva("", {
       sm: "text-sm tracking-[-0.52px]",
       xl: "text-xl tracking-[-0.96px]",
       xs: "text-xs tracking-[-0.48px]",
+    },
+    tag: {
+      h1: "font-bold",
+      h2: "font-bold",
+      h3: "font-semibold",
+      h4: "font-semibold",
+      h5: "font-medium",
+      h6: "font-medium",
     },
   },
 });

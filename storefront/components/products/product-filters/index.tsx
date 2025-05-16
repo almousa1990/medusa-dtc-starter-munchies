@@ -1,7 +1,8 @@
 "use client";
 
+import type {HttpTypes} from "@medusajs/types";
+
 import {Cta} from "@/components/shared/button";
-import {HttpTypes} from "@medusajs/types";
 import {
   Checkbox,
   Collapsible,
@@ -15,25 +16,28 @@ import {parseAsArrayOf, parseAsString, useQueryState} from "nuqs";
 
 type ProductFiltersProps = {
   categories: HttpTypes.StoreProductCategory[];
+  className?: string;
   filters?: {
     id: string;
-    title: string;
     tags: {
       id: string;
       value: string;
     }[];
+    title: string;
   }[];
-  sortBy?: any;
-  className?: string;
   initialTags?: string | string[]; // ✅ updated
+  sortBy?: any;
 };
 
 export default function ProductFilters({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   categories,
-  filters,
-  sortBy,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   className,
+  filters,
   initialTags = [],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  sortBy,
 }: ProductFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -67,14 +71,14 @@ export default function ProductFilters({
       aria-labelledby="filter-heading"
       className="border-border grid items-center border-b"
     >
-      <h2 id="filter-heading" className="sr-only">
+      <h2 className="sr-only" id="filter-heading">
         الترشيح
       </h2>
       <div className="relative col-start-1 row-start-1 py-2">
         <div className="divide-border mx-auto grid max-w-7xl auto-cols-max grid-flow-col gap-x-6 divide-x text-sm">
           <CollapsibleTrigger
-            className="group flex h-9 cursor-default items-center pl-6 font-medium"
             asChild
+            className="group flex h-9 cursor-default items-center pl-6 font-medium"
           >
             <div className="cursor-pointer">
               <FunnelIcon
@@ -87,11 +91,11 @@ export default function ProductFilters({
           {!!tags?.length && (
             <div className="pl-6">
               <Cta
+                className="text-muted-foreground"
                 onClick={clearFilters}
+                size="sm"
                 type="button"
                 variant="ghost"
-                size="sm"
-                className="text-muted-foreground"
               >
                 إعادة تعيين
               </Cta>
@@ -107,15 +111,15 @@ export default function ProductFilters({
                 <legend className="block font-medium">{filter.title}</legend>
                 <div className="grid gap-6 pt-6 sm:gap-4 sm:pt-4">
                   {filter.tags?.map((tag) => (
-                    <div key={tag.id} className="flex gap-3">
+                    <div className="flex gap-3" key={tag.id}>
                       <Checkbox
-                        id={tag.id}
                         checked={tags?.includes(tag.id)}
+                        id={tag.id}
                         onCheckedChange={() => toggleTag(tag.id)}
                       />
                       <Label
-                        htmlFor={tag.id}
                         className="text-base font-normal sm:text-sm"
+                        htmlFor={tag.id}
                       >
                         {tag.value}
                       </Label>

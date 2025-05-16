@@ -1,6 +1,7 @@
+import type {CountryListItem} from "@/data/medusa/regions";
+
 import {Cta} from "@/components/shared/button";
 import {CountryFlag} from "@/components/shared/country-flag";
-import {CountryListItem} from "@/data/medusa/regions";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +12,11 @@ import {
 } from "@merchify/ui";
 
 export function ShippingFromDropdown({
-  countryCode,
   countries,
+  countryCode,
 }: {
-  countryCode: string;
   countries: CountryListItem[];
+  countryCode: string;
 }) {
   const country = countries?.find((c) => c.code == countryCode);
   return (

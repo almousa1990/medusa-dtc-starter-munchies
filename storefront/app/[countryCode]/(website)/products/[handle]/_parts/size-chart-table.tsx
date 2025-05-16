@@ -1,13 +1,13 @@
 "use client";
 
+import type {MerchifyProductSizeChart} from "@/types";
+
 import {Tabs, TabsList, TabsTrigger} from "@/components/shared/tabs";
 import Body from "@/components/shared/typography/body";
-import {MerchifyProductSizeChart} from "@/types";
 import {cn} from "@merchify/ui";
-
 import {useState} from "react";
 
-interface SizeChartTableProps extends MerchifyProductSizeChart {}
+type SizeChartTableProps = MerchifyProductSizeChart;
 
 export function SizeChartTable({columns, rows}: SizeChartTableProps) {
   const [unit, setUnit] = useState("cm");
@@ -30,8 +30,8 @@ export function SizeChartTable({columns, rows}: SizeChartTableProps) {
             <tr className="divide-x">
               {columns.map((col, colIndex) => (
                 <th
-                  key={col}
                   className={cn("p-4 font-medium", {"w-32": colIndex == 0})}
+                  key={col}
                 >
                   {col}
                 </th>
@@ -41,8 +41,8 @@ export function SizeChartTable({columns, rows}: SizeChartTableProps) {
           <tbody className="divide-border divide-y">
             {rows.map((row, rowIndex) => (
               <tr
-                key={rowIndex}
                 className="odd:bg-accent even:bg-background divide-x"
+                key={rowIndex}
               >
                 {columns.map((col, colIndex) => {
                   const rawValue = row[col];
@@ -53,8 +53,8 @@ export function SizeChartTable({columns, rows}: SizeChartTableProps) {
 
                   return (
                     <td
-                      key={col}
                       className={cn("p-4", {"w-32 font-medium": colIndex == 0})}
+                      key={col}
                     >
                       {displayValue || "-"}
                     </td>

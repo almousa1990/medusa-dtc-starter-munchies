@@ -3,6 +3,7 @@ import type {Metadata} from "next";
 
 import {CartProvider} from "@/components/context/cart-context";
 import {Link} from "@/components/shared/button";
+import PromotionForm from "@/components/shared/promotion-form";
 import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import Heading from "@/components/shared/typography/heading";
 import {getCart} from "@/data/medusa/cart";
@@ -11,7 +12,6 @@ import {TicketPercent} from "lucide-react";
 
 import EmptyCartMessage from "./_parts/empty-card-message";
 import LineItem from "./_parts/line-item";
-import PromotionForm from "@/components/shared/promotion-form";
 
 export const metadata: Metadata = {
   description: "View your cart",
@@ -45,7 +45,7 @@ export default async function CartPage(props: CartPageProps) {
                 <Heading desktopSize="lg" mobileSize="xl" tag="h3">
                   ملخص الطلب
                 </Heading>
-                <TotalsBreakdown variant="small" data={cart} />
+                <TotalsBreakdown data={cart} variant="small" />
                 <div className="bg-accent -mx-4 flex flex-col gap-2 px-4 py-4 sm:-mx-6 sm:px-6">
                   <Label>
                     <TicketPercent className="me-1 inline-block size-5" /> هل

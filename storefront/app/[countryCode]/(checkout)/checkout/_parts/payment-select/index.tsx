@@ -1,28 +1,28 @@
 "use client";
 
+import type {ReactNode} from "react";
+
+import {CreditCardForm} from "@/components/shared/credit-card-form";
+import Icon from "@/components/shared/icon";
+import {PaymentSourceType} from "@/types";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  cn,
   Label,
   RadioGroup,
   RadioGroupItem,
+  cn,
 } from "@merchify/ui";
-import {ReactNode, useEffect, useState} from "react";
-import {StoreCustomer} from "@medusajs/types";
-import {CreditCardForm} from "@/components/shared/credit-card-form";
-import Icon from "@/components/shared/icon";
-import {PaymentSourceType} from "@/types";
+import {useEffect, useState} from "react";
 
 interface PaymentSelectProps {
-  customer: StoreCustomer;
-  value?: PaymentSourceType;
   onValueChange: (value: string) => void;
+  value?: PaymentSourceType;
 }
 
 export default function PaymentSelect(props: PaymentSelectProps) {
-  const {customer, value, onValueChange} = props;
+  const {onValueChange, value} = props;
 
   const [canUseApplePay, setCanUseApplePay] = useState(false);
   useEffect(() => {
@@ -33,29 +33,29 @@ export default function PaymentSelect(props: PaymentSelectProps) {
   console.log("value", value);
 
   return (
-    <Accordion type="single" value={value} collapsible className="grid gap-6">
+    <Accordion className="grid gap-6" collapsible type="single" value={value}>
       <RadioGroup
+        className="gap-0"
         defaultValue={value}
         dir="rtl"
-        className="gap-0"
-        value={value}
         onValueChange={onValueChange}
+        value={value}
       >
         <PaymentOption
+          icons={["Mada", "Visa", "Mastercard", "Amex"]}
+          label="الدفع بالبطاقة الإئتمانية أو مدى"
           selected={value == PaymentSourceType.CreditCard}
           value={PaymentSourceType.CreditCard}
-          label="الدفع بالبطاقة الإئتمانية أو مدى"
-          icons={["Mada", "Visa", "Mastercard", "Amex"]}
         >
           <CreditCardForm className="py-2" />
         </PaymentOption>
 
         {canUseApplePay && (
           <PaymentOption
+            icons={["ApplePay"]}
+            label="الدفع باستخدام Apple Pay"
             selected={value == PaymentSourceType.ApplePay}
             value={PaymentSourceType.ApplePay}
-            label="الدفع باستخدام Apple Pay"
-            icons={["ApplePay"]}
           />
         )}
       </RadioGroup>
@@ -64,38 +64,38 @@ export default function PaymentSelect(props: PaymentSelectProps) {
 }
 
 interface PaymentOptionProps {
-  value: string;
-  selected: boolean;
-  label: string;
-  icons: ("Mada" | "ApplePay" | "Visa" | "Amex" | "Mastercard")[];
   children?: ReactNode;
+  icons: ("Amex" | "ApplePay" | "Mada" | "Mastercard" | "Visa")[];
+  label: string;
+  selected: boolean;
+  value: string;
 }
 
 function PaymentOption({
-  value,
-  label,
-  icons,
-  selected,
   children,
+  icons,
+  label,
+  selected,
+  value,
 }: PaymentOptionProps) {
   return (
     <AccordionItem
-      value={value}
       className={cn(
         "-mt-px overflow-hidden border first:rounded-t-md last:rounded-b-md",
         {
           "bg-muted border-primary relative z-10": selected,
         },
       )}
+      value={value}
     >
       <div className="flex w-full items-center gap-3 p-4">
-        <RadioGroupItem value={value} id={value} aria-label={label} />
-        <Label htmlFor={value} className="flex-1">
+        <RadioGroupItem aria-label={label} id={value} value={value} />
+        <Label className="flex-1" htmlFor={value}>
           {label}
         </Label>
         <div className="flex gap-2">
           {icons.map((icon, index) => (
-            <Icon name={icon} key={index} className="h-4" />
+            <Icon className="h-4" key={index} name={icon} />
           ))}
         </div>
       </div>

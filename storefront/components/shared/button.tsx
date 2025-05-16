@@ -1,12 +1,13 @@
+import type {ButtonProps} from "@merchify/ui";
 import type {VariantProps} from "cva";
 import type {LinkProps} from "next/link";
 import type {ComponentProps} from "react";
 
-import {Button, ButtonProps, buttonVariants, cn} from "@merchify/ui";
+import {Button, buttonVariants, cn} from "@merchify/ui";
 import {cva} from "cva";
+import {Loader2} from "lucide-react";
 
 import LocalizedLink from "./localized-link";
-import {Loader2} from "lucide-react";
 
 export const styles = cva("", {
   defaultVariants: {
@@ -26,9 +27,9 @@ export const styles = cva("", {
     variant: {
       default: "",
       ghost: "",
+      link: "",
       outline: "",
       secondary: "",
-      link: "",
     },
   },
 });
@@ -48,12 +49,10 @@ export function Cta({
   variant = "default",
   ...rest
 }: CtaButtonProps) {
-  const loadingIconName =
-    variant === "default" ? "LoadingPrimary" : "LoadingAccent";
   return (
     <Button
       className={cn(
-        buttonVariants({variant, size, className}),
+        buttonVariants({className, size, variant}),
         styles({className, loading, size, variant}),
       )}
       disabled={disabled}
@@ -98,7 +97,7 @@ export function Link({
   return (
     <LocalizedLink
       className={cn(
-        buttonVariants({size, variant, className}),
+        buttonVariants({className, size, variant}),
         styles({
           className,
           size,

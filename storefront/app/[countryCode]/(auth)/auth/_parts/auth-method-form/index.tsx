@@ -50,8 +50,8 @@ interface AuthMethodFormProps {
 }
 
 export default function AuthMethodForm({
-  onSuccess,
   disabled,
+  onSuccess,
 }: AuthMethodFormProps) {
   const [method, setMethod] = useState<"email" | "phone">("phone");
   const {toast} = useToast();
@@ -61,9 +61,9 @@ export default function AuthMethodForm({
       email: "",
       phone: "",
     },
-    resolver: zodResolver(formSchema),
     mode: "onSubmit", // validate only when submitting
     reValidateMode: "onSubmit", // don't re-validate on blur/change
+    resolver: zodResolver(formSchema),
   });
 
   // 2. Define a submit handler.
@@ -101,7 +101,7 @@ export default function AuthMethodForm({
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="flex flex-col items-center gap-2 text-center">
-            <Heading tag="h1" mobileSize="2xl">
+            <Heading mobileSize="2xl" tag="h1">
               تسجيل الدخول أو إنشاء حساب جديد
             </Heading>
             <p className="text-muted-foreground text-sm text-balance">
@@ -170,19 +170,19 @@ export default function AuthMethodForm({
 
       {method == "email" ? (
         <Cta
-          variant="ghost"
-          size="sm"
           className="w-full"
           onClick={() => handleMethodChange("phone")}
+          size="sm"
+          variant="ghost"
         >
           تسجيل الدخول برقم الجوال
         </Cta>
       ) : (
         <Cta
-          variant="ghost"
-          size="sm"
           className="w-full"
           onClick={() => handleMethodChange("email")}
+          size="sm"
+          variant="ghost"
         >
           تسجيل الدخول بالبريد الالكتروني
         </Cta>

@@ -5,18 +5,13 @@ import type {MerchifyCartLineItem} from "@/types";
 import LineItemThumbnail from "@/components/shared/line-item-thumbnail";
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
 import Body from "@/components/shared/typography/body";
-import {convertToLocale} from "@/utils/medusa/money";
 import Heading from "@/components/shared/typography/heading";
+import {convertToLocale} from "@/utils/medusa/money";
 
 export default function LineItem(props: MerchifyCartLineItem) {
   const item = props;
 
   if (!((item?.quantity || 0) > 0)) return null;
-
-  const unit_price = convertToLocale({
-    amount: item?.unit_price || 0,
-    currency_code: (item?.variant?.calculated_price?.currency_code || null)!,
-  });
 
   const item_price = convertToLocale({
     amount: (item?.unit_price || 0) * (item?.quantity || 1),
@@ -26,7 +21,7 @@ export default function LineItem(props: MerchifyCartLineItem) {
   return (
     <div className="flex items-start justify-between space-x-4 pb-4">
       <div className="relative inline-block">
-        <LineItemThumbnail item={item} className="size-24 sm:size-24" />
+        <LineItemThumbnail className="size-24 sm:size-24" item={item} />
         {
           <span className="bg-primary text-primary-foreground absolute -top-2 -left-2 flex size-6 items-center justify-center rounded-full text-xs font-medium">
             {item.quantity}

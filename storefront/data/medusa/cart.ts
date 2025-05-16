@@ -1,3 +1,4 @@
+import type {MerchifyCart, MerchifyCartLineItem} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
 import {cache} from "react";
@@ -5,7 +6,6 @@ import {cache} from "react";
 import client from "./client";
 import {getAuthHeaders, getCartId} from "./cookies";
 import {enrichLineItems} from "./line-items";
-import {MerchifyCart, MerchifyCartLineItem} from "@/types";
 
 export const getCart = cache(async function (id?: string) {
   const cartId = id ?? (await getCartId());

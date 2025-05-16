@@ -1,9 +1,10 @@
+import {cn} from "@merchify/ui";
+
 import type {ModularPageSection} from "./types";
 
 import CarouselSection from "../shared/carousel-section";
-import {SanityImage} from "../shared/sanity-image";
 import LocalizedLink from "../shared/localized-link";
-import {cn} from "@merchify/ui";
+import {SanityImage} from "../shared/sanity-image";
 
 export default async function FeaturedCategories(
   props: ModularPageSection<"section.featuredCategories">,
@@ -17,12 +18,7 @@ export default async function FeaturedCategories(
       {...props.rootHtmlAttributes}
       className="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8"
     >
-      <CarouselSection
-        showButtons={false}
-        slides={slides}
-        subtitle={props.subtitle}
-        title={props.title}
-      >
+      <CarouselSection subtitle={props.subtitle} title={props.title as string}>
         {slides}
       </CarouselSection>
     </section>

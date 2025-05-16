@@ -4,7 +4,7 @@ import type {Video as VideoType} from "@/types/sanity.generated";
 
 import {SanityImage, resolveImageData} from "@/components/shared/sanity-image";
 import useInView from "@/hooks/use-in-view";
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import React, {useEffect, useState} from "react";
 
 export type VideoProps = {
@@ -51,7 +51,7 @@ export default function Video({
       {!appeared ? null : (
         <video
           autoPlay
-          className={cx("absolute inset-0", className)}
+          className={cn("absolute inset-0", className)}
           controls={controls}
           height={posterData.height}
           loop

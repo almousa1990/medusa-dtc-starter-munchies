@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type {StoreProduct} from "@medusajs/types";
 
 import {getProductPrice} from "@/utils/medusa/get-product-price";
-import {cx} from "cva";
 import Image from "next/image";
 
 import LocalizedLink from "./localized-link";

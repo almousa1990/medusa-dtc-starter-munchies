@@ -1,11 +1,11 @@
 import LocalizedLink from "@/components/shared/localized-link";
 import {
-  Breadcrumb as UIBreadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
+  Breadcrumb as UIBreadcrumb,
 } from "@merchify/ui";
 import {ChevronLeft} from "lucide-react";
 import {Fragment} from "react";
@@ -14,8 +14,8 @@ export function Breadcrumb({
   items,
 }: {
   items: {
-    label: string;
     href?: string;
+    label: string;
   }[];
 }) {
   return (

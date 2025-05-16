@@ -1,7 +1,15 @@
 "use client";
 
-import React, {useEffect, useState, useActionState} from "react";
-import {HttpTypes, StoreUpdateCustomerAddress} from "@medusajs/types";
+import type {HttpTypes, StoreUpdateCustomerAddress} from "@medusajs/types";
+
+import {
+  deleteCustomerAddress,
+  updateCustomerAddress,
+} from "@/actions/medusa/customer";
+import AddressForm from "@/components/shared/address-form";
+import {Cta} from "@/components/shared/button";
+import Body from "@/components/shared/typography/body";
+import Heading from "@/components/shared/typography/heading";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,29 +20,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  cn,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  cn,
 } from "@merchify/ui";
-import AddressForm from "@/components/shared/address-form";
-import {
-  deleteCustomerAddress,
-  updateCustomerAddress,
-} from "@/actions/medusa/customer";
-import Heading from "@/components/shared/typography/heading";
-import Body from "@/components/shared/typography/body";
-import {Pencil, Trash, Trash2} from "lucide-react";
-import {Cta} from "@/components/shared/button";
+import {Pencil, Trash2} from "lucide-react";
+import React, {useState} from "react";
 
 type EditAddressProps = {
-  region: HttpTypes.StoreRegion;
   address: HttpTypes.StoreCustomerAddress;
+  region: HttpTypes.StoreRegion;
 };
 
-const EditAddress: React.FC<EditAddressProps> = ({region, address}) => {
+const EditAddress: React.FC<EditAddressProps> = ({address, region}) => {
   const [open, setOpen] = useState(false);
   const [removing, setRemoving] = useState(false);
 
@@ -61,7 +62,7 @@ const EditAddress: React.FC<EditAddressProps> = ({region, address}) => {
         )}
       >
         <div className="flex flex-col">
-          <Heading tag="h4" mobileSize="base" className="text-right">
+          <Heading className="text-right" mobileSize="base" tag="h4">
             {address.first_name} {address.last_name}
           </Heading>
 
@@ -80,17 +81,17 @@ const EditAddress: React.FC<EditAddressProps> = ({region, address}) => {
           </Body>
         </div>
         <div className="flex items-center justify-end gap-x-2">
-          <Cta size="sm" variant="secondary" onClick={() => setOpen(true)}>
+          <Cta onClick={() => setOpen(true)} size="sm" variant="secondary">
             <Pencil /> تعديل
           </Cta>
 
           <DeleteAddressButton
-            onConfirm={hanldeRemoveAddress}
             loading={removing}
+            onConfirm={hanldeRemoveAddress}
           />
         </div>
       </div>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog onOpenChange={setOpen} open={open}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>تعديل العنوان</DialogTitle>
@@ -110,11 +111,11 @@ const EditAddress: React.FC<EditAddressProps> = ({region, address}) => {
 };
 
 function DeleteAddressButton({
-  onConfirm,
   loading = false,
+  onConfirm,
 }: {
-  onConfirm: () => void;
   loading?: boolean;
+  onConfirm: () => void;
 }) {
   return (
     <AlertDialog>

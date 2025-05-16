@@ -5,6 +5,8 @@ import type {
 } from "@medusajs/types";
 
 import AddressForm from "@/components/shared/address-form";
+import FormattedAddress from "@/components/shared/formatted-address";
+import Body from "@/components/shared/typography/body";
 import {
   AccordionContent,
   AccordionItem,
@@ -13,23 +15,21 @@ import {
   RadioGroupItem,
   cn,
 } from "@merchify/ui";
-import Body from "@/components/shared/typography/body";
-import FormattedAddress from "@/components/shared/formatted-address";
 
 export default function AddressItem({
   address,
   countries,
-  selected,
   onEdit,
   onSelect, // ← NEW
   onToggleOpen,
+  selected,
 }: {
   address: StoreCustomerAddress;
   countries?: StoreRegionCountry[];
-  selected: boolean;
   onEdit: (id: string, data: StoreUpdateCustomerAddress) => Promise<any>;
   onSelect: (id: string) => void; // ← NEW
   onToggleOpen: (id: string) => void;
+  selected: boolean;
 }) {
   const handleEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -45,7 +45,6 @@ export default function AddressItem({
           "bg-muted border-primary relative z-10": selected,
         },
       )}
-      value={address.id}
       onClick={(e) => {
         const target = e.target as HTMLElement;
 
@@ -59,15 +58,16 @@ export default function AddressItem({
 
         onSelect(address.id);
       }}
+      value={address.id}
     >
       <div className="flex items-center justify-between gap-3 p-4">
         <div className="flex w-full items-center gap-3">
           <RadioGroupItem id={address.id} value={address.id} />
-          <Label htmlFor={address.id} className="w-full font-normal">
-            <Body mobileSize="sm" className="block font-medium">
+          <Label className="w-full font-normal" htmlFor={address.id}>
+            <Body className="block font-medium" mobileSize="sm">
               {address.first_name} {address.last_name}
             </Body>
-            <Body mobileSize="sm" className="text-muted-foreground block">
+            <Body className="text-muted-foreground block" mobileSize="sm">
               <FormattedAddress address={address} />
             </Body>
           </Label>

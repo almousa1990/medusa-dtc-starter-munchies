@@ -1,6 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {AddonsItem} from "@/components/shared/addons-item";
-import CarouselSection from "@/components/shared/carousel-section";
-import Heading from "@/components/shared/typography/heading";
 import {getProductsByIds} from "@/data/medusa/products";
 
 type Props = {ids: string[]; isEmptyCart: boolean; region_id: string};
@@ -14,18 +13,5 @@ export default async function CartAddons({ids, isEmptyCart, region_id}: Props) {
     </div>
   ));
 
-  return (
-    <div>
-      <CarouselSection
-        showButtons
-        slides={slides}
-        title={
-          <Heading font="serif" mobileSize="lg" tag="h3">
-            {isEmptyCart ? "You might like" : "You might also like"}
-          </Heading>
-        }
-        variant="cart"
-      />
-    </div>
-  );
+  return <div>tbd</div>;
 }

@@ -1,23 +1,20 @@
 "use client";
 
-import type {StoreCustomer} from "@medusajs/types";
-
 import {login, refresh, register} from "@/actions/medusa/auth";
 import {navigate} from "@/actions/medusa/navigate";
+import {useRouter} from "next/navigation";
 import {useState} from "react";
 
 import AuthMethodForm from "../auth-method-form";
 import OtpForm from "../otp-form";
 import SignupForm from "../signup-form";
-import {useRouter} from "next/navigation";
 
 type Step = "method" | "otp" | "signup";
 
 interface AuthFlowProps {
-  customer: StoreCustomer | null;
   redirect: string; // Accept referer as a prop
 }
-export default function AuthFlow({customer, redirect}: AuthFlowProps) {
+export default function AuthFlow({redirect}: AuthFlowProps) {
   const [step, setStep] = useState<Step>("method");
   const [stateKey, setStateKey] = useState<null | string>(null);
   const router = useRouter();

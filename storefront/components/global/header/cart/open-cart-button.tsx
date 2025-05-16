@@ -1,12 +1,10 @@
 "use client";
+import {useCart} from "@/components/context/cart-context";
+import Icon from "@/components/shared/icon";
 import {OpenDialog} from "@/components/shared/side-dialog";
 import Body from "@/components/shared/typography/body";
-
-import {useCart} from "../../../context/cart-context";
-import {ShoppingBag} from "lucide-react";
-import {usePathname} from "next/navigation";
 import {cn} from "@merchify/ui";
-import Icon from "@/components/shared/icon";
+import {usePathname} from "next/navigation";
 
 export default function OpenCart() {
   const {cart} = useCart();
@@ -22,8 +20,8 @@ export default function OpenCart() {
           "cursor-pointer": !isCartPage,
         })}
       >
-        <Icon name="Cart" className="size-6" />
-        <Body font="sans" mobileSize="sm" className="mr-1">
+        <Icon className="size-6" name="Cart" />
+        <Body className="mr-1" font="sans" mobileSize="sm">
           {count}
         </Body>
       </div>

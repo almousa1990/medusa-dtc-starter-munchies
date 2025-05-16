@@ -1,14 +1,13 @@
 import type {SearchParams} from "@/types";
 
+import Pagination from "@/components/shared/pagination";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {getProducts} from "@/data/medusa/products";
 import {getRegion} from "@/data/medusa/regions";
-import {loadDictionary} from "@/data/sanity";
+import {Skeleton} from "@merchify/ui";
 
 import ProductGrid from "./grid";
-import Pagination from "@/components/shared/pagination";
-import {Skeleton} from "@merchify/ui";
 
 export default async function PaginatedProducts({
   countryCode,
@@ -16,7 +15,7 @@ export default async function PaginatedProducts({
 }: {
   countryCode: string;
   searchParams: SearchParams<
-    "category" | "collection" | "tags" | "page" | "sort" | "q"
+    "category" | "collection" | "page" | "q" | "sort" | "tags"
   >;
 }) {
   const category = parseSearchParam(searchParams.category)?.split(",");
@@ -25,22 +24,19 @@ export default async function PaginatedProducts({
   const page =
     typeof searchParams.page === "string" ? parseInt(searchParams.page, 10) : 1;
 
-  const productsDictionary = await loadDictionary();
-
   const region = await getRegion(countryCode);
 
   if (!region) {
     return null;
   }
 
-  const {totalPages, products} = await getProducts(page, region.id, {
+  const {products, totalPages} = await getProducts(page, region.id, {
     category_id: category,
     collection_id: collection,
-    tag_id: tags,
     q: searchParams.q as string,
+    tag_id: tags,
   });
 
-  const hasFilters = category || collection;
   return (
     <>
       {products.length === 0 && (
@@ -61,7 +57,7 @@ export default async function PaginatedProducts({
         <Pagination
           data-testid="product-pagination"
           page={page}
-          totalPages={2}
+          totalPages={totalPages}
         />
       )}
     </>
@@ -72,7 +68,7 @@ export function ProductsSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
       {[...Array(9)].map((_, index) => (
-        <Skeleton key={index} className="aspect-square w-full rounded-md" />
+        <Skeleton className="aspect-square w-full rounded-md" key={index} />
       ))}
     </div>
   );

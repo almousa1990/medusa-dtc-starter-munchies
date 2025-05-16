@@ -5,22 +5,22 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-  Badge,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@merchify/ui";
-import {AlertCircle, ExternalLink, Fullscreen} from "lucide-react";
+import {AlertCircle, ExternalLink} from "lucide-react";
 import Image from "next/image";
+
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "./tabs";
 
 export default function PrintfileLineItemPreviewer({
   currencyCode,
   items,
 }: {
-  currencyCode?: string | null;
+  currencyCode?: null | string;
   items?: MerchifyPrintfileLineItem[];
 }) {
   if (!items) return null;

@@ -5,20 +5,20 @@ import type {
   StoreCustomer,
   StorePaymentProvider,
 } from "@medusajs/types";
-import {useToast} from "@merchify/ui";
 
+import {useToast} from "@merchify/ui";
 import {createContext, useContext, useEffect, useState} from "react";
 
 export type CheckoutStep = "address" | "delivery" | "payment" | "review";
 
 type CheckoutCallbackPayload = {
-  status: string;
   message: string;
+  status: string;
 };
 
 interface CheckoutContextType {
-  cart: StoreCart;
   callbackPayload?: CheckoutCallbackPayload | null;
+  cart: StoreCart;
   customer: StoreCustomer;
   paymentMethods: StorePaymentProvider[];
   setStep: (step: CheckoutContextType["step"]) => void;
@@ -66,6 +66,7 @@ export const CheckoutProvider = ({
     window.history.replaceState({}, "", url.toString());
 
     return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value.callbackPayload?.status, toast]);
 
   const initialStep: CheckoutContextType["step"] = (() => {

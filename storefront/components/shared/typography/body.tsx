@@ -1,7 +1,7 @@
 import type {VariantProps} from "cva";
+import type {ElementType} from "react";
 
 import {cva} from "cva";
-import {ElementType} from "react";
 
 export const bodyStyles = cva("", {
   defaultVariants: {

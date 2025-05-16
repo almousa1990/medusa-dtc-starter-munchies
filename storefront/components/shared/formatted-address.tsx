@@ -1,13 +1,13 @@
 import React from "react";
 
 interface Address {
+  address_1?: null | string;
+  address_2?: null | string;
+  city?: null | string;
   metadata?: {
     country_name?: string;
   } | null;
-  city?: string | null;
-  province?: string | null;
-  address_1?: string | null;
-  address_2?: string | null;
+  province?: null | string;
 }
 
 interface FormattedAddressProps {
@@ -15,7 +15,7 @@ interface FormattedAddressProps {
 }
 
 const FormattedAddress: React.FC<FormattedAddressProps> = ({address}) => {
-  const {metadata, city, address_1, address_2, province} = address;
+  const {address_1, address_2, city, metadata, province} = address;
 
   return (
     <span>

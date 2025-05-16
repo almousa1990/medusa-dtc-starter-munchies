@@ -1,15 +1,16 @@
-import {Metadata} from "next";
+import type {Metadata} from "next";
 
-import {notFound} from "next/navigation";
+import Heading from "@/components/shared/typography/heading";
 import {listOrders} from "@/data/medusa/order";
 import {Separator} from "@merchify/ui";
-import DataTable from "./_parts/order-data-table/data-table";
+import {notFound} from "next/navigation";
+
 import {columns} from "./_parts/order-data-table/columns";
-import Heading from "@/components/shared/typography/heading";
+import DataTable from "./_parts/order-data-table/data-table";
 
 export const metadata: Metadata = {
-  title: "Orders",
   description: "Overview of your previous orders.",
+  title: "Orders",
 };
 
 export default async function Orders() {
@@ -21,7 +22,7 @@ export default async function Orders() {
   return (
     <div className="space-y-6">
       <div>
-        <Heading tag="h3" mobileSize="lg">
+        <Heading mobileSize="lg" tag="h3">
           الطلبات
         </Heading>
         <p className="text-muted-foreground text-sm">عرض سجل الطلبات</p>

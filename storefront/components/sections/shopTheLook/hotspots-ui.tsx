@@ -7,7 +7,7 @@ import {SanityImage} from "@/components/shared/sanity-image";
 import Tag from "@/components/shared/tag";
 import Body from "@/components/shared/typography/body";
 import {getProductPrice} from "@/utils/medusa/get-product-price";
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import Image from "next/image";
 import {useState} from "react";
 
@@ -46,7 +46,7 @@ export default function HotspotsUi({
           {productHotSpots?.map((hotSpot) => {
             return (
               <div
-                className={cx(
+                className={cn(
                   "group bg-accent hover:bg-secondary relative h-6 w-6 cursor-pointer rounded-full transition-all duration-300 lg:h-8 lg:w-8",
                   {
                     "bg-secondary": selectedProduct === hotSpot.product?._ref,
@@ -63,7 +63,7 @@ export default function HotspotsUi({
                 }}
               >
                 <span
-                  className={cx(
+                  className={cn(
                     "group-hover:bg-accent absolute top-1/2 left-1/2 z-10 h-[1.5px] w-2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 lg:w-[13px]",
                     {
                       "bg-accent": selectedProduct === hotSpot.product?._ref,
@@ -73,13 +73,13 @@ export default function HotspotsUi({
                   )}
                 />
                 <span
-                  className={cx(
+                  className={cn(
                     "group-hover:bg-accent absolute top-1/2 left-1/2 h-2 w-[1.5px] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 group-hover:rotate-90 lg:h-[13px]",
                     {
-                      "bg-background":
-                        selectedProduct !== hotSpot.product?._ref,
                       "bg-accent rotate-90":
                         selectedProduct === hotSpot.product?._ref,
+                      "bg-background":
+                        selectedProduct !== hotSpot.product?._ref,
                     },
                   )}
                 />
@@ -148,7 +148,7 @@ export default function HotspotsUi({
           const thumbnailUrl = product?.thumbnail || product?.images?.[0].url;
           return (
             <LocalizedLink
-              className={cx("flex w-full gap-[10px] rounded-2xl p-2", {
+              className={cn("flex w-full gap-[10px] rounded-2xl p-2", {
                 "bg-secondary": selectedProduct === product.id,
               })}
               href={`/products/${product?.handle}`}

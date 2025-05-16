@@ -7,13 +7,13 @@ import Heading from "@/components/shared/typography/heading";
 import {convertToLocale} from "@/utils/medusa/money";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
-  cn,
   Form,
   FormField,
   FormItem,
   Label,
   RadioGroup,
   RadioGroupItem,
+  cn,
 } from "@merchify/ui";
 import {Check} from "lucide-react";
 import {useEffect} from "react";
@@ -43,7 +43,7 @@ export default function Delivery({active}: {active: boolean}) {
   });
 
   const {
-    formState: {isSubmitSuccessful, isSubmitting},
+    formState: {isSubmitting},
     handleSubmit,
     reset,
   } = form;
@@ -52,6 +52,7 @@ export default function Delivery({active}: {active: boolean}) {
     if (!active) {
       reset();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   const activeShippingMethodPrice = convertToLocale({
@@ -72,8 +73,8 @@ export default function Delivery({active}: {active: boolean}) {
 
   return (
     <div
-      onClick={() => (shippingMethods.length ? setStep("delivery") : {})}
       className={cn({"cursor-pointer": !active})}
+      onClick={() => (shippingMethods.length ? setStep("delivery") : {})}
     >
       <Form {...form}>
         <form
@@ -82,11 +83,11 @@ export default function Delivery({active}: {active: boolean}) {
         >
           <div className="flex h-10 items-center justify-between">
             <Heading
+              className={cn({"text-muted-foreground": !active})}
               desktopSize="xl"
               font="serif"
               mobileSize="xl"
               tag="h3"
-              className={cn({"text-muted-foreground": !active})}
             >
               شركة الشحن
             </Heading>
@@ -98,7 +99,7 @@ export default function Delivery({active}: {active: boolean}) {
           </div>
           {isFilled && (
             <div className="flex flex-1 flex-col gap-4">
-              <Body font="sans" className="text-muted-foreground text-sm">
+              <Body className="text-muted-foreground text-sm" font="sans">
                 {activeShippingMethod.name} ({activeShippingMethodPrice})
               </Body>
             </div>
@@ -111,8 +112,8 @@ export default function Delivery({active}: {active: boolean}) {
                 render={({field}) => (
                   <FormItem>
                     <RadioGroup
-                      dir="rtl"
                       className="gap-0"
+                      dir="rtl"
                       onValueChange={field.onChange}
                       value={field.value}
                     >
@@ -157,20 +158,20 @@ export default function Delivery({active}: {active: boolean}) {
                                 <div className="flex w-full items-center justify-between">
                                   <div>
                                     <Body
-                                      mobileSize="sm"
-                                      font="sans"
                                       className="font-medium"
+                                      font="sans"
+                                      mobileSize="sm"
                                     >
                                       {item.name}
                                     </Body>
                                     <Body
-                                      mobileSize="sm"
                                       className="text-muted-foreground block"
+                                      mobileSize="sm"
                                     >
                                       {item.type.description}
                                     </Body>
                                   </div>
-                                  <Body mobileSize="sm" font="sans">
+                                  <Body font="sans" mobileSize="sm">
                                     {price}
                                   </Body>
                                 </div>

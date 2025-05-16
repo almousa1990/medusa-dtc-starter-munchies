@@ -35,9 +35,9 @@ const formSchema = z.object({
 });
 
 export default function SignupForm({
+  disabled,
   input,
   onSuccess,
-  disabled,
 }: SignupFormProps) {
   const {toast} = useToast();
 

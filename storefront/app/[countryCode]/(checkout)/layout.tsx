@@ -3,13 +3,13 @@ import type {Metadata} from "next";
 import type {PropsWithChildren} from "react";
 
 import PreventBackNavigationSmoothScroll from "@/components/prevent-back-navigation-smooth-scroll";
+import {Link} from "@/components/shared/button";
+import LocalizedLink from "@/components/shared/localized-link";
 import config from "@/config";
 import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
-import {Cta, Link} from "@/components/shared/button";
-import {ChevronRight} from "lucide-react";
-import LocalizedLink from "@/components/shared/localized-link";
 import {Toaster} from "@merchify/ui";
+import {ChevronRight} from "lucide-react";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">

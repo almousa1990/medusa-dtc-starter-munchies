@@ -1,6 +1,10 @@
 "use client";
 
-import type {MerchifyPrintfileRenderInput, MerchifyProduct} from "@/types";
+import type {
+  MerchifyPrintfileRenderInput,
+  MerchifyPrintfileTemplate,
+  MerchifyProduct,
+} from "@/types";
 import type {StoreRegion} from "@medusajs/types";
 
 import {
@@ -27,7 +31,7 @@ interface EditorWrapperProps {
   countryCode: string;
   lineItem?: string;
   onVariantSelectionChange?: (id: string) => void;
-  printfiles: any[];
+  printfiles: MerchifyPrintfileTemplate[];
   product: MerchifyProduct;
   region: StoreRegion;
   selectedVariant?: string;

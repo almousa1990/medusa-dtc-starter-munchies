@@ -1,6 +1,7 @@
 import type {HttpTypes} from "@medusajs/types";
 import type {BaseRegionCountry} from "@medusajs/types/dist/http/region/common";
 
+import {useGeolocationAddress} from "@/hooks/use-geolocation-address";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
   Form,
@@ -11,6 +12,7 @@ import {
   FormMessage,
   Input,
 } from "@merchify/ui";
+import {Navigation} from "lucide-react";
 import React from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
@@ -18,8 +20,6 @@ import {z} from "zod";
 import {Cta} from "./button";
 import {InputPhone} from "./input-phone";
 import {NativeSelect} from "./native-select";
-import {Navigation} from "lucide-react";
-import {useGeolocationAddress} from "@/hooks/use-geolocation-address";
 
 const formSchema = z.object({
   address_1: z.string().min(3, {message: "مطلوب"}),
@@ -62,9 +62,9 @@ export default function AddressForm({
       postal_code: address?.postal_code ?? "",
       province: address?.province ?? "",
     },
-    resolver: zodResolver(formSchema),
     mode: "onSubmit", // validate only when submitting
     reValidateMode: "onSubmit", // don't re-validate on blur/change
+    resolver: zodResolver(formSchema),
   });
 
   const {getAddressFromCurrentLocation, isLoading, isSupported} =
@@ -89,11 +89,11 @@ export default function AddressForm({
       <div className="grid gap-4">
         <div className="flex justify-end">
           <Cta
-            disabled={!isSupported}
-            size="sm"
-            loading={isLoading}
             className="w-full"
+            disabled={!isSupported}
+            loading={isLoading}
             onClick={handleLocationClick}
+            size="sm"
             type="button"
             variant="secondary"
           >
@@ -159,13 +159,13 @@ export default function AddressForm({
                           (
                             country,
                           ): country is {
-                            metadata: {ar_name: string};
                             display_name: string;
                             iso_2: string;
+                            metadata: {ar_name: string};
                           } & BaseRegionCountry =>
                             !!country.display_name && !!country.iso_2,
                         )
-                        .map(({metadata, iso_2}) => ({
+                        .map(({iso_2, metadata}) => ({
                           label: metadata.ar_name,
                           value: iso_2,
                         })) || []
@@ -298,7 +298,7 @@ export default function AddressForm({
             const country_name = (
               countries?.find(
                 (c) => c.iso_2 === data.country_code,
-              ) as HttpTypes.StoreRegionCountry & {metadata: {ar_name: string}}
+              ) as {metadata: {ar_name: string}} & HttpTypes.StoreRegionCountry
             )?.metadata.ar_name;
 
             await onSubmit({...data, metadata: {country_name}});

@@ -2,10 +2,12 @@ import type {PageProps} from "@/types";
 import type {ResolvingMetadata} from "next";
 
 import {generateOgEndpoint} from "@/app/api/og/[...info]/utils";
+import ContextBar from "@/components/global/context-bar";
 import PaginatedProducts, {
   ProductsSkeleton,
 } from "@/components/products/paginated-product";
 import ProductFilters from "@/components/products/product-filters";
+import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {getCategories, getCategoryByHandle} from "@/data/medusa/categories";
 import {loadCategoryContent} from "@/data/sanity";
@@ -13,8 +15,6 @@ import {resolveSanityRouteMetadata} from "@/data/sanity/resolve-sanity-route-met
 import {Suspense} from "react";
 
 import notFound from "../../not-found";
-import ContextBar from "@/components/global/context-bar";
-import Body from "@/components/shared/typography/body";
 
 type CategoryPageProps = PageProps<
   "countryCode" | "handle",
@@ -96,8 +96,8 @@ export default async function CategoryPage(props: CategoryPageProps) {
   return (
     <main>
       <ContextBar
-        className="my-6"
         breadcrumbItems={[{label: "نتائج البحث"}]}
+        className="my-6"
         countryCode={params.countryCode}
       />
 

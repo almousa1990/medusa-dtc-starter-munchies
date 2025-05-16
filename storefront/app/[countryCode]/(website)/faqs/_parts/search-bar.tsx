@@ -1,6 +1,4 @@
-import Icon from "@/components/shared/icon";
-import {Input} from "@merchify/ui";
-import {cx} from "cva";
+import {Input, cn} from "@merchify/ui";
 import {Search} from "lucide-react";
 import {type KeyboardEvent, useEffect, useRef} from "react";
 
@@ -45,7 +43,7 @@ export default function SearchBar({
 
   return (
     <div
-      className={cx(
+      className={cn(
         "relative mt-7 flex w-full items-center rounded-md lg:max-w-[420px]",
         className,
       )}
@@ -53,12 +51,12 @@ export default function SearchBar({
       <Search className="text-muted-foreground absolute right-4 h-4 w-4" />
 
       <Input
-        value={query}
-        onChange={(e) => handleSearch(e.target.value)}
         className="h-12 w-full pr-10"
-        placeholder={placeholder ?? "بحث"}
+        onChange={(e) => handleSearch(e.target.value)}
         onKeyDown={keydownHandler}
+        placeholder={placeholder ?? "بحث"}
         ref={ref}
+        value={query}
       />
     </div>
   );

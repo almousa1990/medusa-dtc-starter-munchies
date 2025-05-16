@@ -2,11 +2,11 @@
 
 import type {StoreProduct} from "@medusajs/types";
 
-import {cx} from "cva";
+import {ProductVariantsProvider} from "@/components/context/product-context";
+import {cn} from "@merchify/ui";
 import {useEffect, useState} from "react";
 
-import {ProductVariantsProvider} from "../../../../../../components/context/product-context";
-import InitiateEditor from "./initiate-editor-button";
+import InitiateEditorButton from "./initiate-editor-button";
 
 export default function StickyAtc({
   region_id,
@@ -32,7 +32,7 @@ export default function StickyAtc({
   return (
     <ProductVariantsProvider product={product}>
       <div
-        className={cx(
+        className={cn(
           "border-accent bg-background fixed right-0 bottom-0 left-0 z-80 w-screen min-w-[320px] border-t p-5 transition-transform duration-300 lg:hidden",
           {
             "translate-y-0": isVisible,
@@ -41,7 +41,7 @@ export default function StickyAtc({
         )}
       >
         <div className="flex items-center justify-center gap-3">
-          <InitiateEditor regionId={region_id} variant="sticky" />
+          <InitiateEditorButton regionId={region_id} variant="sticky" />
         </div>
       </div>
     </ProductVariantsProvider>

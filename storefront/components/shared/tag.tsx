@@ -1,4 +1,4 @@
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 
 import Label from "./typography/label";
 
@@ -11,7 +11,7 @@ export default function Tag({
 }) {
   return (
     <Label
-      className={cx("bg-primary text-accent px-1 py-px text-end", className)}
+      className={cn("bg-primary text-accent px-1 py-px text-end", className)}
       desktopSize="sm"
       font="display"
       mobileSize="2xs"

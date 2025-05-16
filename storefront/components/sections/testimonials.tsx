@@ -2,7 +2,6 @@ import type {ModularPageSection} from "./types";
 
 import CarouselSection from "../shared/carousel-section";
 import Body from "../shared/typography/body";
-import Heading from "../shared/typography/heading";
 
 export default function Testimonials(
   props: ModularPageSection<"section.testimonials">,
@@ -16,19 +15,7 @@ export default function Testimonials(
   ));
   return (
     <section {...props.rootHtmlAttributes}>
-      <CarouselSection
-        slides={slides}
-        title={
-          <Heading
-            className="text-center"
-            desktopSize="3xl"
-            mobileSize="lg"
-            tag="h3"
-          >
-            {props.title}
-          </Heading>
-        }
-      />
+      <CarouselSection title={props.title as string}>{slides}</CarouselSection>
     </section>
   );
 }

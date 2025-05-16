@@ -94,7 +94,9 @@ function getUpdatedOptionsForValidVariant(
 
   // Check if the updated combination is already valid
   const isValid = product.variants?.some((variant) =>
-    variant.options?.every((opt) => newOptions[opt.option_id] === opt.value),
+    variant.options?.every(
+      (opt) => newOptions[opt.option_id as string] === opt.value,
+    ),
   );
 
   if (isValid) {
@@ -116,7 +118,7 @@ function getUpdatedOptionsForValidVariant(
   // Update selected options to match the fallback variant
   const correctedOptions = {...selected};
   for (const opt of fallbackVariant.options || []) {
-    correctedOptions[opt.option_id] = opt.value;
+    correctedOptions[opt.option_id as string] = opt.value;
   }
 
   return correctedOptions;

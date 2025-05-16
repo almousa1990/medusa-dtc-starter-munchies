@@ -6,9 +6,9 @@ import config from "@/config";
 import {getCustomer} from "@/data/medusa/customer";
 import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
+import {Separator} from "@merchify/ui";
 
 import SideNavigation from "./_parts/side-navigation";
-import {Separator} from "@merchify/ui";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">

@@ -6,9 +6,9 @@ import Footer from "@/components/global/footer";
 import Header from "@/components/global/header";
 import PreventBackNavigationSmoothScroll from "@/components/prevent-back-navigation-smooth-scroll";
 import config from "@/config";
+import {getCustomer} from "@/data/medusa/customer";
 import {loadGlobalData} from "@/data/sanity";
 import {getOgImages} from "@/data/sanity/resolve-sanity-route-metadata";
-import {getCustomer} from "@/data/medusa/customer";
 
 type LayoutProps = PropsWithChildren<
   Omit<PageProps<"countryCode">, "searchParams">

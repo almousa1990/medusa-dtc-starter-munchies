@@ -2,20 +2,20 @@ import type {MerchifyProduct, PageProps} from "@/types";
 import type {ResolvingMetadata} from "next";
 
 import {generateOgEndpoint} from "@/app/api/og/[...info]/utils";
+import ContextBar from "@/components/global/context-bar";
 import SectionsRenderer from "@/components/sections/section-renderer";
 import {getProductByHandle} from "@/data/medusa/products";
 import {getRegion} from "@/data/medusa/regions";
 import {loadProductContent} from "@/data/sanity";
 import {resolveSanityRouteMetadata} from "@/data/sanity/resolve-sanity-route-metadata";
+import {getPathComponents} from "@/utils/path-components";
+import {headers} from "next/headers";
 import {notFound} from "next/navigation";
 
 import {ProductImagesCarousel} from "./_parts/image-carousel";
 import ProductInformation from "./_parts/product-information";
 import ProductSpecs from "./_parts/specs";
 import StickyAtc from "./_parts/sticky-atc";
-import ContextBar from "@/components/global/context-bar";
-import {getPathComponents} from "@/utils/path-components";
-import {headers} from "next/headers";
 
 type ProductPageProps = PageProps<"countryCode" | "handle">;
 
@@ -59,7 +59,7 @@ export async function generateMetadata(
 
 const getBreadcrumbItem = (
   product: MerchifyProduct,
-  referer: string | null,
+  referer: null | string,
 ) => {
   const pathComponents = getPathComponents(referer);
 
@@ -72,7 +72,7 @@ const getBreadcrumbItem = (
         (category) => category.handle === lastSegment,
       );
       return category
-        ? {label: category.name, href: `/categories/${category.handle}`}
+        ? {href: `/categories/${category.handle}`, label: category.name}
         : undefined;
 
     default:
@@ -80,8 +80,8 @@ const getBreadcrumbItem = (
       const firstCategory = product.categories?.[0];
       return firstCategory
         ? {
-            label: firstCategory.name,
             href: `/categories/${firstCategory.handle}`,
+            label: firstCategory.name,
           }
         : undefined;
   }
@@ -110,11 +110,11 @@ export default async function ProductPage(props: ProductPageProps) {
   return (
     <main>
       <ContextBar
-        className="my-6"
         breadcrumbItems={[
           ...(breadcrumbItem ? [breadcrumbItem] : []),
           {label: product.title},
         ]}
+        className="my-6"
         countryCode={params.countryCode}
       />
 

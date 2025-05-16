@@ -1,10 +1,7 @@
 "use client";
 
-import type {
-  StoreCart,
-  StoreCartLineItem,
-  StorePromotion,
-} from "@medusajs/types";
+import type {MerchifyCart, MerchifyCartLineItem} from "@/types";
+import type {StorePromotion} from "@medusajs/types";
 import type {Dispatch, PropsWithChildren, SetStateAction} from "react";
 
 import {
@@ -29,13 +26,14 @@ import {addToCartEventBus} from "../../utils/event-bus";
 
 type Cart = {
   promotions?: StorePromotion[];
-} & StoreCart;
+} & MerchifyCart;
 
 const CartContext = createContext<
   | {
       cart: Cart | null;
       cartOpen: boolean;
       handleDeleteItem: (lineItem: string) => Promise<void>;
+      handleRefreshItem: (lineItem: string) => Promise<void>;
       handleUpdateItem: (
         lineItem: string,
         update: {
@@ -43,7 +41,6 @@ const CartContext = createContext<
           quantity?: number;
         },
       ) => Promise<void>;
-      handleRefreshItem: (lineItem: string) => Promise<void>;
       isUpdating: boolean;
       setCartOpen: Dispatch<SetStateAction<boolean>>;
     }
@@ -88,8 +85,8 @@ export function CartProvider({
           const priceAmount =
             payload.productVariant.calculated_price?.calculated_amount || 0;
 
-          const newItem: StoreCartLineItem = {
-            cart: prev || ({} as StoreCart),
+          const newItem: MerchifyCartLineItem = {
+            cart: prev || ({} as MerchifyCart),
             cart_id: prev?.id || "",
             discount_tax_total: 0,
             discount_total: 0,
@@ -102,6 +99,7 @@ export function CartProvider({
             original_subtotal: priceAmount,
             original_tax_total: 0,
             original_total: priceAmount,
+            printfile_line_items: [],
             product: payload.productVariant.product || undefined,
             quantity: 1,
             requires_shipping: true,
@@ -128,6 +126,7 @@ export function CartProvider({
         });
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setCartOpen, setOptimisticCart, cart],
   );
 
@@ -156,7 +155,7 @@ export function CartProvider({
         if (!prev) return prev;
 
         const optimisticItems = prev.items?.reduce(
-          (acc: StoreCartLineItem[], item) => {
+          (acc: MerchifyCartLineItem[], item) => {
             if (item.id === lineItem) {
               return update.quantity === 0
                 ? acc
@@ -203,8 +202,8 @@ export function CartProvider({
         cart: optimisticCart,
         cartOpen,
         handleDeleteItem,
-        handleUpdateItem,
         handleRefreshItem,
+        handleUpdateItem,
         isUpdating: JSON.stringify(cart) !== JSON.stringify(optimisticCart),
         setCartOpen,
       }}
@@ -232,7 +231,7 @@ export function isOptimisticItemId(id: string) {
   return id.startsWith(OPTIMISTIC_ITEM_ID_PREFIX);
 }
 
-function calculateCartTotal(cartItems: StoreCartLineItem[]) {
+function calculateCartTotal(cartItems: MerchifyCartLineItem[]) {
   return (
     cartItems.reduce((acc, item) => acc + item.unit_price * item.quantity, 0) ||
     0

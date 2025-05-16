@@ -2,10 +2,10 @@ import type {Footer} from "@/types/sanity.generated";
 
 import {RichText} from "@/components/shared/rich-text";
 import {SanityImage} from "@/components/shared/sanity-image";
+import {Separator} from "@merchify/ui";
 
 import BottomLinks from "./parts/bottom-links";
 import TopLinks from "./parts/top-links";
-import {Separator} from "@merchify/ui";
 
 interface FooterProps extends NonNullable<Footer> {
   variant?: "default" | "simple";

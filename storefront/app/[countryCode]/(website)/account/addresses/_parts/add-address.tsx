@@ -1,11 +1,10 @@
 "use client";
 
-import {useState} from "react";
+import type {HttpTypes, StoreCreateCustomerAddress} from "@medusajs/types";
 
-import {HttpTypes, StoreCreateCustomerAddress} from "@medusajs/types";
-
-import AddressForm from "@/components/shared/address-form";
 import {addCustomerAddress} from "@/actions/medusa/customer";
+import AddressForm from "@/components/shared/address-form";
+import Heading from "@/components/shared/typography/heading";
 import {
   Dialog,
   DialogContent,
@@ -14,8 +13,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@merchify/ui";
-import Heading from "@/components/shared/typography/heading";
 import {Plus} from "lucide-react";
+import {useState} from "react";
 
 const AddAddress = ({region}: {region: HttpTypes.StoreRegion}) => {
   const [open, setOpen] = useState(false);
@@ -30,10 +29,10 @@ const AddAddress = ({region}: {region: HttpTypes.StoreRegion}) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         <button className="flex h-full min-h-[220px] w-full flex-col justify-between rounded-md border p-5">
-          <Heading tag="h4" mobileSize="base" className="text-right">
+          <Heading className="text-right" mobileSize="base" tag="h4">
             عنوان جديد
           </Heading>
           <div className="flex justify-end">

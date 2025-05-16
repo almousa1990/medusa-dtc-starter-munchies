@@ -1,16 +1,17 @@
 "use client";
 
-import {useRef} from "react";
 import {
-  cn,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   Input,
+  cn,
   useFormContext,
 } from "@merchify/ui";
+import {useRef} from "react";
+
 import {NativeSelect} from "./native-select";
 
 interface CreditCardFormProps {
@@ -36,10 +37,10 @@ export function CreditCardForm({className}: CreditCardFormProps) {
             <FormLabel>رقم البطاقة</FormLabel>
             <FormControl>
               <Input
-                placeholder="رقم البطاقة"
-                inputMode="numeric"
                 dir="ltr"
+                inputMode="numeric"
                 maxLength={19}
+                placeholder="رقم البطاقة"
                 {...field}
                 onChange={(e) => {
                   let value = e.target.value.replace(/\D/g, "");
@@ -68,15 +69,15 @@ export function CreditCardForm({className}: CreditCardFormProps) {
               <FormLabel>الشهر</FormLabel>
               <FormControl>
                 <NativeSelect
-                  placeholder="الشهر"
                   options={Array.from({length: 12}, (_, i) => {
                     const month = i + 1;
                     const formatted = month.toString().padStart(2, "0"); // always 2 digits
                     return {
-                      value: formatted,
                       label: formatted,
+                      value: formatted,
                     };
                   })}
+                  placeholder="الشهر"
                   {...field}
                   onChange={(e) => {
                     field.onChange(e);
@@ -101,14 +102,14 @@ export function CreditCardForm({className}: CreditCardFormProps) {
               <FormLabel>السنة</FormLabel>
               <FormControl>
                 <NativeSelect
-                  placeholder="السنة"
                   options={Array.from({length: 10}, (_, i) => {
                     const year = currentYear + i;
                     return {
-                      value: String(year).slice(2), // full year for backend (e.g., 2025)
                       label: String(year).slice(2), // only last two digits for display (e.g., "25")
+                      value: String(year).slice(2), // full year for backend (e.g., 2025)
                     };
                   })}
+                  placeholder="السنة"
                   {...field}
                   onChange={(e) => {
                     field.onChange(e);
@@ -134,17 +135,17 @@ export function CreditCardForm({className}: CreditCardFormProps) {
             <FormLabel>رمز التحقق (CVC)</FormLabel>
             <FormControl>
               <Input
-                placeholder="CVC"
-                inputMode="numeric"
                 dir="ltr"
+                inputMode="numeric"
                 maxLength={4}
+                placeholder="CVC"
                 {...field}
-                ref={cvcRef}
                 onChange={(e) => {
                   let value = e.target.value.replace(/\D/g, "");
                   value = value.slice(0, 4);
                   field.onChange(value);
                 }}
+                ref={cvcRef}
               />
             </FormControl>
             <FormMessage />

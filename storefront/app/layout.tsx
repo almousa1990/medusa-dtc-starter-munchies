@@ -1,4 +1,4 @@
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import {IBM_Plex_Sans_Arabic, Rubik} from "next/font/google";
 import {NuqsAdapter} from "nuqs/adapters/next/app";
 
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={cx(
+      className={cn(
         ibmPlexSans.variable,
         rubik.variable,
         "overflow-x-clip overscroll-none scroll-smooth",

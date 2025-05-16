@@ -1,22 +1,22 @@
 import type {StoreProduct} from "@medusajs/types";
 
 import {getProductPrice} from "@/utils/medusa/get-product-price";
+import {cn} from "@merchify/ui";
 import Image from "next/image";
 
 import LocalizedLink from "./localized-link";
 import Tag from "./tag";
 import Body from "./typography/body";
 import Heading from "./typography/heading";
-import {cn} from "@merchify/ui";
 
 export default function ProductCard({
+  className,
   index,
   product,
-  className,
 }: {
+  className?: string;
   index?: number;
   product: StoreProduct | undefined;
-  className?: string;
 }) {
   if (!product) return null;
 

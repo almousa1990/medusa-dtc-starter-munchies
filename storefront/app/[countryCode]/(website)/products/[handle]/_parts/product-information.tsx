@@ -6,7 +6,7 @@ import Heading from "@/components/shared/typography/heading";
 
 import {ProductVariantsProvider} from "../../../../../../components/context/product-context";
 import Addons from "./addons";
-import InitiateEditor from "./initiate-editor-button";
+import InitiateEditorButton from "./initiate-editor-button";
 import OptionsSelect from "./options";
 import Price from "./price";
 
@@ -41,7 +41,7 @@ export default function ProductInformation(props: Props) {
         </Body>
         <div className="mt-4 flex flex-col gap-4">
           {props.options && <OptionsSelect options={props.options} />}
-          <InitiateEditor
+          <InitiateEditorButton
             className="mt-4"
             regionId={props.region_id}
             variant="PDP"

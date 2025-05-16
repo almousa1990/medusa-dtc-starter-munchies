@@ -1,16 +1,16 @@
 "use client";
 
-import type {StoreProductOption} from "@medusajs/types";
+import type {MerchifyProductOption} from "@/types";
 
 import {useProductVariants} from "../../../../../../components/context/product-context";
 import OptionSelect from "./option-select";
 
 type Props = {
-  options: StoreProductOption[];
+  options: MerchifyProductOption[];
 };
 
 export default function OptionsSelect({options}: Props) {
-  const {selectedOptions, product, updateOption} = useProductVariants();
+  const {product, selectedOptions, updateOption} = useProductVariants();
 
   return options?.map((option) => {
     const values = option.values?.map(({value}) => ({
@@ -23,14 +23,14 @@ export default function OptionsSelect({options}: Props) {
 
     return (
       <OptionSelect
+        current={activeOption}
+        data-testid="product-options"
+        disabled={false}
         key={option.id}
         option={option}
         product={product}
         selectedOptions={selectedOptions}
-        current={activeOption}
         updateOption={(v) => updateOption(option.id, v)}
-        disabled={false}
-        data-testid="product-options"
       />
     );
   });

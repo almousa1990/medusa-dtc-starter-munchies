@@ -1,16 +1,16 @@
 import type {Header} from "@/types/sanity.generated";
+import type {StoreCustomer} from "@medusajs/types";
 
+import {Link} from "@/components/shared/button";
+import Icon from "@/components/shared/icon";
 import LocalizedLink from "@/components/shared/localized-link";
 import {Suspense} from "react";
 
 import Cart from "./cart";
 import AnnouncementBar from "./parts/announcement-bar";
+import BottomBorder from "./parts/bottom-border";
 import HamburgerContainer from "./parts/hamburger/container";
 import Navigation from "./parts/navigation";
-import {StoreCustomer} from "@medusajs/types";
-import {Link} from "@/components/shared/button";
-import BottomBorder from "./parts/bottom-border";
-import Icon from "@/components/shared/icon";
 
 export default function Header(
   props: {countryCode: string; customer: StoreCustomer | null} & Header,
@@ -36,16 +36,16 @@ export default function Header(
         <div className="flex flex-1 items-center justify-end gap-4">
           <div className="hidden lg:flex lg:gap-2">
             {props.customer ? (
-              <Link variant={"ghost"} href={"/account"}>
+              <Link href={"/account"} variant={"ghost"}>
                 حسابي
               </Link>
             ) : (
-              <Link variant={"ghost"} href={"/auth"}>
+              <Link href={"/auth"} variant={"ghost"}>
                 تسجيل الدخول أو إنشاء حساب
               </Link>
             )}
           </div>
-          <Suspense fallback={<Icon name="Cart" className="size-6" />}>
+          <Suspense fallback={<Icon className="size-6" name="Cart" />}>
             <Cart
               cartAddons={props.cartAddons}
               countryCode={props.countryCode}

@@ -1,4 +1,6 @@
-import type {Product} from "@/types/sanity.generated";
+import type {MerchifyProduct} from "@/types";
+
+import Image from "next/image";
 
 import {
   ProductSpecItem,
@@ -6,8 +8,6 @@ import {
   ProductSpecItemTitle,
 } from "./product-spec-item";
 import {SizeChartTable} from "./size-chart-table";
-import {MerchifyProduct} from "@/types";
-import Image from "next/image";
 
 type Props = MerchifyProduct;
 
@@ -29,12 +29,12 @@ export default function ProductSpecs(props: Props) {
             <>
               {careSet.map((instruction) => (
                 <Image
-                  className="mb-4"
-                  width={32}
-                  height={32}
-                  src={instruction.symbol_url}
                   alt={instruction.title}
+                  className="mb-4"
+                  height={32}
                   key={instruction.code}
+                  src={instruction.symbol_url}
+                  width={32}
                 />
               ))}
 
@@ -53,12 +53,12 @@ export default function ProductSpecs(props: Props) {
               {features.map((feature, index) => (
                 <div key={index}>
                   <Image
-                    className="mb-4 hidden lg:block"
-                    width={48}
-                    height={48}
-                    src={feature.template.symbol_url}
                     alt={feature.template.name}
+                    className="mb-4 hidden lg:block"
+                    height={48}
                     key={feature.template.name}
+                    src={feature.template.symbol_url}
+                    width={48}
                   />
                   <p className="mb-2 font-bold">{feature.template.name}</p>
                   <p className="text-muted-foreground">{feature.content}</p>
@@ -79,21 +79,3 @@ export default function ProductSpecs(props: Props) {
     </section>
   );
 }
-
-/*    (specs?.length || 0) > 0 && (
-      <Accordion
-        initialOpen={null}
-        items={
-          specs
-            ?.map(({_key, content, title}) => {
-              if (!title || !content) return null;
-              return {content, id: _key, title};
-            })
-            .filter(
-              (item): item is {content: string; id: string; title: string} =>
-                item !== null,
-            ) || []
-        }
-        type="product"
-      />
-    ) */

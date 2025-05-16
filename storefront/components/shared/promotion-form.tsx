@@ -79,8 +79,8 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
               <FormItem className="w-full overflow-visible">
                 <FormControl>
                   <Input
-                    placeholder="SUMMER_20"
                     className="uppercase"
+                    placeholder="SUMMER_20"
                     {...field}
                   />
                 </FormControl>
@@ -125,7 +125,9 @@ export default function PromotionForm({cart}: {cart: HttpTypes.StoreCart}) {
                             {promotion.application_method.type === "percentage"
                               ? `${promotion.application_method.value}%`
                               : convertToLocale({
-                                  amount: promotion.application_method.value,
+                                  amount: Number(
+                                    promotion.application_method.value,
+                                  ),
                                   currency_code:
                                     promotion.application_method.currency_code,
                                 })}

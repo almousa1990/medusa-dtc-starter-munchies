@@ -1,20 +1,22 @@
 "use client";
 
 import {Cta} from "@/components/shared/button";
-import {useRouter} from "next/navigation";
-
-import {useProductVariants} from "../../../../../../components/context/product-context";
 import {cn} from "@merchify/ui";
+import {useRouter} from "next/navigation";
 import {useState} from "react";
 
+import {useProductVariants} from "../../../../../../components/context/product-context";
+
 export default function InitiateEditorButton({
-  regionId,
-  variant,
   className,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  regionId,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  variant,
 }: {
+  className?: string;
   regionId: string;
   variant: "PDP" | "sticky";
-  className?: string;
 }) {
   const {activeVariant, product} = useProductVariants();
   const router = useRouter();
@@ -36,8 +38,8 @@ export default function InitiateEditorButton({
 
   return (
     <Cta
-      loading={loading}
       className={cn("w-full", className)}
+      loading={loading}
       onClick={(e) => {
         e.preventDefault();
         if (activeVariant) {

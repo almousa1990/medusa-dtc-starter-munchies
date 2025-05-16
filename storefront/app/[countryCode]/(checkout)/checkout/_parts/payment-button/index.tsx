@@ -1,3 +1,5 @@
+import type {ApplePaySource, CreditCardSource, PaymentData} from "@/types";
+
 import {
   createCardToken,
   initiateApplePaySession,
@@ -7,42 +9,37 @@ import {useCheckout} from "@/components/context/checkout-context";
 import {useCountryCode} from "@/components/context/country-code-context";
 import {Cta} from "@/components/shared/button";
 import config from "@/config";
-import {
-  ApplePaySource,
-  PaymentData,
-  CreditCardSource,
-  PaymentSourceType,
-} from "@/types";
+import {PaymentSourceType} from "@/types";
 import {useFormContext, useToast} from "@merchify/ui";
 
 interface PaymentButtonProps {
-  type: PaymentSourceType;
-  loading: boolean;
   disabled: boolean;
+  loading: boolean;
   onInitiated: (transactionUrl?: string) => Promise<void>;
+  type: PaymentSourceType;
 }
 
 export default function PaymentButton({
-  type,
-  loading,
   disabled,
+  loading,
   onInitiated,
+  type,
 }: PaymentButtonProps) {
   switch (type) {
     case PaymentSourceType.CreditCard:
       return (
         <CreditCardPaymentButton
-          onInitiated={onInitiated}
-          loading={loading}
           disabled={disabled}
+          loading={loading}
+          onInitiated={onInitiated}
         />
       );
     case PaymentSourceType.ApplePay:
       return (
         <ApplePayPaymentButton
-          onInitiated={onInitiated}
-          loading={loading}
           disabled={disabled}
+          loading={loading}
+          onInitiated={onInitiated}
         />
       );
     // You can add more cases like stcpay
@@ -51,19 +48,19 @@ export default function PaymentButton({
   }
 }
 interface Props {
-  loading: boolean;
   disabled: boolean;
+  loading: boolean;
   onInitiated: (transactionUrl?: string) => Promise<void>;
 }
 
-function ApplePayPaymentButton({loading, disabled, onInitiated}: Props) {
+function ApplePayPaymentButton({disabled, loading, onInitiated}: Props) {
   const form = useFormContext();
-  const {cart, customer} = useCheckout();
+  const {cart} = useCheckout();
   const countryCode = useCountryCode();
 
   const {toast} = useToast();
 
-  const handleClick = form.handleSubmit(async (_data) => {
+  const handleClick = form.handleSubmit(async () => {
     if (typeof window !== "undefined" && !(window as any).ApplePaySession) {
       return;
     }
@@ -72,11 +69,11 @@ function ApplePayPaymentButton({loading, disabled, onInitiated}: Props) {
     const applePayPaymentRequest: ApplePayJS.ApplePayPaymentRequest = {
       countryCode: countryCode.toUpperCase(),
       currencyCode: cart.currency_code.toUpperCase(),
-      supportedNetworks: ["mada", "visa", "masterCard"],
       merchantCapabilities: ["supports3DS", "supportsDebit", "supportsCredit"],
+      supportedNetworks: ["mada", "visa", "masterCard"],
       total: {
-        label: config.siteName,
         amount: cart.total.toString(),
+        label: config.siteName,
       },
     };
 
@@ -105,30 +102,29 @@ function ApplePayPaymentButton({loading, disabled, onInitiated}: Props) {
         {
           cart,
           input: {
-            provider_id: "pp_moyasar_moyasar",
             data: {
               source: {
-                type: PaymentSourceType.ApplePay,
                 token: JSON.stringify(token),
+                type: PaymentSourceType.ApplePay,
               },
             },
+            provider_id: "pp_moyasar_moyasar",
           },
         },
       );
 
       if (!session.success) {
         applePaySession.completePayment({
-          status: ApplePaySession.STATUS_FAILURE,
           errors: [
             new ApplePayError("unknown", undefined, session.error as string),
           ],
+          status: ApplePaySession.STATUS_FAILURE,
         });
         throw new Error(session.error || "فشل في بدء عملية الدفع");
       }
 
       if (session.data?.status != "paid") {
         applePaySession.completePayment({
-          status: ApplePaySession.STATUS_FAILURE,
           errors: [
             new ApplePayError(
               "unknown",
@@ -136,20 +132,20 @@ function ApplePayPaymentButton({loading, disabled, onInitiated}: Props) {
               session.data?.source.message,
             ),
           ],
+          status: ApplePaySession.STATUS_FAILURE,
         });
 
         return;
       }
 
-      // TODO: Report payment result to merchant backend
-      // TODO: Add any merchant related bussiness logic here
+      onInitiated();
 
       applePaySession.completePayment({
         status: ApplePaySession.STATUS_SUCCESS,
       });
     };
 
-    applePaySession.oncancel = (event) => {
+    applePaySession.oncancel = () => {
       toast({description: "تم إلغاء العملية", variant: "destructive"});
     };
 
@@ -168,7 +164,7 @@ function ApplePayPaymentButton({loading, disabled, onInitiated}: Props) {
   );
 }
 
-function CreditCardPaymentButton({loading, disabled, onInitiated}: Props) {
+function CreditCardPaymentButton({disabled, loading, onInitiated}: Props) {
   const form = useFormContext();
   const {toast} = useToast();
   const {cart, customer} = useCheckout();
@@ -181,12 +177,12 @@ function CreditCardPaymentButton({loading, disabled, onInitiated}: Props) {
       }
 
       const result = await createCardToken({
+        cvc: data.card.cvc,
         first_name: customer.first_name,
         last_name: customer.last_name,
-        number: normalizedCardNumber,
         month: data.card.month,
+        number: normalizedCardNumber,
         year: data.card.year,
-        cvc: data.card.cvc,
       });
 
       if (!result.success) {
@@ -199,14 +195,14 @@ function CreditCardPaymentButton({loading, disabled, onInitiated}: Props) {
       >({
         cart,
         input: {
-          provider_id: "pp_moyasar_moyasar",
           data: {
-            source: {
-              type: PaymentSourceType.Token,
-              token: result.data.id,
-            },
             callback_url: `${window.location.origin}/api/payment-redirect/${cart.id}`,
+            source: {
+              token: result.data.id,
+              type: PaymentSourceType.Token,
+            },
           },
+          provider_id: "pp_moyasar_moyasar",
         },
       });
 

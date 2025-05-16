@@ -1,6 +1,7 @@
 "use server";
 
 import {normalizeMockupRenditions} from "@/utils/medusa/normalize-mockup-renditions";
+
 import medusa from "./client";
 import {getAuthHeaders} from "./cookies";
 

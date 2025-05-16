@@ -15,13 +15,13 @@ export default function Newsletter(props: NonNullable<Footer>) {
   return (
     <section className="max-w-max-screen mx-auto flex w-full flex-col gap-4 px-5 py-10 lg:px-8">
       {state === "success" && (
-        <Body desktopSize="8xl" font="serif" mobileSize="5xl">
+        <Body desktopSize="4xl" font="serif" mobileSize="2xl">
           {props.signup_success && <RichText value={props.signup_success} />}
         </Body>
       )}
       {state !== "success" && (
         <>
-          <Heading desktopSize="5xl" font="serif" mobileSize="2xl" tag="h2">
+          <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h2">
             {props.copy && <RichText value={props.copy} />}
           </Heading>
           <form action={action} className="flex flex-col gap-4 lg:flex-row">

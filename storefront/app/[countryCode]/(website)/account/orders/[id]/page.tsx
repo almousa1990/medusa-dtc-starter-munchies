@@ -1,24 +1,22 @@
 import type {Metadata} from "next";
 
-import {Badge, cn, Separator} from "@merchify/ui";
-import {notFound} from "next/navigation";
-
-import {getOrder} from "@/data/medusa/order";
-import {enrichLineItems} from "@/data/medusa/line-items";
+import OrderAddressBlock from "@/components/orders/blocks/order-address";
+import OrderContactInfoBlock from "@/components/orders/blocks/order-contact-info";
+import OrderPaymentBlock from "@/components/orders/blocks/order-payment";
+import OrderShippingOptionBlock from "@/components/orders/blocks/order-shipping-option";
+import OrderItem from "@/components/orders/order-item";
+import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
 import Body from "@/components/shared/typography/body";
+import Heading from "@/components/shared/typography/heading";
+import {getOrder} from "@/data/medusa/order";
 import {
   enrichFulfillmentsWithOrderItems,
   getFulfillmentState,
   getOrderStatusLabel,
 } from "@/utils/medusa/order";
-import OrderItem from "@/components/orders/order-item";
-import OrderAddressBlock from "@/components/orders/blocks/order-address";
-import OrderContactInfoBlock from "@/components/orders/blocks/order-contact-info";
-import OrderPaymentBlock from "@/components/orders/blocks/order-payment";
-import OrderShippingOptionBlock from "@/components/orders/blocks/order-shipping-option";
-import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
-import Heading from "@/components/shared/typography/heading";
+import {Badge, Separator} from "@merchify/ui";
 import Link from "next/link";
+import {notFound} from "next/navigation";
 
 type Props = {
   params: Promise<{id: string}>;
@@ -65,35 +63,35 @@ export default async function OrderDetailPage(props: Props) {
 
       <dl className="my-8 grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-3">
         <div className="bg-accent rounded-md px-4 py-2">
-          <Body className="font-medium" mobileSize="sm" as="dt">
+          <Body as="dt" className="font-medium" mobileSize="sm">
             تاريخ الطلب
           </Body>
-          <Body className="mt-2" mobileSize="sm" as="dd">
+          <Body as="dd" className="mt-2" mobileSize="sm">
             <time dateTime={new Date(order.created_at).toDateString()}>
               {new Date(order.created_at ?? "").toLocaleDateString(
                 "ar-SA-u-ca-gregory",
                 {
-                  year: "numeric",
-                  month: "long",
                   day: "numeric",
+                  month: "long",
+                  year: "numeric",
                 },
               )}
             </time>
           </Body>
         </div>
         <div className="bg-accent rounded-md px-4 py-2">
-          <Body className="font-medium" mobileSize="sm" as="dt">
+          <Body as="dt" className="font-medium" mobileSize="sm">
             رقم الطلب
           </Body>
-          <Body className="mt-2" mobileSize="sm" as="dd">
+          <Body as="dd" className="mt-2" mobileSize="sm">
             {order.display_id}
           </Body>
         </div>
         <div className="bg-accent rounded-md px-4 py-2">
-          <Body className="font-medium" mobileSize="sm" as="dt">
+          <Body as="dt" className="font-medium" mobileSize="sm">
             حالة الطلب
           </Body>
-          <Body className="mt-2" mobileSize="sm" as="dd">
+          <Body as="dd" className="mt-2" mobileSize="sm">
             {getOrderStatusLabel(order.status)}
           </Body>
         </div>
@@ -108,7 +106,7 @@ export default async function OrderDetailPage(props: Props) {
               const shippingOption = fulfillment.shipping_option;
               const state = getFulfillmentState(fulfillment);
               return (
-                <div key={fulfillment.id} className="pb-4">
+                <div className="pb-4" key={fulfillment.id}>
                   <div className="flex justify-between rounded-t-md border px-4 py-4">
                     <Heading tag="h4">شحنة #{index + 1}</Heading>
                     <div>
@@ -119,26 +117,26 @@ export default async function OrderDetailPage(props: Props) {
                     {fulfillment.items?.map((fi) => (
                       <OrderItem
                         currencyCode={order.currency_code}
-                        key={fi.id}
                         item={fi.line_item}
+                        key={fi.id}
                       />
                     ))}
                   </div>
                   <div className="bg-accent rounded-b-md border px-4 py-4">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-6 lg:grid-cols-2">
                       <div>
-                        <Body className="font-medium" mobileSize="sm" as="dt">
+                        <Body as="dt" className="font-medium" mobileSize="sm">
                           شركة الشحن
                         </Body>
-                        <Body className="mt-2" mobileSize="sm" as="dd">
-                          {shippingOption.name}
+                        <Body as="dd" className="mt-2" mobileSize="sm">
+                          {shippingOption?.name}
                         </Body>
                       </div>
                       <div>
-                        <Body className="font-medium" mobileSize="sm" as="dt">
+                        <Body as="dt" className="font-medium" mobileSize="sm">
                           رقم التتبع
                         </Body>
-                        <Body className="mt-2" mobileSize="sm" as="dd">
+                        <Body as="dd" className="mt-2" mobileSize="sm">
                           {labels?.map((label) => (
                             <Link href={label.tracking_url} key={label.id}>
                               {label.tracking_number}
@@ -170,8 +168,8 @@ export default async function OrderDetailPage(props: Props) {
               {unfulfilledItems?.map((item) => (
                 <OrderItem
                   currencyCode={order.currency_code}
-                  key={item.id}
                   item={item}
+                  key={item.id}
                 />
               ))}
             </div>

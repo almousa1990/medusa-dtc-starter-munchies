@@ -8,7 +8,7 @@ interface InputPhoneProps extends React.ComponentPropsWithoutRef<typeof Input> {
 const InputPhone = React.forwardRef<
   React.ComponentRef<typeof Input>,
   InputPhoneProps
->(({className, countryCode = "+966", onChange, onBlur, ...props}, ref) => {
+>(({className, countryCode = "+966", onBlur, onChange, ...props}, ref) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.currentTarget.value.replace(/\D/g, ""); // Remove non-digits
 
@@ -17,12 +17,12 @@ const InputPhone = React.forwardRef<
 
     const syntheticEvent = {
       ...e,
-      target: {
-        ...e.target,
-        value: trimmedValue,
-      },
       currentTarget: {
         ...e.currentTarget,
+        value: trimmedValue,
+      },
+      target: {
+        ...e.target,
         value: trimmedValue,
       },
     };
@@ -40,12 +40,12 @@ const InputPhone = React.forwardRef<
 
       const syntheticEvent = {
         ...e,
-        target: {
-          ...e.target,
-          value,
-        },
         currentTarget: {
           ...e.currentTarget,
+          value,
+        },
+        target: {
+          ...e.target,
           value,
         },
       };
@@ -67,11 +67,11 @@ const InputPhone = React.forwardRef<
       <Input
         className={cn("pl-14 sm:pl-12", className)}
         inputMode="numeric"
+        onBlur={handleBlur}
+        onChange={handleChange}
         pattern="\d{1,10}"
         ref={ref}
         type="tel"
-        onChange={handleChange}
-        onBlur={handleBlur}
         {...props}
       />
     </div>

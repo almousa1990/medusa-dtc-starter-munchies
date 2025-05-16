@@ -4,6 +4,7 @@ import type {BlocksBody} from "@/utils/content/toc";
 
 import {getPtComponentId} from "@/utils/ids";
 import {toPlainText} from "@portabletext/react";
+
 import {NativeSelect} from "./native-select";
 
 type Props = {
@@ -31,9 +32,9 @@ export default function TocSelect({outlines}: Props) {
 
   return (
     <NativeSelect
-      options={options}
-      onChange={handleChange}
       className="lg:hidden"
+      onChange={handleChange}
+      options={options}
     />
   );
 }

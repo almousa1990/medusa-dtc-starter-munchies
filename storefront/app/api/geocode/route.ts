@@ -1,4 +1,4 @@
-import {GeolocationAddress} from "@/types";
+import type {GeolocationAddress} from "@/types";
 
 export async function POST(req: Request) {
   const {latitude, longitude} = await req.json();
@@ -30,9 +30,9 @@ export async function POST(req: Request) {
     address_1: getComponent("sublocality") || getComponent("neighborhood"),
     address_2: getComponent("route"),
     city: getComponent("locality"),
-    province: getComponent("administrative_area_level_1"),
-    postal_code: getComponent("postal_code"),
     country_code: getComponent("country").toLowerCase(),
+    postal_code: getComponent("postal_code"),
+    province: getComponent("administrative_area_level_1"),
   };
 
   return Response.json(address);

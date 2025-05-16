@@ -7,7 +7,7 @@ import Delivery from "./delivery";
 import Payment from "./payment";
 
 export default function CheckoutForm() {
-  const {shippingMethods, error, step} = useCheckout();
+  const {shippingMethods, step} = useCheckout();
 
   return (
     <div className="mx-auto max-w-lg lg:max-w-none">

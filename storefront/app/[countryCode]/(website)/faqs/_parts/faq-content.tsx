@@ -1,16 +1,16 @@
 "use client";
 import type {FAQS_PAGE_QUERYResult} from "@/types/sanity.generated";
 
+import {NativeSelect} from "@/components/shared/native-select";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
-import React from "react";
-import {NativeSelect} from "@/components/shared/native-select";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@merchify/ui";
+import React from "react";
 
 type FaqContentProps = {
   category: NonNullable<FAQS_PAGE_QUERYResult>["category"];
@@ -21,6 +21,7 @@ type FaqContentProps = {
 
 export default function FaqContent({
   category,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openAnswer,
   selectedCategory,
   setSelectedCategory,
@@ -63,28 +64,28 @@ export default function FaqContent({
       </div>
       <div className="w-full lg:max-w-[690px]">
         <NativeSelect
+          className="lg:hidden"
+          onChange={(e) => setSelectedCategory(e.target.value)}
           options={
             category?.map((group) => ({
               label: group.title || "",
               value: group.slug?.current || "",
             })) || []
           }
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="lg:hidden"
         />
         <Heading
           className="mb-2 hidden lg:block"
-          font="serif"
           desktopSize="xl"
+          font="serif"
           mobileSize="lg"
           tag="h2"
         >
           {currentCategory?.title}
         </Heading>
         <div className="flex flex-col gap-5">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion className="w-full" collapsible type="single">
             {items.map((item) => (
-              <AccordionItem className="border-0" value={item.id} key={item.id}>
+              <AccordionItem className="border-0" key={item.id} value={item.id}>
                 <AccordionTrigger className="font-serif font-semibold hover:no-underline lg:text-lg">
                   {item.title}
                 </AccordionTrigger>

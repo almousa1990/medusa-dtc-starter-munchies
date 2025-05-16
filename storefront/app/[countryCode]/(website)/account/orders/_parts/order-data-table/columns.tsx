@@ -1,5 +1,10 @@
 "use client";
 
+import type {StoreOrder} from "@medusajs/types";
+import type {ColumnDef} from "@tanstack/react-table";
+
+import {convertToLocale} from "@/utils/medusa/money";
+import {getOrderStatusLabel} from "@/utils/medusa/order";
 import {Button} from "@merchify/ui";
 import {
   DropdownMenu,
@@ -9,12 +14,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@merchify/ui";
-import {StoreOrder} from "@medusajs/types";
-import {ColumnDef} from "@tanstack/react-table";
 import {MoreHorizontal} from "lucide-react";
 import Link from "next/link";
-import {convertToLocale} from "@/utils/medusa/money";
-import {getOrderStatusLabel} from "@/utils/medusa/order";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -26,7 +27,6 @@ export const columns: ColumnDef<StoreOrder>[] = [
   },
   {
     accessorKey: "customer",
-    header: "العميل",
     cell: ({row}) => {
       const order = row.original;
 
@@ -36,10 +36,10 @@ export const columns: ColumnDef<StoreOrder>[] = [
         </div>
       );
     },
+    header: "العميل",
   },
   {
     accessorKey: "total",
-    header: "الإجمالي",
     cell: ({row}) => {
       const order = row.original;
       return convertToLocale({
@@ -47,39 +47,39 @@ export const columns: ColumnDef<StoreOrder>[] = [
         currency_code: order.currency_code,
       });
     },
+    header: "الإجمالي",
   },
   {
     accessorKey: "status",
-    header: "الحالة",
     cell: ({row}) => {
       const order = row.original;
       return getOrderStatusLabel(order.status);
     },
+    header: "الحالة",
   },
   {
     accessorKey: "created_at",
-    header: "التاريخ",
     cell: ({row}) => {
       const order = row.original;
       return new Date(order.created_at ?? "").toLocaleDateString(
         "ar-SA-u-ca-gregory",
         {
-          year: "numeric",
-          month: "long",
           day: "numeric",
+          month: "long",
+          year: "numeric",
         },
       );
     },
+    header: "التاريخ",
   },
   {
-    id: "actions",
     cell: ({row}) => {
       const order = row.original;
 
       return (
         <DropdownMenu dir="rtl">
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button className="h-8 w-8 p-0" variant="ghost">
               <span className="sr-only">فتح القائمة</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
@@ -99,5 +99,6 @@ export const columns: ColumnDef<StoreOrder>[] = [
         </DropdownMenu>
       );
     },
+    id: "actions",
   },
 ];

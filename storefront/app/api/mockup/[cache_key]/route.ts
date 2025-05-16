@@ -1,6 +1,7 @@
+import type {NextRequest} from "next/server";
+
 import medusa from "@/data/medusa/client";
 import {getAuthHeaders} from "@/data/medusa/cookies";
-import {NextRequest} from "next/server";
 
 export async function GET(
   req: NextRequest,
@@ -16,8 +17,8 @@ export async function GET(
       headers: {
         ...headers,
 
-        "Content-Type": null,
         Accept: "image/webp",
+        "Content-Type": null,
       },
     })
     .catch(console.log);
@@ -30,11 +31,11 @@ export async function GET(
   const contentLength = response.headers.get("Content-Length");
 
   return new Response(response.body, {
-    status: 200,
     headers: {
       "Content-Type": contentType,
       ...(contentLength ? {"Content-Length": contentLength} : {}),
       "Cache-Control": "public, max-age=3600",
     },
+    status: 200,
   });
 }

@@ -1,8 +1,9 @@
+import type {
+  CheckoutStep} from "@/components/context/checkout-context";
 import type {MerchifyCartLineItem, PageProps} from "@/types";
 
 import {
-  CheckoutProvider,
-  CheckoutStep,
+  CheckoutProvider
 } from "@/components/context/checkout-context";
 import {getCart} from "@/data/medusa/cart";
 import {getCustomer} from "@/data/medusa/customer";
@@ -17,7 +18,7 @@ import CartDetails from "./_parts/cart-details";
 import CheckoutForm from "./_parts/checkout-form";
 
 export default async function CheckoutPage(
-  props: PageProps<"countryCode", "step" | "status" | "message">,
+  props: PageProps<"countryCode", "message" | "status" | "step">,
 ) {
   const params = await props.params;
   const searchParams = await props.searchParams;
@@ -47,14 +48,14 @@ export default async function CheckoutPage(
   const shippingMethods = (await listCartShippingMethods(cart.id)) || [];
   const paymentMethods = (await listCartPaymentMethods(cart.region_id!)) || [];
 
-  const callbackPayload = status ? {status, message} : undefined;
+  const callbackPayload = status ? {message, status} : undefined;
   return (
     <CheckoutProvider
       value={{
         callbackPayload,
-        initialStep: step,
         cart,
         customer,
+        initialStep: step,
         paymentMethods,
         shippingMethods,
       }}

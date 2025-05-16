@@ -18,7 +18,7 @@ export const getProductByHandle = unstable_cache(
         },
         {next: {tags: ["products"]}},
       )
-      .then(({products, count}) =>
+      .then(({count, products}) =>
         count ? (products[0] as MerchifyProduct) : undefined,
       );
   },

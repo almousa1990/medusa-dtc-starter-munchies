@@ -39,10 +39,10 @@ const formSchema = z.object({
 });
 
 export default function OtpForm({
+  disabled,
   input,
   onRestart,
   onSuccess,
-  disabled,
 }: OtpFormProps) {
   const {toast} = useToast();
 

@@ -1,16 +1,18 @@
-import {Metadata} from "next";
-import {notFound} from "next/navigation";
-import {HttpTypes} from "@medusajs/types";
-import AddAddress from "./_parts/add-address";
-import EditAddress from "./_parts/edit-address";
+import type {HttpTypes} from "@medusajs/types";
+import type {Metadata} from "next";
+
+import Heading from "@/components/shared/typography/heading";
 import {getCustomer} from "@/data/medusa/customer";
 import {getRegion} from "@/data/medusa/regions";
 import {Separator} from "@merchify/ui";
-import Heading from "@/components/shared/typography/heading";
+import {notFound} from "next/navigation";
+
+import AddAddress from "./_parts/add-address";
+import EditAddress from "./_parts/edit-address";
 
 export const metadata: Metadata = {
-  title: "Addresses",
   description: "View your addresses",
+  title: "Addresses",
 };
 
 export default async function AddressPage(props: {
@@ -28,7 +30,7 @@ export default async function AddressPage(props: {
   return (
     <div className="space-y-6">
       <div>
-        <Heading tag="h3" mobileSize="lg">
+        <Heading mobileSize="lg" tag="h3">
           العناوين
         </Heading>
         <p className="text-muted-foreground text-sm">تحديث عناوينك المسجلة</p>
@@ -52,7 +54,7 @@ const AddressBook: React.FC<AddressBookProps> = ({customer, region}) => {
         <AddAddress region={region} />
         {addresses.map((address) => {
           return (
-            <EditAddress region={region} address={address} key={address.id} />
+            <EditAddress address={address} key={address.id} region={region} />
           );
         })}
       </div>

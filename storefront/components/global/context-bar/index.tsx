@@ -1,20 +1,21 @@
-import {cn} from "@merchify/ui";
-import {SearchInput} from "./_parts/search-input";
-import {Breadcrumb} from "./_parts/breadcrumb";
-import {ShippingFromDropdown} from "./_parts/shipping-from-dropdown";
 import {listCountries} from "@/data/medusa/regions";
+import {cn} from "@merchify/ui";
+
+import {Breadcrumb} from "./_parts/breadcrumb";
+import {SearchInput} from "./_parts/search-input";
+import {ShippingFromDropdown} from "./_parts/shipping-from-dropdown";
 
 export default async function ContextBar({
+  breadcrumbItems,
   className,
   countryCode,
-  breadcrumbItems,
 }: {
-  countryCode: string;
-  className: string;
   breadcrumbItems?: {
-    label: string;
     href?: string;
+    label: string;
   }[];
+  className: string;
+  countryCode: string;
 }) {
   const countries = (await listCountries()).filter(Boolean);
 
@@ -30,8 +31,8 @@ export default async function ContextBar({
           <div className="flex items-center gap-2">
             <span>الشحن من</span>
             <ShippingFromDropdown
-              countryCode={countryCode}
               countries={countries}
+              countryCode={countryCode}
             />
           </div>
         </div>

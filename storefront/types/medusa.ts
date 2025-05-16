@@ -1,8 +1,8 @@
-import {HttpTypes} from "@medusajs/types";
-import {BasePayment} from "@medusajs/types/dist/http/payment/common";
-import {BaseCalculatedPriceSet} from "@medusajs/types/dist/http/pricing/common";
+import type {HttpTypes} from "@medusajs/types";
+import type {BaseCalculatedPriceSet} from "@medusajs/types/dist/http/pricing/common";
 
-export interface MerchifyProduct extends HttpTypes.StoreProduct {
+export interface MerchifyProduct
+  extends Omit<HttpTypes.StoreProduct, "options"> {
   care_instructions?: MerchifyProductCareInstruction[] | null;
   feature_entries?: MerchifyProductFeature[] | null;
   metadata?:
@@ -11,6 +11,7 @@ export interface MerchifyProduct extends HttpTypes.StoreProduct {
         size_chart: MerchifyProductSizeChart;
       } & Record<string, unknown>)
     | null;
+  options: MerchifyProductOption[] | null;
 }
 
 export interface MerchifyProductOption
@@ -123,6 +124,13 @@ export interface MerchifyOrderLineItem extends HttpTypes.StoreOrderLineItem {
 
 export interface MerchifyOrder extends Omit<HttpTypes.StoreOrder, "items"> {
   items: MerchifyOrderLineItem[] | null;
+}
+
+export interface MerchifyRegionCountry
+  extends Omit<HttpTypes.StoreRegionCountry, "metadata"> {
+  metadata: {
+    ar_name?: string;
+  };
 }
 
 export type GeolocationAddress = {

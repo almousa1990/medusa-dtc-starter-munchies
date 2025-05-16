@@ -5,7 +5,7 @@ import {Cta} from "@/components/shared/button";
 import Icon from "@/components/shared/icon";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
-import {cx} from "cva";
+import {cn} from "@merchify/ui";
 import React, {useState} from "react";
 
 export default function Content({data}: {data: COOKIE_BANNER_QUERYResult}) {
@@ -21,7 +21,7 @@ export default function Content({data}: {data: COOKIE_BANNER_QUERYResult}) {
     <>
       {showCookieBanner && (
         <div
-          className={cx(
+          className={cn(
             "border-accent bg-background fixed bottom-4 left-4 z-300 flex w-full max-w-[332px] flex-col rounded-lg border-[1.5px] p-4 lg:max-w-[390px] lg:p-5",
             "animate-fadeInUp",
             {

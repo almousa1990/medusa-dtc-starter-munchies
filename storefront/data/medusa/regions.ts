@@ -1,3 +1,4 @@
+import type {MerchifyRegionCountry} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
 import medusaError from "@/utils/medusa/error";
@@ -43,7 +44,10 @@ export const listCountries = unstable_cache(
             .format(9)
             .split("9")[0],
         },
-        name: country.metadata?.ar_name ?? country.display_name,
+        name:
+          (country as MerchifyRegionCountry).metadata?.ar_name ??
+          country.display_name ??
+          "unkown",
       }));
     });
 
@@ -84,7 +88,8 @@ export const getRegion = unstable_cache(
         : regionMap.get("sa");
 
       return region;
-    } catch (e: any) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
       return null;
     }
   },
@@ -93,31 +98,3 @@ export const getRegion = unstable_cache(
     revalidate: 120,
   },
 );
-
-const _getRegion = async function (countryCode: string) {
-  try {
-    if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode);
-    }
-
-    const regions = await listRegions();
-
-    if (!regions) {
-      return null;
-    }
-
-    regions.forEach((region) => {
-      region.countries?.forEach((c) => {
-        regionMap.set(c?.iso_2 ?? "", region);
-      });
-    });
-
-    const region = countryCode
-      ? regionMap.get(countryCode)
-      : regionMap.get("sa");
-
-    return region;
-  } catch (e: any) {
-    return null;
-  }
-};

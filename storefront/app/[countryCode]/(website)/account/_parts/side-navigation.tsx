@@ -1,8 +1,7 @@
 "use client";
 
 import LocalizedLink from "@/components/shared/localized-link";
-import {buttonVariants} from "@merchify/ui";
-import {cx} from "cva";
+import {buttonVariants, cn} from "@merchify/ui";
 import {usePathname} from "next/navigation";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -21,7 +20,7 @@ export default function SideNavigation({
 
   return (
     <nav
-      className={cx(
+      className={cn(
         "flex gap-2 overflow-x-auto whitespace-nowrap lg:flex-col lg:gap-1",
         className,
       )}
@@ -29,7 +28,7 @@ export default function SideNavigation({
     >
       {items.map((item) => (
         <LocalizedLink
-          className={cx(
+          className={cn(
             buttonVariants({variant: "ghost"}),
             pathname.startsWith(item.href)
               ? "bg-muted hover:bg-muted"

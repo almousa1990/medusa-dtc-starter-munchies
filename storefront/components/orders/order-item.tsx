@@ -1,33 +1,30 @@
-import Body from "@/components/shared/typography/body";
-import {convertToLocale} from "@/utils/medusa/money";
-import Image from "next/image";
-import Heading from "@/components/shared/typography/heading";
-import {Badge, cn} from "@merchify/ui";
+import type {MerchifyOrderLineItem} from "@/types";
+
 import PrintfileLineItemPreviewer from "@/components/shared/printfile-line-item-previewer";
-import {MerchifyOrderLineItem} from "@/types";
+import Body from "@/components/shared/typography/body";
+import Heading from "@/components/shared/typography/heading";
+import {convertToLocale} from "@/utils/medusa/money";
+import {Badge, cn} from "@merchify/ui";
+import Image from "next/image";
 
 export default function OrderItem({
-  item,
-  currencyCode,
   className,
+  currencyCode,
+  item,
 }: {
-  item: MerchifyOrderLineItem;
-  currencyCode: string;
   className?: string;
+  currencyCode: string;
+  item: MerchifyOrderLineItem;
 }) {
   const {
-    unit_price,
+    printfile_line_items,
+    product_subtitle,
     quantity,
+    subtitle,
     thumbnail,
     title,
-    subtitle,
-    product_subtitle,
-    printfile_line_items,
+    unit_price,
   } = item;
-  const price = convertToLocale({
-    amount: unit_price * quantity,
-    currency_code: currencyCode,
-  });
 
   const unit_price_to_locale = convertToLocale({
     amount: unit_price,
@@ -51,12 +48,12 @@ export default function OrderItem({
       <div className="flex flex-1 flex-col">
         <div>
           <div className="flex gap-2">
-            <Heading tag="h4" className="font-medium">
+            <Heading className="font-medium" tag="h4">
               {subtitle}
             </Heading>
             <Badge variant="secondary">{title}</Badge>
           </div>
-          <Body className="text-muted-foreground mt-2 text-sm" as="p">
+          <Body as="p" className="text-muted-foreground mt-2 text-sm">
             {product_subtitle}
           </Body>
         </div>
@@ -69,19 +66,19 @@ export default function OrderItem({
         <div className="mt-6 flex flex-1 items-end">
           <dl className="divide-border flex divide-x">
             <div className="flex pl-4 sm:pl-6">
-              <Body className="font-medium" mobileSize="sm" as="dt">
+              <Body as="dt" className="font-medium" mobileSize="sm">
                 الكمية
               </Body>
-              <Body className="mr-2" mobileSize="sm" as="dd">
+              <Body as="dd" className="mr-2" mobileSize="sm">
                 {quantity}
               </Body>
             </div>
             <div className="flex pr-4 sm:pr-6">
-              <Body className="font-medium" mobileSize="sm" as="dt">
+              <Body as="dt" className="font-medium" mobileSize="sm">
                 سعر الوحدة
               </Body>
 
-              <Body className="mr-2" mobileSize="sm" as="dd">
+              <Body as="dd" className="mr-2" mobileSize="sm">
                 {unit_price_to_locale}
               </Body>
             </div>

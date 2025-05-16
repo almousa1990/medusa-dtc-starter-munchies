@@ -1,12 +1,12 @@
 "use server";
 
+import type {MerchifyOrder} from "@/types";
 import type {HttpTypes} from "@medusajs/types";
 
 import medusaError from "@/utils/medusa/error";
 
 import medusa from "./client";
 import {getAuthHeaders, getCacheHeaders} from "./cookies";
-import {MerchifyOrder} from "@/types";
 
 export const getOrder = async function (id: string) {
   return medusa.store.order
@@ -31,15 +31,10 @@ export const listOrders = async function (
     ...(await getAuthHeaders()),
   };
 
-  const next = {
-    ...(await getCacheHeaders("orders")),
-  };
-
   return medusa.client
     .fetch<HttpTypes.StoreOrderListResponse>(`/store/orders`, {
       headers,
       method: "GET",
-      next,
       query: {
         fields:
           "*items,+items.metadata,*items.variant,*items.product,*customer",

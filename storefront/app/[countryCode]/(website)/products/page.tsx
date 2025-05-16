@@ -1,17 +1,15 @@
 import type {PageProps} from "@/types";
 
+import ContextBar from "@/components/global/context-bar";
 import PaginatedProducts, {
   ProductsSkeleton,
 } from "@/components/products/paginated-product";
 import Heading from "@/components/shared/typography/heading";
 import {Suspense} from "react";
 
-import ContextBar from "@/components/global/context-bar";
-import {getRegion} from "@/data/medusa/regions";
-
 type ProductsPageProps = PageProps<
   "countryCode",
-  "category" | "collection" | "page" | "sort" | "q"
+  "category" | "collection" | "page" | "q" | "sort"
 >;
 
 export default async function ProductsPage(props: ProductsPageProps) {
@@ -21,8 +19,8 @@ export default async function ProductsPage(props: ProductsPageProps) {
   return (
     <main>
       <ContextBar
-        className="my-6"
         breadcrumbItems={[{label: "نتائج البحث"}]}
+        className="my-6"
         countryCode={params.countryCode}
       />
 
@@ -30,7 +28,7 @@ export default async function ProductsPage(props: ProductsPageProps) {
         <div>
           <Heading desktopSize="4xl" font="serif" mobileSize="2xl" tag="h1">
             {searchParams.q ? (
-              <>عرض نتائج البحث عن '{searchParams.q}'</>
+              <>عرض نتائج البحث عن &apos;{searchParams.q}&apos;</>
             ) : (
               <>ما الذي ترغب في العثور عليه؟</>
             )}

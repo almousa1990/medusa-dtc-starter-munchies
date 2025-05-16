@@ -1,5 +1,9 @@
 "use client";
 
+import type {
+  ColumnDef,
+  Table as RTable} from "@tanstack/react-table";
+
 import {
   Table,
   TableBody,
@@ -8,21 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@merchify/ui";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  Table as RTable,
-} from "@tanstack/react-table";
 import {Button} from "@merchify/ui";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -30,6 +20,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@merchify/ui";
+import {
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable
+} from "@tanstack/react-table";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,8 +42,8 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
-    data,
     columns,
+    data,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
@@ -74,8 +76,8 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  key={row.id}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -92,8 +94,8 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
                   className="h-24 text-center"
+                  colSpan={columns.length}
                 >
                   لا يوجد طلبات
                 </TableCell>
@@ -124,10 +126,10 @@ export function DataTablePagination<TData>({
         <div className="flex items-center space-x-2 space-x-reverse">
           <p className="text-sm font-medium">المدخلات لكل صفحة</p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
             }}
+            value={`${table.getState().pagination.pageSize}`}
           >
             <SelectTrigger className="h-8 w-[70px]">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
@@ -147,37 +149,37 @@ export function DataTablePagination<TData>({
         </div>
         <div className="flex items-center space-x-2 space-x-reverse">
           <Button
-            variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
+            onClick={() => table.setPageIndex(0)}
+            variant="outline"
           >
             <span className="sr-only">الصفحة الأولى</span>
             <ChevronsRight />
           </Button>
           <Button
-            variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            onClick={() => table.previousPage()}
+            variant="outline"
           >
             <span className="sr-only">الصفحة السابقة</span>
             <ChevronRight />
           </Button>
           <Button
-            variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            onClick={() => table.nextPage()}
+            variant="outline"
           >
             <span className="sr-only">الصفحة التالية</span>
             <ChevronLeft />
           </Button>
           <Button
-            variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            variant="outline"
           >
             <span className="sr-only">الصفحة الأخيرة</span>
             <ChevronsLeft />

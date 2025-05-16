@@ -9,12 +9,12 @@ import {
   addCustomerAddress,
   updateCustomerAddress,
 } from "@/actions/medusa/customer";
+import {CHECKOUT_ADD_ADDRESS_ID} from "@/utils/constants";
 import {Accordion, RadioGroup} from "@merchify/ui";
 import {useCallback, useState} from "react";
 
 import AddAddressItem from "./add-address-item";
 import AddressItem from "./address-item";
-import {CHECKOUT_ADD_ADDRESS_ID} from "@/utils/constants";
 
 type AddressSelectProps = {
   countries?: StoreRegionCountry[];
@@ -36,10 +36,10 @@ export default function AddressSelect({
   value,
 }: AddressSelectProps) {
   const [expandedItem, setExpandedItem] = useState<
-    typeof CHECKOUT_ADD_ADDRESS_ID | string
+    string | typeof CHECKOUT_ADD_ADDRESS_ID
   >("");
   const [selectedItem, setSelectedItem] = useState<
-    typeof CHECKOUT_ADD_ADDRESS_ID | string
+    string | typeof CHECKOUT_ADD_ADDRESS_ID
   >(value ?? CHECKOUT_ADD_ADDRESS_ID);
 
   const handleEditCustomerAddress = useCallback(
@@ -81,6 +81,7 @@ export default function AddressSelect({
         setExpandedItem("");
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onValueChange, expandedItem, selectedItem, setSelectedItem],
   );
 
@@ -92,39 +93,39 @@ export default function AddressSelect({
 
   return (
     <Accordion
-      type="single"
-      collapsible
-      value={expandedItem}
       className="grid w-full gap-2"
+      collapsible
+      type="single"
+      value={expandedItem}
     >
       <RadioGroup
+        className="gap-0"
         dir="rtl"
         onValueChange={handleSelect}
-        className="gap-0"
         value={selectedItem} // null → undefined
       >
         {(customer.addresses ?? []).map((address) => (
           <AddressItem
             address={address}
             countries={countries}
-            selected={selectedItem === address.id}
             key={address.id}
             onEdit={handleEditCustomerAddress}
             onSelect={handleSelect}
             onToggleOpen={handleExpand}
+            selected={selectedItem === address.id}
           />
         ))}
 
         <AddAddressItem
+          countries={countries}
           defaultAddress={{
             first_name: customer.first_name,
             last_name: customer.last_name,
             phone: customer.phone,
           }}
-          countries={countries}
-          selected={selectedItem === CHECKOUT_ADD_ADDRESS_ID}
           onSelect={handleSelect}
           onSubmit={handleAddCustomerAddress}
+          selected={selectedItem === CHECKOUT_ADD_ADDRESS_ID}
         />
       </RadioGroup>
     </Accordion>

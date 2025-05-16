@@ -7,8 +7,8 @@ import type {
 import type {EmblaViewportRefType} from "embla-carousel-react";
 import type {ComponentProps, JSX, PropsWithChildren} from "react";
 
+import {cn} from "@merchify/ui";
 import {Slot} from "@radix-ui/react-slot";
-import {cx} from "cva";
 import useEmblaCarousel from "embla-carousel-react";
 import {
   createContext,
@@ -131,7 +131,7 @@ export function SlidesWrapper(props: SlidesWrapperProps) {
   const {ref} = useCarousel();
   return (
     <div
-      className={cx("overflow-hidden", className)}
+      className={cn("overflow-hidden", className)}
       ref={ref}
       {...passThrough}
     >
@@ -145,11 +145,11 @@ export function Slides({content, itemProps, wrapperDiv}: SlidesProps) {
   const {className: itemClassName, ...passThroughItemProps} = itemProps;
 
   return (
-    <div className={cx("flex", wrapperClassName)} {...passThroughWrapper}>
+    <div className={cn("flex", wrapperClassName)} {...passThroughWrapper}>
       {content.map((item) => {
         return (
           <div
-            className={cx("flex-1", itemClassName)}
+            className={cn("flex-1", itemClassName)}
             key={item.key}
             {...passThroughItemProps}
           >

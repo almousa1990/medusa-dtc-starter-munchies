@@ -30,13 +30,13 @@ export function SearchInput() {
     <div className="relative flex items-center">
       <Search className="text-muted-foreground absolute right-4 h-4 w-4" />
       <Input
-        value={input}
+        className="bg-accent h-12 w-full pr-10"
         onChange={(e) => {
           hasTyped.current = true;
           setInput(e.target.value);
         }}
-        className="bg-accent h-12 w-full pr-10"
         placeholder="ابحث عن المنتجات والعلامات التجارية والفئات"
+        value={input}
       />
     </div>
   );

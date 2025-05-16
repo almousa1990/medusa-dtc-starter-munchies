@@ -1,7 +1,8 @@
+import type {NextRequest} from "next/server";
+
 import {placeOrder} from "@/actions/medusa/order";
 import {getCart} from "@/data/medusa/cart";
-import {getCacheTag} from "@/data/medusa/cookies";
-import {NextRequest, NextResponse} from "next/server";
+import {NextResponse} from "next/server";
 
 type Params = Promise<{cart_id: string}>;
 
@@ -28,8 +29,8 @@ export async function GET(req: NextRequest, {params}: {params: Params}) {
 
   if (
     !paymentSession ||
-    !["paid", "authorized", "captured"].includes(redirectStatus) ||
-    !["pending", "authorized", "captured"].includes(paymentSession.status)
+    !["authorized", "captured", "paid"].includes(redirectStatus) ||
+    !["authorized", "captured", "pending"].includes(paymentSession.status)
   ) {
     console.log("redirect to failure");
 
@@ -40,7 +41,7 @@ export async function GET(req: NextRequest, {params}: {params: Params}) {
 
   console.log("place order again");
 
-  const cartRes = await placeOrder(cart_id);
+  await placeOrder(cart_id);
 
   return NextResponse.redirect(`${origin}`);
 }

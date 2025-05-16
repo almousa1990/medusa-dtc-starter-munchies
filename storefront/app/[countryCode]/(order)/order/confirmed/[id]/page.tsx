@@ -1,20 +1,18 @@
 import type {PageProps} from "@/types";
 
-import Body from "@/components/shared/typography/body";
-import Heading from "@/components/shared/typography/heading";
-import {enrichLineItems} from "@/data/medusa/line-items";
-import {getOrder} from "@/data/medusa/order";
-import {notFound} from "next/navigation";
-
-import {Link} from "@/components/shared/button";
-import {ChevronLeft} from "lucide-react";
-import OrderDetails from "@/components/orders/order-details";
-import OrderItem from "@/components/orders/order-item";
 import OrderAddressBlock from "@/components/orders/blocks/order-address";
 import OrderContactInfoBlock from "@/components/orders/blocks/order-contact-info";
 import OrderPaymentBlock from "@/components/orders/blocks/order-payment";
 import OrderShippingOptionBlock from "@/components/orders/blocks/order-shipping-option";
+import OrderItem from "@/components/orders/order-item";
+import {Link} from "@/components/shared/button";
 import {TotalsBreakdown} from "@/components/shared/totals-breakdown";
+import Body from "@/components/shared/typography/body";
+import Heading from "@/components/shared/typography/heading";
+import {enrichLineItems} from "@/data/medusa/line-items";
+import {getOrder} from "@/data/medusa/order";
+import {ChevronLeft} from "lucide-react";
+import {notFound} from "next/navigation";
 
 export default async function OrderConfirmedPage(props: PageProps<"id">) {
   const params = await props.params;
@@ -49,8 +47,8 @@ export default async function OrderConfirmedPage(props: PageProps<"id">) {
             <OrderItem
               className="border-b py-10"
               currencyCode={order.currency_code}
-              key={item.id}
               item={item}
+              key={item.id}
             />
           );
         })}

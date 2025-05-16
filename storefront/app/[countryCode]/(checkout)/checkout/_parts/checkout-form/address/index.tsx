@@ -6,13 +6,13 @@ import FormattedAddress from "@/components/shared/formatted-address";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {cn, Form, FormField, FormItem} from "@merchify/ui";
+import {Form, FormField, FormItem, cn} from "@merchify/ui";
+import {Check} from "lucide-react";
+import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 import AddressSelect from "../../address-select";
-import {useEffect, useState} from "react";
-import {Check} from "lucide-react";
 
 const formSchema = z.object({
   customer_address_id: z.string().nullable(),
@@ -33,7 +33,7 @@ export default function Address({active}: {active: boolean}) {
   });
 
   const {
-    formState: {isSubmitSuccessful, isSubmitting},
+    formState: {isSubmitting},
     handleSubmit,
     reset,
   } = form;
@@ -45,6 +45,7 @@ export default function Address({active}: {active: boolean}) {
           .customer_address_id as string,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, cart?.shipping_address?.metadata?.customer_address_id]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -80,8 +81,8 @@ export default function Address({active}: {active: boolean}) {
 
   return (
     <div
-      onClick={() => (isFilled ? setStep("address") : {})}
       className={cn({"cursor-pointer": !active})}
+      onClick={() => (isFilled ? setStep("address") : {})}
     >
       <Form {...form}>
         <form
@@ -90,11 +91,11 @@ export default function Address({active}: {active: boolean}) {
         >
           <div className="flex h-10 items-center justify-between">
             <Heading
+              className={cn({"text-muted-foreground": !active})}
               desktopSize="xl"
               font="serif"
               mobileSize="xl"
               tag="h3"
-              className={cn({"text-muted-foreground": !active})}
             >
               عنوان التوصيل
             </Heading>
@@ -105,7 +106,7 @@ export default function Address({active}: {active: boolean}) {
             )}
           </div>
           {isFilled && cart.shipping_address && (
-            <Body font="sans" className="text-muted-foreground text-sm">
+            <Body className="text-muted-foreground text-sm" font="sans">
               <FormattedAddress address={cart.shipping_address} />
             </Body>
           )}

@@ -8,15 +8,14 @@ import {SanityImage} from "@/components/shared/sanity-image";
 import Body from "@/components/shared/typography/body";
 import Heading from "@/components/shared/typography/heading";
 import Label from "@/components/shared/typography/label";
-import {cx} from "cva";
+import {cn, navigationMenuTriggerStyle} from "@merchify/ui";
+import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import {ChevronDown} from "lucide-react";
 import {usePathname, useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {RemoveScroll} from "react-remove-scroll";
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 
 import BottomBorder from "./bottom-border";
-import {cn, navigationMenuTriggerStyle} from "@merchify/ui";
-import {ChevronDown} from "lucide-react";
 
 type DropdownType = Extract<
   NonNullable<Header["navigation"]>[number],
@@ -38,8 +37,8 @@ export default function Navigation({data}: {data: Header}) {
   return (
     <NavigationMenu.Root
       className="z-20 hidden lg:block"
-      onValueChange={handleValueChange}
       dir="rtl"
+      onValueChange={handleValueChange}
       value={openDropdown}
     >
       <NavigationMenu.List className="group flex flex-1 list-none items-center justify-center space-x-1">
@@ -53,7 +52,7 @@ export default function Navigation({data}: {data: Header}) {
                   className={cn(navigationMenuTriggerStyle(), "group")}
                 >
                   <LocalizedLink href={item.cta?.link} key={item._key} passHref>
-                    <Body font="sans" className="font-medium" mobileSize="base">
+                    <Body className="font-medium" font="sans" mobileSize="base">
                       {item.cta?.label}
                     </Body>
                   </LocalizedLink>
@@ -66,17 +65,17 @@ export default function Navigation({data}: {data: Header}) {
                 <NavigationMenu.Trigger
                   className={cn(navigationMenuTriggerStyle(), "group")}
                 >
-                  <Body font="sans" className="font-medium" mobileSize="base">
+                  <Body className="font-medium" font="sans" mobileSize="base">
                     {item.title}
                   </Body>
                   <ChevronDown
-                    className="relative top-[1px] mr-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
                     aria-hidden="true"
+                    className="relative top-[1px] mr-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
                   />
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content
-                  dir="rtl"
                   className="bg-background absolute top-0 left-0 z-[30] w-full"
+                  dir="rtl"
                 >
                   <Content {...item} />
                 </NavigationMenu.Content>
@@ -90,7 +89,7 @@ export default function Navigation({data}: {data: Header}) {
 
         <NavigationMenu.Viewport className="bg-background relative mx-auto h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden" />
         <div
-          className={cx("bg-border relative w-full", {
+          className={cn("bg-border relative w-full", {
             "animate-in fade-in h-px": openDropdown,
             "animate-our fade-out h-0": !openDropdown,
           })}
@@ -101,8 +100,6 @@ export default function Navigation({data}: {data: Header}) {
 }
 
 function Content({cards, columns}: DropdownType) {
-  const [hoveredKey, setHoveredKey] = useState<null | string | undefined>(null);
-
   return (
     <RemoveScroll>
       <div className="relative mx-auto flex max-w-xl items-start justify-between gap-8 px-4 py-10 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -120,11 +117,9 @@ function Content({cards, columns}: DropdownType) {
                   if (!link?.link) return null;
                   return (
                     <LocalizedLink
-                      className={cx("py-2 last:pb-0")}
+                      className={cn("py-2 last:pb-0")}
                       href={link.link}
                       key={link._key}
-                      onMouseEnter={() => setHoveredKey(link._key)}
-                      onMouseLeave={() => setHoveredKey(null)}
                       prefetch
                     >
                       <Label font="sans" mobileSize="lg">

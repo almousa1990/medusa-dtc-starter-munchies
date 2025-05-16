@@ -3,20 +3,19 @@
 import type {MerchifyCartLineItem} from "@/types";
 
 import {fetchCartLineItem} from "@/actions/medusa/cart";
-import clsx from "clsx";
-import Image from "next/image";
-import {useEffect, useRef, useState} from "react";
 import {cn} from "@merchify/ui";
 import {Loader2} from "lucide-react";
+import Image from "next/image";
+import {useEffect, useRef, useState} from "react";
 
 export default function LineItemThumbnail({
-  item: initialItem,
   className,
+  item: initialItem,
   pollingInterval = 5000,
 }: {
+  className?: string;
   item: MerchifyCartLineItem;
   pollingInterval?: number;
-  className?: string;
 }) {
   const [item, setItem] = useState<MerchifyCartLineItem>(initialItem);
   const [isLoading, setIsLoading] = useState(
@@ -51,7 +50,7 @@ export default function LineItemThumbnail({
     <div className={cn("relative size-24 sm:size-36", className)}>
       <Image
         alt={item.title}
-        className={clsx(
+        className={cn(
           "aspect-square rounded-md object-cover transition-opacity duration-300",
           {"opacity-70": isLoading},
         )}
